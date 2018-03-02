@@ -12,12 +12,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.HeaderParam;
-import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
-import nip.service.objects.NESingleRequest;
+import nip.tools.AppParams;
+import nip.tools.DBConnector;
+import nip.tools.NIBBsResponseCodes;
+import nip.tools.PGPEncrytionTool;
 import nip.wrapperobjects.NameEnquiryRequest;
 import nip.wrapperobjects.NameEnquiryResponse;
+import org.apache.log4j.Level;
 
 /**
  * REST Web Service
@@ -29,12 +33,38 @@ public class NIPInterface {
 
     @Context
     private UriInfo context;
-
+    NIBBsResponseCodes respcodes;
+    AppParams options;
+    PGPEncrytionTool nipssm;
+    DBConnector db;
+    String logfilename ="NIPClientInterface";
     /**
      * Creates a new instance of NIPInterface
      */
     public NIPInterface() {
+        
+        try
+    {
+ 
+        options = new AppParams();
+        
+        nipssm = new PGPEncrytionTool(options);
+        
+       
+        
+        db = new DBConnector(options.getDBserver(),options.getDBuser(),options.getDBpass(),"NIPLogs");
+        
     }
+    catch (Exception e)
+    {   
+        options.getServiceLogger(logfilename).LogError(e.getMessage(), e, Level.FATAL);
+    }
+            
+            
+    }
+
+        
+    
 
     /**
      * Retrieves representation of an instance of nip.service.NIPInterface
@@ -47,7 +77,7 @@ public class NIPInterface {
     @POST
     @Path("NameEnquiry")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getXml(@HeaderParam("authenticationID") String authenticationID, @HeaderParam("timeStamp") String timeStamp, @HeaderParam("applicationID") String applicationID, String payload) 
+    public String NameEnquiry(@HeaderParam("authenticationID") String authenticationID, @HeaderParam("timeStamp") String timeStamp, @HeaderParam("applicationID") String applicationID, String payload) 
     {
      Gson gson = new Gson();
      
@@ -55,12 +85,29 @@ public class NIPInterface {
        
      try{
          
+         
          NameEnquiryRequest request = (NameEnquiryRequest) gson.fromJson(payload, NameEnquiryRequest.class);
          
-         NESingleRequest niprequest = new NESingleRequest();
+         String stringtohash = request.getRequestID() + request.getDestinationInstitutionCode() + request.getAccountNumber();
          
-         response.setResponseCode("00");
-         response.setKycLevel("2");
+      String requesthash = request.getHash();
+      
+      String hash = options.get_SHA_512_Hash(stringtohash, "inlaks");
+
+     if(hash.equals(requesthash)){
+                 
+          respcodes = options.getResponseObject("00");
+         
+         response.setResponseCode(respcodes.getInlaksCode());
+         response.setResponseDescription(respcodes.getMessage());
+     }
+      else{
+         respcodes = NIBBsResponseCodes.Security_violation;
+         response.setResponseCode(respcodes.getInlaksCode());
+         response.setResponseDescription(respcodes.getMessage());
+     }
+     
+     
      }
      catch(Exception e)
      {
