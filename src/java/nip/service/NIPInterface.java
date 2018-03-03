@@ -7,6 +7,7 @@ package nip.service;
 
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -93,9 +94,10 @@ public class NIPInterface {
       headers.add("requestPayload");
       values.add(payload);
       
-    //  Date reqdate = new Date();
+      Date reqdate = new Date();
       
-      
+      headers.add("requestDate");
+      values.add(reqdate);
      
        
      try{
@@ -108,6 +110,10 @@ public class NIPInterface {
             return gson.toJson(response);
          }
          
+         headers.add("applicationID");
+         values.add(applicationID);
+         
+         
          NameEnquiryRequest request = (NameEnquiryRequest) gson.fromJson(payload, NameEnquiryRequest.class);
          
          String stringtohash = request.getRequestID() + request.getDestinationInstitutionCode() + request.getAccountNumber();
@@ -115,6 +121,9 @@ public class NIPInterface {
       String requesthash = request.getHash();
       
       String hash = options.get_SHA_512_Hash(stringtohash, "inlaks");
+      
+      headers.add("hash");
+      values.add(hash);
 
      if(hash.equals(requesthash)){
                  
@@ -130,7 +139,10 @@ public class NIPInterface {
          
      }
      
-     
+      headers.add("responseCode");
+      values.add(response.getResponseCode());
+        headers.add("responseDescription");
+      values.add(response.getResponseDescription());
      }
      catch(Exception e)
      {
@@ -138,6 +150,10 @@ public class NIPInterface {
      }
      finally{
          try{
+             
+             headers.add("response");
+             values.add(gson.toJson(response));  
+             
           db.insertData(headers, values.toArray(),logTable);
          }
          catch(Exception s){
