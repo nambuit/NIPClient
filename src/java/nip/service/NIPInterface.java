@@ -6,6 +6,8 @@
 package nip.service;
 
 import com.google.gson.Gson;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -38,6 +40,9 @@ public class NIPInterface {
     PGPEncrytionTool nipssm;
     DBConnector db;
     String logfilename ="NIPClientInterface";
+    String logTable = "InlaksNIPWrapperLog";
+    
+    
     /**
      * Creates a new instance of NIPInterface
      */
@@ -82,9 +87,26 @@ public class NIPInterface {
      Gson gson = new Gson();
      
      NameEnquiryResponse response = new NameEnquiryResponse();
+     
+       List<Object> values = new ArrayList<>();
+        List<String> headers = new ArrayList<>();
+      headers.add("requestPayload");
+      values.add(payload);
+      
+    //  Date reqdate = new Date();
+      
+      
+     
        
      try{
          
+         if(authenticationID==null||timeStamp==null||applicationID==null)
+         {
+            respcodes = NIBBsResponseCodes.Invalid_Sender;
+            response.setResponseCode(respcodes.getInlaksCode());
+            response.setResponseDescription(respcodes.getMessage());
+            return gson.toJson(response);
+         }
          
          NameEnquiryRequest request = (NameEnquiryRequest) gson.fromJson(payload, NameEnquiryRequest.class);
          
@@ -105,6 +127,7 @@ public class NIPInterface {
          respcodes = NIBBsResponseCodes.Security_violation;
          response.setResponseCode(respcodes.getInlaksCode());
          response.setResponseDescription(respcodes.getMessage());
+         
      }
      
      
@@ -112,6 +135,14 @@ public class NIPInterface {
      catch(Exception e)
      {
          
+     }
+     finally{
+         try{
+          db.insertData(headers, values.toArray(),logTable);
+         }
+         catch(Exception s){
+             
+         }
      }
         
         return gson.toJson(response);
