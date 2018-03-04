@@ -58,6 +58,31 @@ public ResultSet getData(String sql, Connection conn)  throws Exception{
  
 
 
+public ResultSet getData(PreparedStatement prestmt, Connection conn)  throws Exception{
+
+      
+         
+   
+        
+        try
+        {
+           
+            Class.forName(JDBC_DRIVER);
+
+           conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            ResultSet ds = prestmt.executeQuery();
+           
+      
+            return ds;      
+         
+     }catch (Exception e){
+        throw(e);
+             }
+
+}
+
+
+
 public void Execute (String sql)  throws Exception{
 
          Connection conn = null;

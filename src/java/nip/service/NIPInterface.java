@@ -110,11 +110,15 @@ public class NIPInterface {
             return gson.toJson(response);
          }
          
+       
+         
          headers.add("applicationID");
          values.add(applicationID);
          
-         
          NameEnquiryRequest request = (NameEnquiryRequest) gson.fromJson(payload, NameEnquiryRequest.class);
+         
+           headers.add("requestID");
+         values.add(request.getRequestID());
          
          String stringtohash = request.getRequestID() + request.getDestinationInstitutionCode() + request.getAccountNumber();
          
@@ -131,6 +135,7 @@ public class NIPInterface {
          
          response.setResponseCode(respcodes.getInlaksCode());
          response.setResponseDescription(respcodes.getMessage());
+         
      }
       else{
          respcodes = NIBBsResponseCodes.Security_violation;
@@ -156,7 +161,8 @@ public class NIPInterface {
              
           db.insertData(headers, values.toArray(),logTable);
          }
-         catch(Exception s){
+         catch(Exception s)
+         {
              
          }
      }
@@ -172,4 +178,7 @@ public class NIPInterface {
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(String content) {
     }
+    
+    
+    
 }
