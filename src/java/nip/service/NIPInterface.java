@@ -65,6 +65,7 @@ public class NIPInterface {
     {   
         options.getServiceLogger(logfilename).LogError(e.getMessage(), e, Level.FATAL);
     }
+       
             
             
     }
@@ -135,6 +136,7 @@ public class NIPInterface {
          
          response.setResponseCode(respcodes.getInlaksCode());
          response.setResponseDescription(respcodes.getMessage());
+         response.setNameEnquiryRef("9c13830d86f172c042a710f0b9c48cd");
          
      }
       else{
