@@ -5,35 +5,22 @@
  */
 package nip.wrapperobjects;
 
-
-
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  *
- * @author wumoru
+ * @author r16user
  */
 
+
 @Getter @Setter
-@XmlRootElement(name = "NameEnquiryRequest")
-public class NameEnquiryRequest {
+@XmlRootElement(name = "getFIListRequest")
+public class getFIListRequest {
     
-   
     private String requestID;
-    
-
-    private String destinationInstitutionCode;
-    
-    private String accountNumber;
-    
     private String hash;
-    
     private String ChannelCode;
-    
     private String InstitutionCode;
-
-   
-    
 }

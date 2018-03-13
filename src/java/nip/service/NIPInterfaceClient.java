@@ -18,6 +18,10 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+import nibss.nip.core.NIPInterface;
+import nibss.nip.core.NIPInterface_Service;
+import nip.service.objects.NESingleRequest;
+import nip.service.objects.NESingleResponse;
 import nip.tools.AppParams;
 import nip.tools.DBConnector;
 import nip.tools.NIBBsResponseCodes;
@@ -32,7 +36,7 @@ import org.apache.log4j.Level;
  * @author Administrator
  */
 @Path("NIPOutwardInterface")
-public class NIPInterface {
+public class NIPInterfaceClient {
 
     @Context
     private UriInfo context;
@@ -42,12 +46,12 @@ public class NIPInterface {
     DBConnector db;
     String logfilename ="NIPClientInterface";
     String logTable = "InlaksNIPWrapperLog";
-    
+    NIPInterface nip;
     
     /**
      * Creates a new instance of NIPInterface
      */
-    public NIPInterface() {
+    public NIPInterfaceClient() {
         
         try
     {
@@ -56,7 +60,9 @@ public class NIPInterface {
         
         nipssm = new PGPEncrytionTool(options);
         
+       NIPInterface_Service nipservice = new NIPInterface_Service();
        
+       nip = nipservice.getNIPInterfacePort();
         
         db = new DBConnector(options.getDBserver(),options.getDBuser(),options.getDBpass(),"NIPLogs");
         
@@ -103,20 +109,28 @@ public class NIPInterface {
        
      try{
          
+         
+         
          if(authenticationID==null||timeStamp==null||applicationID==null)
          {
+           
+             
             respcodes = NIBBsResponseCodes.Invalid_Sender;
             response.setResponseCode(respcodes.getInlaksCode());
             response.setResponseDescription(respcodes.getMessage());
             return gson.toJson(response);
          }
          
-       
+        NameEnquiryRequest request = (NameEnquiryRequest) gson.fromJson(payload, NameEnquiryRequest.class);
+         
+   
+         
+         
          
          headers.add("applicationID");
          values.add(applicationID);
          
-         NameEnquiryRequest request = (NameEnquiryRequest) gson.fromJson(payload, NameEnquiryRequest.class);
+        
          
            headers.add("requestID");
          values.add(request.getRequestID());
@@ -132,11 +146,34 @@ public class NIPInterface {
 
      if(hash.equals(requesthash)){
                  
-          respcodes = options.getResponseObject("00");
+              NESingleRequest niprequest = new NESingleRequest();
+             
+         niprequest.setAccountNumber(request.getAccountNumber());
+         niprequest.setChannelCode(request.getChannelCode());
+         niprequest.setDestinationInstitutionCode(request.getDestinationInstitutionCode());
+         String sessionID = options.generateSessionID(request.getInstitutionCode());
+         niprequest.setSessionID(sessionID);
+         
+         String niprequeststr = options.ObjectToXML(niprequest);
+         
+         niprequeststr = nipssm.encrypt(niprequeststr);
+         
+       String nipresponse =  nip.nameenquirysingleitem(niprequeststr);
+       
+       nipresponse = nipssm.decrypt(nipresponse);
+       
+       NESingleResponse nipresponseobject = (NESingleResponse) options.XMLToObject(nipresponse, new NESingleResponse());
+         
+       respcodes = options.getResponseObject(nipresponseobject.getResponseCode());
          
          response.setResponseCode(respcodes.getInlaksCode());
          response.setResponseDescription(respcodes.getMessage());
-         response.setNameEnquiryRef("9c13830d86f172c042a710f0b9c48cd");
+         response.setNameEnquiryRef(nipresponseobject.getSessionID());
+         response.setBankVerificationNo(nipresponseobject.getBankVerificationNumber());
+         response.setKycLevel(nipresponseobject.getKYCLevel());
+         response.setRequestID(request.getRequestID());
+         response.setAccountName(nipresponseobject.getAccountName());
+         response.setAccountNumber(nipresponseobject.getAccountNumber());
          
      }
       else{

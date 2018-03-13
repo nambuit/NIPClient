@@ -14,6 +14,9 @@ import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
 import javax.naming.InitialContext;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -131,8 +134,27 @@ public WebServiceLogger getServiceLogger(String filename){
       
       return text.replace("&", "&amp;").replace("\"", "&quot;").replace("'", "&apos;").replace("<", "&lt;").replace(">", "&gt;");
   }
+  
+  
+  public  String generateSessionID(String instcode){
+      SimpleDateFormat sdf = new SimpleDateFormat("yymmddHHmmss");
+      
+      Date now = new Date();
+      
+      String date = sdf.format(now);
+      String uniquenumber = GenerateRandomNumber(12); 
 
+     String sessionid = instcode+date+uniquenumber;
+     
+     return sessionid;
+      
+  }
 
+ public  String GenerateRandomNumber(int charLength) {
+        return String.valueOf(charLength < 1 ? 0 : new Random()
+                .nextInt((9 * (int) Math.pow(10, charLength - 1)) - 1)
+                + (int) Math.pow(10, charLength - 1));
+    }
   
     public NIBBsResponseCodes getNIBBsCode(String message){
    
