@@ -21,4 +21,6 @@ public class TransactionStatusQueryRequest {
     private String requestID;
     private String nibssSessionID;
     private String hash;
+     private String ChannelCode;
+     private String InstitutionCode;
 }

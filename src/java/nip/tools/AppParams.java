@@ -150,10 +150,21 @@ public WebServiceLogger getServiceLogger(String filename){
       
   }
 
- public  String GenerateRandomNumber(int charLength) {
-        return String.valueOf(charLength < 1 ? 0 : new Random()
-                .nextInt((9 * (int) Math.pow(10, charLength - 1)) - 1)
-                + (int) Math.pow(10, charLength - 1));
+// public  String GenerateRandomNumber(int charLength) {
+//        return String.valueOf(charLength < 1 ? 0 : new Random()
+//                .nextInt((9 * (int) Math.pow(10, charLength - 1)) - 1)
+//                + (int) Math.pow(10, charLength - 1));
+//    }
+ 
+  public  String GenerateRandomNumber(int charLength) {
+      
+      Random rand = new Random();
+      StringBuilder sb = new StringBuilder();
+      for(int i = 0;i<charLength;i++){
+          sb.append(String.valueOf(rand.nextInt(9)));
+      }
+     
+        return sb.toString();
     }
   
     public NIBBsResponseCodes getNIBBsCode(String message){

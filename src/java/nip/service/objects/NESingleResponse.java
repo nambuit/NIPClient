@@ -8,14 +8,14 @@ package nip.service.objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
-import lombok.Setter;
+
 
 /**
  *
  * @author wumoru
  */
 @XmlRootElement(name = "NESingleResponse")
-@Getter @Setter
+@Getter
 public class NESingleResponse {
     
     @XmlElement(name = "SessionID")

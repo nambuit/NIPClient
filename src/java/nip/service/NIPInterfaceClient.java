@@ -21,15 +21,23 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import nibss.nip.core.NIPInterface;
 import nibss.nip.core.NIPInterface_Service;
+import nip.service.objects.FTSingleCreditRequest;
+import nip.service.objects.FTSingleCreditResponse;
 import nip.service.objects.NESingleRequest;
 import nip.service.objects.NESingleResponse;
+import nip.service.objects.Record;
+import nip.service.objects.TSQuerySingleRequest;
 import nip.tools.AppParams;
 import nip.tools.DBConnector;
 import nip.tools.NIBBsResponseCodes;
 import nip.tools.PGPEncrytionTool;
+import nip.wrapperobjects.FundsTransferDCRequest;
+import nip.wrapperobjects.FundsTransferDCResponse;
 import nip.wrapperobjects.NameEnquiryRequest;
 import nip.wrapperobjects.NameEnquiryResponse;
 import nip.wrapperobjects.Records;
+import nip.wrapperobjects.TransactionStatusQueryRequest;
+import nip.wrapperobjects.TransactionStatusQueryResponse;
 import nip.wrapperobjects.getFIListRequest;
 import nip.wrapperobjects.getFIListResponse;
 import org.apache.log4j.Level;
@@ -158,6 +166,7 @@ public class NIPInterfaceClient {
          String sessionID = options.generateSessionID(request.getInstitutionCode());
          niprequest.setSessionID(sessionID);
          
+         
          String niprequeststr = options.ObjectToXML(niprequest);
          
          niprequeststr = nipssm.encrypt(niprequeststr);
@@ -214,6 +223,285 @@ public class NIPInterfaceClient {
         
         return gson.toJson(response);
     }
+    
+    
+    
+    
+      /**
+     * Retrieves representation of an instance of nip.service.NIPInterface
+     * @param authenticationID
+     * @param timeStamp
+     * @param applicationID
+     * @param payload
+     * @return an instance of java.lang.String
+     */
+    @POST
+    @Path("FundsTransferDC")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String FundsTransferDC(@HeaderParam("authenticationID") String authenticationID, @HeaderParam("timeStamp") String timeStamp, @HeaderParam("applicationID") String applicationID, String payload) 
+    {
+     Gson gson = new Gson();
+     
+     FundsTransferDCResponse response = new FundsTransferDCResponse();
+     
+       List<Object> values = new ArrayList<>();
+        List<String> headers = new ArrayList<>();
+      headers.add("requestPayload");
+      values.add(payload);
+      
+      Date reqdate = new Date();
+      
+      headers.add("requestDate");
+      values.add(reqdate);
+     
+       
+     try{
+         
+         
+         
+         if(authenticationID==null||timeStamp==null||applicationID==null)
+         {
+           
+             
+            respcodes = NIBBsResponseCodes.Invalid_Sender;
+            response.setResponseCode(respcodes.getInlaksCode());
+            response.setResponseDescription(respcodes.getMessage());
+            return gson.toJson(response);
+         }
+         
+        FundsTransferDCRequest request = (FundsTransferDCRequest) gson.fromJson(payload, FundsTransferDCRequest.class);
+         
+   
+         
+         
+         
+         headers.add("applicationID");
+         values.add(applicationID);
+         
+        
+         
+           headers.add("requestID");
+         values.add(request.getRequestID());
+         
+         String stringtohash = request.getRequestID() + request.getDestinationInstitutionCode() + request.getBeneficiaryAccountNumber()+request.getAmount();
+         
+      String requesthash = request.getHash();
+      
+      String hash = options.get_SHA_512_Hash(stringtohash, "inlaks");
+      
+      headers.add("hash");
+      values.add(hash);
+
+     if(hash.equals(requesthash)){
+                 
+         FTSingleCreditRequest niprequest = new FTSingleCreditRequest();
+             
+         niprequest.setBeneficiaryAccountNumber(request.getBeneficiaryAccountNumber());
+         niprequest.setChannelCode(request.getChannelCode());
+         niprequest.setDestinationInstitutionCode(request.getDestinationInstitutionCode());
+         String sessionID = options.generateSessionID(request.getInstitutionCode());
+         niprequest.setSessionID(sessionID);
+         niprequest.setBeneficiaryAccountName(request.getBeneficiaryAccountName());
+         niprequest.setNameEnquiryRef(request.getNameEnquiryRef());
+         niprequest.setBeneficiaryVerificationNumber(request.getBeneficiaryBankVerificationNumber());
+         niprequest.setNarration(request.getNarration());//"Inlaks FT Single DC Test ");
+         niprequest.setOriginatorKYCLevel(request.getOriginatorKYCLevel());
+         niprequest.setPaymentReference(request.getPaymentReference());
+         niprequest.setOriginatorAccountName(request.getOriginatorAccountName());
+         niprequest.setOriginatorBankVerificationNumber(request.getOriginatorBankVerificationNumber());
+         niprequest.setTransactionLocation(request.getTransactionLocation());
+         niprequest.setBeneficiaryKYCLevel(request.getBeneficiaryKYCLevel());
+         niprequest.setOriginatorAccountNumber(request.getOriginatorAccountNumber());
+         
+       String niprequeststr = options.ObjectToXML(niprequest);
+         
+       niprequeststr = nipssm.encrypt(niprequeststr);
+         
+       String nipresponse =  nip.fundtransfersingleitemDc(niprequeststr);
+       
+       nipresponse = nipssm.decrypt(nipresponse);
+       
+       FTSingleCreditResponse nipresponseobject = (FTSingleCreditResponse) options.XMLToObject(nipresponse, new FTSingleCreditResponse());
+         
+       respcodes = options.getResponseObject(nipresponseobject.getResponseCode());
+         
+         response.setResponseCode(respcodes.getInlaksCode());
+         response.setResponseDescription(respcodes.getMessage());
+         response.setNibssSessionID(nipresponseobject.getSessionID());
+         response.setInstitutionCode(request.getInstitutionCode());
+         response.setDestinationInstitutionCode(nipresponseobject.getDestinationInstitutionCode());
+         response.setRequestID(request.getRequestID());
+         response.setHash(request.getHash());
+         response.setChannelCode(nipresponseobject.getChannelCode());
+         response.setBeneficiaryAccountNumber(nipresponse);
+         
+         
+     }
+      else{
+         respcodes = NIBBsResponseCodes.Security_violation;
+         response.setResponseCode(respcodes.getInlaksCode());
+         response.setResponseDescription(respcodes.getMessage());
+         
+     }
+     
+      headers.add("responseCode");
+      values.add(response.getResponseCode());
+        headers.add("responseDescription");
+      values.add(response.getResponseDescription());
+     }
+     catch(Exception e)
+     {
+          respcodes = NIBBsResponseCodes.System_malfunction;
+         response.setResponseCode(respcodes.getInlaksCode());
+         response.setResponseDescription(respcodes.getMessage());
+     }
+     finally{
+         try{
+             
+             headers.add("response");
+             values.add(gson.toJson(response));  
+             
+          db.insertData(headers, values.toArray(),logTable);
+         }
+         catch(Exception s)
+         {
+             
+         }
+     }
+        
+        return gson.toJson(response);
+    }
+
+    
+       /**
+     * Retrieves representation of an instance of nip.service.NIPInterface
+     * @param authenticationID
+     * @param timeStamp
+     * @param applicationID
+     * @param payload
+     * @return an instance of java.lang.String
+     */
+    @POST
+    @Path("TransactionStatusQuery")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String TransactionStatusQuery(@HeaderParam("authenticationID") String authenticationID, @HeaderParam("timeStamp") String timeStamp, @HeaderParam("applicationID") String applicationID, String payload) 
+    {
+     Gson gson = new Gson();
+     
+     TransactionStatusQueryResponse response = new TransactionStatusQueryResponse();
+     
+       List<Object> values = new ArrayList<>();
+        List<String> headers = new ArrayList<>();
+      headers.add("requestPayload");
+      values.add(payload);
+      
+      Date reqdate = new Date();
+      
+      headers.add("requestDate");
+      values.add(reqdate);
+     
+       
+     try{
+         
+         
+         
+         if(authenticationID==null||timeStamp==null||applicationID==null)
+         {
+           
+             
+            respcodes = NIBBsResponseCodes.Invalid_Sender;
+            response.setResponseCode(respcodes.getInlaksCode());
+            response.setResponseDescription(respcodes.getMessage());
+            return gson.toJson(response);
+         }
+         
+      TransactionStatusQueryRequest request = (TransactionStatusQueryRequest) gson.fromJson(payload, TransactionStatusQueryRequest.class);
+         
+   
+         
+         
+         
+         headers.add("applicationID");
+         values.add(applicationID);
+         
+        
+         
+           headers.add("requestID");
+        values.add(request.getRequestID());
+         
+        String stringtohash = request.getRequestID() + request.getNibssSessionID();
+         
+        String requesthash = request.getHash();
+      
+        String hash = options.get_SHA_512_Hash(stringtohash, "inlaks");
+      
+        headers.add("hash");
+        values.add(hash);
+
+     if(hash.equals(requesthash)){
+                 
+         TSQuerySingleRequest niprequest = new TSQuerySingleRequest();
+             
+         niprequest.setSessionID(request.getNibssSessionID());
+         niprequest.setChannelCode(request.getChannelCode());
+         niprequest.setSourceInstitutionCode(request.getInstitutionCode());
+        
+         
+       String niprequeststr = options.ObjectToXML(niprequest);
+         
+       niprequeststr = nipssm.encrypt(niprequeststr);
+         
+       String nipresponse =  nip.txnstatusquerysingleitem(niprequeststr);
+       
+       nipresponse = nipssm.decrypt(nipresponse);
+       
+       FTSingleCreditResponse nipresponseobject = (FTSingleCreditResponse) options.XMLToObject(nipresponse, new FTSingleCreditResponse());
+         
+       respcodes = options.getResponseObject(nipresponseobject.getResponseCode());
+         
+         response.setResponseCode(respcodes.getInlaksCode());
+         response.setResponseDescription(respcodes.getMessage());
+         response.setNibssSessionID(nipresponseobject.getSessionID());
+         
+         
+         
+     }
+      else{
+         respcodes = NIBBsResponseCodes.Security_violation;
+         response.setResponseCode(respcodes.getInlaksCode());
+         response.setResponseDescription(respcodes.getMessage());
+         
+     }
+     
+      headers.add("responseCode");
+      values.add(response.getResponseCode());
+        headers.add("responseDescription");
+      values.add(response.getResponseDescription());
+     }
+     catch(Exception e)
+     {
+          respcodes = NIBBsResponseCodes.System_malfunction;
+         response.setResponseCode(respcodes.getInlaksCode());
+         response.setResponseDescription(respcodes.getMessage());
+     }
+     finally{
+         try{
+             
+             headers.add("response");
+             values.add(gson.toJson(response));  
+             
+          db.insertData(headers, values.toArray(),logTable);
+         }
+         catch(Exception s)
+         {
+             
+         }
+     }
+        
+        return gson.toJson(response);
+    }
+
+    
 
   @POST
     @Path("getFIList")
@@ -276,7 +564,7 @@ public class NIPInterfaceClient {
                  
                    
    
-      ResultSet rs = db.getData("Select count(*) from NIP_Institutions", conn);
+      ResultSet rs = db.getData("Select * from NIP_Institutions", conn);
 
       response.setChannelCode(request.getChannelCode());
       
@@ -284,8 +572,8 @@ public class NIPInterfaceClient {
       while(rs.next()){
           Records record = new Records();
           
-          record.setCategory(rs.getString("Category"));
           record.setInstitutionCode(rs.getString("InstitutionCode"));
+          record.setCategory(String.valueOf(rs.getInt("Category")));
           record.setInstitutionName(rs.getString("InstitutionName"));
           records.add(record);
       }
@@ -293,7 +581,7 @@ public class NIPInterfaceClient {
       response.setNumberOfRecords(String.valueOf(records.size()));
       response.setHash(hash);
       response.setInstitutionCode(request.getInstitutionCode());
-      response.setRecord((Records[])records.toArray());
+      response.setRecord(records.toArray(new Records[records.size()]));
          respcodes = NIBBsResponseCodes.SUCCESS;
          response.setResponseCode(respcodes.getInlaksCode());
          response.setResponseDescription(respcodes.getMessage());

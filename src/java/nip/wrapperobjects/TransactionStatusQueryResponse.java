@@ -21,4 +21,5 @@ public class TransactionStatusQueryResponse {
     private String ResponseCode;
     private String ResponseDescription;
     private String nibssSessionID;
+
 }

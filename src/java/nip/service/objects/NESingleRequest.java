@@ -8,7 +8,6 @@ package nip.service.objects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import lombok.Getter;
 import lombok.Setter;
 
 /**
@@ -16,7 +15,7 @@ import lombok.Setter;
  * @author wumoru
  */
 
-@Getter @Setter
+@Setter
 @XmlRootElement(name = "NESingleRequest")
 public class NESingleRequest {
     

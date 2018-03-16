@@ -30,6 +30,7 @@ public class FundsTransferDCRequest {
     private String originatorBankVerificationNumber;
     private String originatorKYCLevel;
     private String transactionLocation;
+    private String PaymentReference;
     private String narration;
     private String amount;
     private String hash;
