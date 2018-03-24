@@ -27,6 +27,7 @@ import nip.service.objects.NESingleRequest;
 import nip.service.objects.NESingleResponse;
 import nip.service.objects.Record;
 import nip.service.objects.TSQuerySingleRequest;
+import nip.service.objects.TSQuerySingleResponse;
 import nip.tools.AppParams;
 import nip.tools.DBConnector;
 import nip.tools.NIBBsResponseCodes;
@@ -187,6 +188,9 @@ public class NIPInterfaceClient {
          response.setRequestID(request.getRequestID());
          response.setAccountName(nipresponseobject.getAccountName());
          response.setAccountNumber(nipresponseobject.getAccountNumber());
+         response.setDestinationInstitutionCode(nipresponseobject.getDestinationInstitutionCode());
+         response.setChannelCode(nipresponseobject.getChannelCode());
+         response.setHash(request.getHash());
          
      }
       else{
@@ -303,7 +307,7 @@ public class NIPInterfaceClient {
          niprequest.setSessionID(sessionID);
          niprequest.setBeneficiaryAccountName(request.getBeneficiaryAccountName());
          niprequest.setNameEnquiryRef(request.getNameEnquiryRef());
-         niprequest.setBeneficiaryVerificationNumber(request.getBeneficiaryBankVerificationNumber());
+         niprequest.setBeneficiaryBankVerificationNumber(request.getBeneficiaryBankVerificationNumber());
          niprequest.setNarration(request.getNarration());//"Inlaks FT Single DC Test ");
          niprequest.setOriginatorKYCLevel(request.getOriginatorKYCLevel());
          niprequest.setPaymentReference(request.getPaymentReference());
@@ -312,6 +316,8 @@ public class NIPInterfaceClient {
          niprequest.setTransactionLocation(request.getTransactionLocation());
          niprequest.setBeneficiaryKYCLevel(request.getBeneficiaryKYCLevel());
          niprequest.setOriginatorAccountNumber(request.getOriginatorAccountNumber());
+         niprequest.setAmount(request.getAmount());
+     
          
        String niprequeststr = options.ObjectToXML(niprequest);
          
@@ -455,7 +461,7 @@ public class NIPInterfaceClient {
        
        nipresponse = nipssm.decrypt(nipresponse);
        
-       FTSingleCreditResponse nipresponseobject = (FTSingleCreditResponse) options.XMLToObject(nipresponse, new FTSingleCreditResponse());
+       TSQuerySingleResponse nipresponseobject = (TSQuerySingleResponse) options.XMLToObject(nipresponse, new TSQuerySingleResponse());
          
        respcodes = options.getResponseObject(nipresponseobject.getResponseCode());
          

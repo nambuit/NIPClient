@@ -5,10 +5,9 @@
  */
 package nip.service.objects;
 
-import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import lombok.Getter;
 import lombok.Setter;
 
 /**
@@ -35,10 +34,7 @@ public class FTSingleCreditRequest {
    
    @XmlElement(name = "BeneficiaryAccountNumber")
    private String BeneficiaryAccountNumber;
-   
-   @XmlElement(name = "BeneficiaryVerificationNumber")
-   private String BeneficiaryVerificationNumber;
-   
+      
    @XmlElement(name = "BeneficiaryBankVerificationNumber")
    private String BeneficiaryBankVerificationNumber;
    
@@ -67,6 +63,6 @@ public class FTSingleCreditRequest {
    private String PaymentReference;
    
    @XmlElement(name = "Amount") 
-   private BigDecimal Amount;
+   private String Amount;
     
 }
