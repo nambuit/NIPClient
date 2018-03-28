@@ -42,5 +42,21 @@
         <delete dir="${build.generated.sources.dir}/jax-ws/nibss/nip/core"/>
         <delete dir="${build.generated.dir}/jax-wsCache/NIPInterface"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-NIPInterface"/>
+    <target name="wsimport-client-OFSService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/OFSService"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/OFSService" destdir="${build.generated.dir}/jax-wsCache/OFSService" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/OFSService/wsdl/13.95.28.0_8085/TAFJServices/services/OFSService.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://13.95.28.0:8085/TAFJServices/services/OFSService?wsdl" xnocompile="true" xendorsed="true" package="nip.tools">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/OFSService/wsdl/13.95.28.0_8085/TAFJServices/services/OFSService.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/OFSService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/OFSService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-OFSService" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/nip/tools"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/OFSService"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-NIPInterface, wsimport-client-OFSService"/>
 </project>

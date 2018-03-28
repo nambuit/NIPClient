@@ -8,10 +8,13 @@ package nip.service;
 import com.google.gson.Gson;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -30,8 +33,13 @@ import nip.service.objects.TSQuerySingleRequest;
 import nip.service.objects.TSQuerySingleResponse;
 import nip.tools.AppParams;
 import nip.tools.DBConnector;
+import nip.tools.DataItem;
+import nip.tools.InstitutionDetails;
 import nip.tools.NIBBsResponseCodes;
 import nip.tools.PGPEncrytionTool;
+import nip.tools.T24Link;
+import nip.tools.T24TAFJLink;
+import nip.tools.ofsParam;
 import nip.wrapperobjects.FundsTransferDCRequest;
 import nip.wrapperobjects.FundsTransferDCResponse;
 import nip.wrapperobjects.NameEnquiryRequest;
@@ -60,7 +68,8 @@ public class NIPInterfaceClient {
     String logfilename ="NIPClientInterface";
     String logTable = "InlaksNIPWrapperLog";
     NIPInterface nip;
-    
+   T24Link t24; 
+     Thread watcherthread = new Thread();
     /**
      * Creates a new instance of NIPInterface
      */
@@ -78,6 +87,33 @@ public class NIPInterfaceClient {
        nip = nipservice.getNIPInterfacePort();
         
         db = new DBConnector(options.getDBserver(),options.getDBuser(),options.getDBpass(),"NIPLogs");
+        
+          t24 = new T24TAFJLink();
+          
+               if (watcherthread.getState() == Thread.State.NEW) {
+
+                watcherthread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try {
+                            Timer timer = new Timer();
+                            timer.scheduleAtFixedRate(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    options.EffectReversals(db, nipssm, t24);
+                                }
+                            }, 60 * 1000, 60 * 1000);
+                        } catch (Exception v) {
+
+                        }
+                    }
+
+                });
+
+                watcherthread.setName("ExecutePendingCredits");
+                watcherthread.start();
+            }
         
     }
     catch (Exception e)
@@ -106,11 +142,15 @@ public class NIPInterfaceClient {
     public String NameEnquiry(@HeaderParam("authenticationID") String authenticationID, @HeaderParam("timeStamp") String timeStamp, @HeaderParam("applicationID") String applicationID, String payload) 
     {
      Gson gson = new Gson();
-     
+       String sessionID ="", monthlyTable ="";
      NameEnquiryResponse response = new NameEnquiryResponse();
      
        List<Object> values = new ArrayList<>();
         List<String> headers = new ArrayList<>();
+        
+               List<Object> nipvalues = new ArrayList<>();
+        List<String> nipheaders = new ArrayList<>();
+        
       headers.add("requestPayload");
       values.add(payload);
       
@@ -164,10 +204,55 @@ public class NIPInterfaceClient {
          niprequest.setAccountNumber(request.getAccountNumber());
          niprequest.setChannelCode(request.getChannelCode());
          niprequest.setDestinationInstitutionCode(request.getDestinationInstitutionCode());
-         String sessionID = options.generateSessionID(request.getInstitutionCode());
+         
+         sessionID = options.generateSessionID(request.getInstitutionCode());
          niprequest.setSessionID(sessionID);
+            
+         nipvalues.add(sessionID);      
+         nipheaders.add("SessionID");
+
+        nipvalues.add(request.getAccountNumber());
+         nipheaders.add("AccountNumber");
          
+         nipvalues.add(request.getChannelCode());
+         nipheaders.add("ChannelCode");
          
+        nipvalues.add(request.getDestinationInstitutionCode());
+        nipheaders.add("DestinationInstitutionCode");
+
+        
+        nipvalues.add("OUTWARD");
+        nipheaders.add("TranDirection");
+        
+        nipvalues.add("nameenquirysingleitem");
+        nipheaders.add("MethodName");
+        
+        
+      String datestr = sessionID.substring(6,18);
+       
+       SimpleDateFormat sdf = new SimpleDateFormat("yymmddHHmmss");
+ 
+        Date date = sdf.parse(datestr);
+       
+        
+          nipvalues.add(date);
+         nipheaders.add("TransactionDate");
+        
+         SimpleDateFormat df = new SimpleDateFormat("MMMyyyy"); 
+        
+         monthlyTable = df.format(date)+"NIP_TRANSACTIONS";
+        
+        String createquery = options.getCreateNIPTableScript(monthlyTable);
+        
+        try{
+            db.Execute(createquery);
+        }
+        catch(Exception r){
+            
+        }
+     
+       db.insertData(nipheaders, nipvalues.toArray(),monthlyTable);
+  
          String niprequeststr = options.ObjectToXML(niprequest);
          
          niprequeststr = nipssm.encrypt(niprequeststr);
@@ -218,6 +303,11 @@ public class NIPInterfaceClient {
              values.add(gson.toJson(response));  
              
           db.insertData(headers, values.toArray(),logTable);
+          
+           String query = "Update "+monthlyTable+" set ResponseCode='"+respcodes.getCode()+"', StatusMessage='"+respcodes.getMessage()+"' where SessionID='"+sessionID+"' and MethodName='nameenquirysingleitem'";
+        
+        db.Execute(query);
+          
          }
          catch(Exception s)
          {
@@ -248,8 +338,16 @@ public class NIPInterfaceClient {
      
      FundsTransferDCResponse response = new FundsTransferDCResponse();
      
+    // 
+     FTSingleCreditResponse nipresponseobject = new FTSingleCreditResponse();
+     String sessionID ="";
+  
        List<Object> values = new ArrayList<>();
         List<String> headers = new ArrayList<>();
+        
+           List<Object> nipvalues = new ArrayList<>();
+        List<String> nipheaders = new ArrayList<>();
+        
       headers.add("requestPayload");
       values.add(payload);
       
@@ -257,8 +355,8 @@ public class NIPInterfaceClient {
       
       headers.add("requestDate");
       values.add(reqdate);
-     
-       
+     String monthlyTable ="";
+      
      try{
          
          
@@ -297,13 +395,14 @@ public class NIPInterfaceClient {
       values.add(hash);
 
      if(hash.equals(requesthash)){
-                 
-         FTSingleCreditRequest niprequest = new FTSingleCreditRequest();
+         
+         
+        FTSingleCreditRequest  niprequest = new FTSingleCreditRequest();
              
          niprequest.setBeneficiaryAccountNumber(request.getBeneficiaryAccountNumber());
          niprequest.setChannelCode(request.getChannelCode());
          niprequest.setDestinationInstitutionCode(request.getDestinationInstitutionCode());
-         String sessionID = options.generateSessionID(request.getInstitutionCode());
+        sessionID = options.generateSessionID(request.getInstitutionCode());
          niprequest.setSessionID(sessionID);
          niprequest.setBeneficiaryAccountName(request.getBeneficiaryAccountName());
          niprequest.setNameEnquiryRef(request.getNameEnquiryRef());
@@ -317,7 +416,92 @@ public class NIPInterfaceClient {
          niprequest.setBeneficiaryKYCLevel(request.getBeneficiaryKYCLevel());
          niprequest.setOriginatorAccountNumber(request.getOriginatorAccountNumber());
          niprequest.setAmount(request.getAmount());
+       
+        
+           
+         nipvalues.add(Double.parseDouble(request.getAmount()));
+         nipheaders.add("Amount");
+         
+         nipvalues.add(request.getBeneficiaryAccountName());      
+         nipheaders.add("BeneficiaryAccountName");
+         
+         nipvalues.add(sessionID);      
+         nipheaders.add("SessionID");
+
+         nipvalues.add(request.getBeneficiaryAccountNumber());
+         nipheaders.add("BeneficiaryAccountNumber");
+         
+         nipvalues.add(request.getBeneficiaryBankVerificationNumber());
+         nipheaders.add("BeneficiaryBankVerificationNumber");
+         
+         nipvalues.add(request.getChannelCode());
+         nipheaders.add("ChannelCode");
+         
+        nipvalues.add(request.getDestinationInstitutionCode());
+        nipheaders.add("DestinationInstitutionCode");
+        
+                
+        nipvalues.add(request.getOriginatorAccountName());
+        nipheaders.add("OriginatorAccountName");
+        
+
+        nipvalues.add(request.getOriginatorAccountNumber());
+        nipheaders.add("OriginatorAccountNumber");
+        
+        nipvalues.add(request.getOriginatorBankVerificationNumber());
+        nipheaders.add("OriginatorBankVerificationNumber");
+        
+
+        nipvalues.add(request.getOriginatorKYCLevel());
+        nipheaders.add("OriginatorKYCLevel");
+        
+      
+        nipvalues.add(request.getTransactionLocation());
+        nipheaders.add("TransactionLocation");
+        
+
+        nipvalues.add(request.getNameEnquiryRef());
+        nipheaders.add("NameEnquiryRef");
+        
+        
+        nipvalues.add(request.getNarration());
+         nipheaders.add("Narration");
+        
+        nipvalues.add(request.getPaymentReference());
+        nipheaders.add("PaymentReference");
+        
+        nipvalues.add("OUTWARD");
+        nipheaders.add("TranDirection");
+        
+        nipvalues.add("fundtransfersingleitem_dc");
+        nipheaders.add("MethodName");
+        
+        
+      String datestr = sessionID.substring(6,18);
+       
+       SimpleDateFormat sdf = new SimpleDateFormat("yymmddHHmmss");
+ 
+        Date date = sdf.parse(datestr);
+       
+        
+          nipvalues.add(date);
+         nipheaders.add("TransactionDate");
+        
+         SimpleDateFormat df = new SimpleDateFormat("MMMyyyy"); 
+        
+         monthlyTable = df.format(date)+"NIP_TRANSACTIONS";
+        
+        String createquery = options.getCreateNIPTableScript(monthlyTable);
+        
+        try{
+            db.Execute(createquery);
+        }
+        catch(Exception r){
+            
+        }
      
+       db.insertData(nipheaders, nipvalues.toArray(),monthlyTable);
+        
          
        String niprequeststr = options.ObjectToXML(niprequest);
          
@@ -326,9 +510,10 @@ public class NIPInterfaceClient {
        String nipresponse =  nip.fundtransfersingleitemDc(niprequeststr);
        
        nipresponse = nipssm.decrypt(nipresponse);
+     
+        nipresponseobject = (FTSingleCreditResponse) options.XMLToObject(nipresponse, new FTSingleCreditResponse());
        
-       FTSingleCreditResponse nipresponseobject = (FTSingleCreditResponse) options.XMLToObject(nipresponse, new FTSingleCreditResponse());
-         
+       sessionID = nipresponseobject.getSessionID();
        respcodes = options.getResponseObject(nipresponseobject.getResponseCode());
          
          response.setResponseCode(respcodes.getInlaksCode());
@@ -341,7 +526,7 @@ public class NIPInterfaceClient {
          response.setChannelCode(nipresponseobject.getChannelCode());
          response.setBeneficiaryAccountNumber(nipresponse);
          
-         
+       
      }
       else{
          respcodes = NIBBsResponseCodes.Security_violation;
@@ -368,6 +553,61 @@ public class NIPInterfaceClient {
              values.add(gson.toJson(response));  
              
           db.insertData(headers, values.toArray(),logTable);
+    
+            
+        String query = "Update "+monthlyTable+" set ResponseCode='"+respcodes.getCode()+"', StatusMessage='"+respcodes.getMessage()+"' where SessionID='"+sessionID+"' and MethodName='fundtransfersingleitem_dc'";
+        
+        db.Execute(query);
+        
+        switch(respcodes.getCode()){
+            
+            case"97":case"09":
+                
+                  query = "insert into NIPpendingFT_Outward select *,0 from "+monthlyTable+" where SessionID='"+sessionID+"' and MethodName='fundtransfersingleitem_dc'";
+        
+                 db.Execute(query);
+                
+                break;
+                
+                
+                case"00":
+                    break;
+                
+            default:
+                
+                InstitutionDetails details = this.getInstitutionDetails(response.getInstitutionCode());
+                 ofsParam param = new ofsParam();
+                String[] credentials = new String[] { options.getOfsuser(), options.getOfspass(),details.getCompanyCode() };
+                param.setCredentials(credentials);
+                param.setOperation("FUNDS.TRANSFER");
+ 
+                param.setVersion("REV.WD");
+                String[] ofsoptions = new String[] { "", "R", "PROCESS", "2", "0" };
+                param.setOptions(ofsoptions);
+                
+                param.setTransaction_id(nipresponseobject.getPaymentReference());
+                
+                    param.setDataItems(new ArrayList<DataItem>());
+
+                    String ofstr = t24.generateOFSTransactString(param);
+
+                    String result = t24.PostMsg(ofstr);
+
+                    if (t24.IsSuccessful(result)) {
+                    
+                        
+                    }
+                    else{
+                        
+                        query = "insert into NIPpendingFT_Outward select *,5 from "+monthlyTable+" where SessionID='"+sessionID+"' and MethodName='fundtransfersingleitem_dc'";
+        
+                         db.Execute(query);
+                
+                        
+                    }
+        }
+        
+      
          }
          catch(Exception s)
          {
@@ -393,11 +633,16 @@ public class NIPInterfaceClient {
     public String TransactionStatusQuery(@HeaderParam("authenticationID") String authenticationID, @HeaderParam("timeStamp") String timeStamp, @HeaderParam("applicationID") String applicationID, String payload) 
     {
      Gson gson = new Gson();
-     
+     String monthlyTable ="";
      TransactionStatusQueryResponse response = new TransactionStatusQueryResponse();
      
        List<Object> values = new ArrayList<>();
         List<String> headers = new ArrayList<>();
+        
+          
+           List<Object> nipvalues = new ArrayList<>();
+        List<String> nipheaders = new ArrayList<>();
+        
       headers.add("requestPayload");
       values.add(payload);
       
@@ -451,6 +696,50 @@ public class NIPInterfaceClient {
          niprequest.setSessionID(request.getNibssSessionID());
          niprequest.setChannelCode(request.getChannelCode());
          niprequest.setSourceInstitutionCode(request.getInstitutionCode());
+         
+          nipvalues.add(request.getNibssSessionID());      
+         nipheaders.add("SessionID");
+
+             
+         nipvalues.add(request.getChannelCode());
+         nipheaders.add("ChannelCode");
+         
+        nipvalues.add(niprequest.getSourceInstitutionCode());
+        nipheaders.add("SourceInstitutionCode");
+
+        
+        nipvalues.add("OUTWARD");
+        nipheaders.add("TranDirection");
+        
+        nipvalues.add("txnstatusquerysingleitem");
+        nipheaders.add("MethodName");
+        
+        
+      String datestr = request.getNibssSessionID().substring(6,18);
+       
+       SimpleDateFormat sdf = new SimpleDateFormat("yymmddHHmmss");
+ 
+        Date date = sdf.parse(datestr);
+       
+        
+          nipvalues.add(date);
+         nipheaders.add("TransactionDate");
+        
+         SimpleDateFormat df = new SimpleDateFormat("MMMyyyy"); 
+        
+         monthlyTable = df.format(date)+"NIP_TRANSACTIONS";
+        
+        String createquery = options.getCreateNIPTableScript(monthlyTable);
+        
+        try{
+            db.Execute(createquery);
+        }
+        catch(Exception r){
+            
+        }
+     
+       db.insertData(nipheaders, nipvalues.toArray(),monthlyTable);
+  
         
          
        String niprequeststr = options.ObjectToXML(niprequest);
@@ -497,6 +786,11 @@ public class NIPInterfaceClient {
              values.add(gson.toJson(response));  
              
           db.insertData(headers, values.toArray(),logTable);
+          
+            String query = "Update "+monthlyTable+" set ResponseCode='"+respcodes.getCode()+"', StatusMessage='"+respcodes.getMessage()+"' where SessionID='"+response.getNibssSessionID()+"' and MethodName='txnstatusquerysingleitem'";
+        
+        db.Execute(query);
+          
          }
          catch(Exception s)
          {
@@ -631,6 +925,38 @@ public class NIPInterfaceClient {
     }
 
     
+   private InstitutionDetails getInstitutionDetails(String InstCode){
+       
+       try{
+          
+           ArrayList<List<String>> result = t24.getOfsData("GET.BANK.NIP.PARAM",options.getOfsuser(), options.getOfspass(), "INSTITUTION.CODE:EQ=" +InstCode,"");
+          
+           List<String> headers = result.get(0);
+     
+           if(headers.size()!=result.get(1).size()){
+             return null;          
+           }
+           
+       String companycode = result.get(1).get(headers.indexOf("@ID")).replace("\"", "").trim();
+        String payableacct = result.get(1).get(headers.indexOf("PAYABLE.ACCOUNT")).replace("\"", "").trim();    
+         String receivableacct = result.get(1).get(headers.indexOf("RECEIVABLE.ACCOUNT")).replace("\"", "").trim();  
+         
+         InstitutionDetails details = new InstitutionDetails();
+         details.setCompanyCode(companycode);
+         details.setInstitutionCode(InstCode);
+         details.setPayableAccount(payableacct);
 
+
+
+         details.setReceivableAccount(receivableacct);
+         
+         return details;
+         
+       }
+       catch(Exception d){
+           
+           return null;
+       }
+   }
     
 }
