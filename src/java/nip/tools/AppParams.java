@@ -574,116 +574,39 @@ String generatedPassword = null;
       
       
       
-      
-        public void EffectReversals(DBConnector db, PGPEncrytionTool nipssm, T24Link t24){
-       
-        Connection conn = null;
-       
-       try{
-      SimpleDateFormat ndf = new SimpleDateFormat("yyyyMMdd");
-           
-           ResultSet rs = db.getData("Select * from NIPpendingFT_Outward",conn);
-           
-           while (rs.next()){
-             
-               String sessionid = rs.getString("SessionID");
-               String ofstr = rs.getString("OFSMessage");
-               String sourceinstcode = rs.getString("DestinationInstitutionCode");
-               String compcode = rs.getString("CompanyCode");
-               Date date = rs.getTimestamp("TransactionDate");
-   
-    
-               String trandate = ndf.format(date);
-               
-               
-              NIBBsResponseCodes respcode =  CheckTransactionStatus(sessionid, sourceinstcode, nipssm);
-              
-           String code =   respcode.getCode();
-               
-             if(code.equals("00"))
-             { 
-              
-              String result = t24.PostMsg(ofstr);
-              
-              
-                if(t24.IsSuccessful(result)){
-             
-                  
-               
-                ofsParam param = new ofsParam();
-                String[] credentials = new String[] { getOfsuser(), getOfspass(),compcode };
-                param.setCredentials(credentials);
-                 
-                List<DataItem> items = new LinkedList<>();
-               DataItem item = new DataItem();
-               
-                String[] ofsoptions = new String[] { "", "I", "PROCESS", "2", "0" };
-               
-          
-               param.setCredentials(credentials);
-               param.setOperation("NIBBS.FT.REF.TABLE");
-               param.setOptions(ofsoptions);
-               
-               
-               param.setTransaction_id(sessionid);
-               
-          
-               item.setItemHeader("T24.ID");
-               item.setItemValues(new String[] {result.split("/")[0]});
-               items.add(item);
-               
-               item = new DataItem();
-               item.setItemHeader("DATE");
-               item.setItemValues(new String[] {trandate});
-               
-               
-               items.add(item);
-
-               param.setDataItems(items);
-               
-                ofstr = t24.generateOFSTransactString(param);
-
-                t24.PostMsg(ofstr);
-                
-               db.Execute("delete from NIPPendingCredits where SessionID ='"+sessionid+"'");
-                
-               
-           }
-           else{
-                    
-                    String errormessage;
-                    
-                        if(result.contains("/")){
-                         errormessage =    result.split("/")[3];
-               
-                        }
-                        else{
-                              errormessage =    result;
-                        }
-               
-             
-               
-                     
-                db.Execute("Update  NIPPendingCredits set StatusMessage='"+errormessage+"' where  SessionID ='"+sessionid+"'");
-               
-              
-           }
-             }
-             else{
-                  db.Execute("Update  NIPPendingCredits set StatusMessage='"+respcode.getMessage()+"', ResponseCode='"+respcode.getCode()+"' where  SessionID ='"+sessionid+"'"); 
-             }
-             
-             
-           }
-       
-         
-           
-         
-   }
-       catch(Exception d){
-          System.out.println(d.getMessage());
-       }
-       
-   }
-     
+//      
+//        public void EffectReversals(DBConnector db, PGPEncrytionTool nipssm, T24Link t24){
+//       
+//        Connection conn = null;
+//       
+//       try{
+//      SimpleDateFormat ndf = new SimpleDateFormat("yyyyMMdd");
+//           
+//           ResultSet rs = db.getData("Select * from NIPpendingFT_Outward",conn);
+//           
+//           while (rs.next()){
+//             
+//               String sessionid = rs.getString("SessionID");
+//             //  String ofstr = rs.getString("OFSMessage");
+//               String sourceinstcode = sessionid.substring(6);
+//        
+//   
+//    
+//           
+//               
+//               
+//              NIBBsResponseCodes respcode =  CheckTransactionStatus(sessionid, sourceinstcode, nipssm);
+//              
+//           String code =   respcode.getCode();
+//               
+//            
+//           
+//         
+//   }
+//       catch(Exception d){
+//          System.out.println(d.getMessage());
+//       }
+//       
+//   }
+//     
 }
