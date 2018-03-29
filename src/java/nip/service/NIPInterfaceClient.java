@@ -101,7 +101,7 @@ public class NIPInterfaceClient {
                             timer.scheduleAtFixedRate(new TimerTask() {
                                 @Override
                                 public void run() {
-                                    options.EffectReversals(db, nipssm, t24);
+                                  //  options.EffectReversals(db, nipssm, t24);
                                 }
                             }, 60 * 1000, 60 * 1000);
                         } catch (Exception v) {
