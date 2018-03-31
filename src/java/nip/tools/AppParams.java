@@ -18,8 +18,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 import javax.naming.InitialContext;
 import javax.xml.bind.JAXBContext;
@@ -574,39 +572,54 @@ String generatedPassword = null;
       
       
       
-//      
-//        public void EffectReversals(DBConnector db, PGPEncrytionTool nipssm, T24Link t24){
-//       
-//        Connection conn = null;
-//       
-//       try{
-//      SimpleDateFormat ndf = new SimpleDateFormat("yyyyMMdd");
-//           
-//           ResultSet rs = db.getData("Select * from NIPpendingFT_Outward",conn);
-//           
-//           while (rs.next()){
-//             
-//               String sessionid = rs.getString("SessionID");
-//             //  String ofstr = rs.getString("OFSMessage");
-//               String sourceinstcode = sessionid.substring(6);
-//        
-//   
-//    
-//           
-//               
-//               
-//              NIBBsResponseCodes respcode =  CheckTransactionStatus(sessionid, sourceinstcode, nipssm);
-//              
-//           String code =   respcode.getCode();
-//               
-//            
-//           
-//         
-//   }
-//       catch(Exception d){
-//          System.out.println(d.getMessage());
-//       }
-//       
-//   }
-//     
+      
+        public void MonitorPending(DBConnector db, PGPEncrytionTool nipssm, T24Link t24){
+       
+        Connection conn = null;
+       
+       try{
+      
+           SimpleDateFormat ndf = new SimpleDateFormat("yyyyMMdd");
+           
+           ResultSet rs = db.getData("Select * from NIPpendingFT_Outward",conn);
+           
+           while (rs.next()){
+             
+               String sessionid = rs.getString("SessionID");
+             //  String ofstr = rs.getString("OFSMessage");
+               String sourceinstcode = sessionid.substring(6);
+        
+           NIBBsResponseCodes respcode =  CheckTransactionStatus(sessionid, sourceinstcode, nipssm);
+              
+           String code =   respcode.getCode();
+           
+           String query;
+           
+           switch(code){
+               
+              case"97":case"09":
+                
+               query   = "Update NIPpendingFT_Outward Set No_of_Attempts=No_of_Attempts+1 where SessionID='"+sessionid+"'";
+                   
+                break;
+                
+             default:
+                
+               query = "Delete from NIPpendingFT_Outward where SessionID='"+sessionid+"'";
+         
+                break;
+               
+           }
+               
+           db.Execute(query);
+            
+           }    
+         
+   }
+       catch(Exception d){
+          System.out.println(d.getMessage());
+       }
+       
+   }
+     
 }

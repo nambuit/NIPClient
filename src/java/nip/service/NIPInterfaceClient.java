@@ -28,7 +28,6 @@ import nip.service.objects.FTSingleCreditRequest;
 import nip.service.objects.FTSingleCreditResponse;
 import nip.service.objects.NESingleRequest;
 import nip.service.objects.NESingleResponse;
-import nip.service.objects.Record;
 import nip.service.objects.TSQuerySingleRequest;
 import nip.service.objects.TSQuerySingleResponse;
 import nip.tools.AppParams;
@@ -92,23 +91,18 @@ public class NIPInterfaceClient {
           
                if (watcherthread.getState() == Thread.State.NEW) {
 
-                watcherthread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        try {
-                            Timer timer = new Timer();
-                            timer.scheduleAtFixedRate(new TimerTask() {
-                                @Override
-                                public void run() {
-                                  //  options.EffectReversals(db, nipssm, t24);
-                                }
-                            }, 60 * 1000, 60 * 1000);
-                        } catch (Exception v) {
-
-                        }
+                watcherthread = new Thread(() -> {
+                    try {
+                        Timer timer = new Timer();
+                        timer.scheduleAtFixedRate(new TimerTask() {
+                            @Override
+                            public void run() {
+                                options.MonitorPending(db, nipssm, t24);
+                            }
+                        }, 60 * 1000, 60 * 1000);
+                    } catch (Exception v) {
+                        
                     }
-
                 });
 
                 watcherthread.setName("ExecutePendingCredits");
@@ -569,9 +563,8 @@ public class NIPInterfaceClient {
                 
                 break;
                 
-                
-                case"00":
-                    break;
+            case"00":
+                break;
                 
             default:
                 
@@ -587,7 +580,7 @@ public class NIPInterfaceClient {
                 
                 param.setTransaction_id(nipresponseobject.getPaymentReference());
                 
-                    param.setDataItems(new ArrayList<DataItem>());
+                    param.setDataItems(new ArrayList<>());
 
                     String ofstr = t24.generateOFSTransactString(param);
 
@@ -599,12 +592,13 @@ public class NIPInterfaceClient {
                     }
                     else{
                         
-                        query = "insert into NIPpendingFT_Outward select *,5 from "+monthlyTable+" where SessionID='"+sessionID+"' and MethodName='fundtransfersingleitem_dc'";
+                        query = "insert into NIPpendingFT_Outward select *,1 from "+monthlyTable+" where SessionID='"+sessionID+"' and MethodName='fundtransfersingleitem_dc'";
         
                          db.Execute(query);
                 
                         
                     }
+                    break;
         }
         
       
