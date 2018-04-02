@@ -143,7 +143,7 @@ public WebServiceLogger getServiceLogger(String filename){
   
   
   public  String generateSessionID(String instcode){
-      SimpleDateFormat sdf = new SimpleDateFormat("yymmddHHmmss");
+      SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
       
       Date now = new Date();
       
