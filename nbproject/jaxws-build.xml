@@ -44,8 +44,8 @@
     </target>
     <target name="wsimport-client-OFSService" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/OFSService"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/OFSService" destdir="${build.generated.dir}/jax-wsCache/OFSService" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/OFSService/wsdl/13.95.28.0_8085/TAFJServices/services/OFSService.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://13.95.28.0:8085/TAFJServices/services/OFSService?wsdl" xnocompile="true" xendorsed="true" package="nip.tools">
-            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/OFSService/wsdl/13.95.28.0_8085/TAFJServices/services/OFSService.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/OFSService" destdir="${build.generated.dir}/jax-wsCache/OFSService" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/OFSService/wsdl/localhost_8085/TAFJServices/services/OFSService.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8085/TAFJServices/services/OFSService?wsdl" xnocompile="true" xendorsed="true" package="nip.tools">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/OFSService/wsdl/localhost_8085/TAFJServices/services/OFSService.wsdl"/>
             <produces dir="${build.generated.dir}/jax-wsCache/OFSService"/>
         </wsimport>
         <copy todir="${build.generated.sources.dir}/jax-ws">
