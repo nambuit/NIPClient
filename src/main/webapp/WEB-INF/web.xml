@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	 version="3.1">
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+         <env-entry>
+        <env-entry-name>authkey</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>z5nugjer90cx9vpke622yyclymb0kb7utev1omy6nv397fire9uynflv85rzr15q</env-entry-value>        
+    </env-entry>
+       <env-entry>
+        <env-entry-name>authsecrete</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>rps55oyi3i3lp2s1zaf3ukrysdlypu8g0v8rmga5a8jwzzj7csabw1opk4j5tpyu</env-entry-value>        
+    </env-entry>
+        <env-entry>
+        <env-entry-name>no_of_failed_attempts</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>5</env-entry-value>        
+    </env-entry>
+          <env-entry>
+        <env-entry-name>AppProvisioningmessage</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>Download the NAMBUIT Secure Authentication app by opening this link</env-entry-value>        
+    </env-entry>
+       <env-entry>
+        <env-entry-name>TOKEN_NAME</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>NAMBUIT TOKEN</env-entry-value>        
+    </env-entry>
+       <env-entry>
+        <env-entry-name>EnforcePin</env-entry-name>
+        <env-entry-type>java.lang.Boolean</env-entry-type>
+        <env-entry-value>TRUE</env-entry-value>        
+    </env-entry>
+             <env-entry>
+        <env-entry-name>DBuser</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>inlaks</env-entry-value>        
+    </env-entry>
+         <env-entry>
+        <env-entry-name>DBpass</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>own2morrow</env-entry-value>
+    </env-entry>  
+         <env-entry>
+        <env-entry-name>DBserver</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>154.113.4.22</env-entry-value>
+    </env-entry> 
+        <env-entry>
+        <env-entry-name>DBName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>AuthDB</env-entry-value>
+    </env-entry>
+</web-app>
