@@ -42,6 +42,22 @@
         <delete dir="${build.generated.sources.dir}/jax-ws/nip/tools"/>
         <delete dir="${build.generated.dir}/jax-wsCache/OFSService"/>
     </target>
+    <target name="wsimport-client-NIPTSQInterface" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/NIPTSQInterface"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/NIPTSQInterface" destdir="${build.generated.dir}/jax-wsCache/NIPTSQInterface" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/NIPTSQInterface/wsdl/196.6.103.233_88/NIPWS/NIPTSQInterface.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://196.6.103.233:88/NIPWS/NIPTSQInterface?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/NIPTSQInterface/wsdl/196.6.103.233_88/NIPWS/NIPTSQInterface.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/NIPTSQInterface"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/NIPTSQInterface">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-NIPTSQInterface" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/nibss/nip/core"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/NIPTSQInterface"/>
+    </target>
     <target name="wsimport-client-NIPInterface" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/NIPInterface"/>
         <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/NIPInterface" destdir="${build.generated.dir}/jax-wsCache/NIPInterface" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/NIPInterface/wsdl/41.58.130.134_8086/NIPWS/NIPInterface.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://41.58.130.134:8086/NIPWS/NIPInterface?wsdl" xnocompile="true" xendorsed="true">
@@ -58,21 +74,5 @@
         <delete dir="${build.generated.sources.dir}/jax-ws/nibss/nip/core"/>
         <delete dir="${build.generated.dir}/jax-wsCache/NIPInterface"/>
     </target>
-    <target name="wsimport-client-NIPTSQInterface" depends="wsimport-init">
-        <mkdir dir="${build.generated.dir}/jax-wsCache/NIPTSQInterface"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/NIPTSQInterface" destdir="${build.generated.dir}/jax-wsCache/NIPTSQInterface" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/NIPTSQInterface/wsdl/41.58.130.134_88/NIPWS/NIPTSQInterface.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://41.58.130.134:88/NIPWS/NIPTSQInterface?wsdl" xnocompile="true" xendorsed="true">
-            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/NIPTSQInterface/wsdl/41.58.130.134_88/NIPWS/NIPTSQInterface.wsdl"/>
-            <produces dir="${build.generated.dir}/jax-wsCache/NIPTSQInterface"/>
-        </wsimport>
-        <copy todir="${build.generated.sources.dir}/jax-ws">
-            <fileset dir="${build.generated.dir}/jax-wsCache/NIPTSQInterface">
-                <include name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="wsimport-client-clean-NIPTSQInterface" depends="-init-project">
-        <delete dir="${build.generated.sources.dir}/jax-ws/nibss/nip/core"/>
-        <delete dir="${build.generated.dir}/jax-wsCache/NIPTSQInterface"/>
-    </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-OFSService, wsimport-client-NIPInterface, wsimport-client-NIPTSQInterface"/>
+    <target name="wsimport-client-generate" depends="wsimport-client-OFSService, wsimport-client-NIPTSQInterface, wsimport-client-NIPInterface"/>
 </project>

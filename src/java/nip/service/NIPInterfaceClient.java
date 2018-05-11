@@ -64,14 +64,15 @@ public class NIPInterfaceClient {
     NIBBsResponseCodes respcodes;
     AppParams options;
     PGPEncrytionTool nipssm;
-   private static DBConnector db;
+    Connection conn = null;
+    private DBConnector db;
     String logfilename = "NIPClientInterface";
     String logTable = "InlaksNIPWrapperLog";
     NIPInterface nip;
     NIPTSQInterface niptsq;
     T24Link t24;
     Thread watcherthread = new Thread();
-
+    String apikey = "";
     /**
      * Creates a new instance of NIPInterface
      */
@@ -161,6 +162,32 @@ public class NIPInterfaceClient {
                 response.setResponseDescription(respcodes.getMessage());
                 return gson.toJson(response);
             }
+            
+            ResultSet rs = db.getData("select * from NIPClients where ApplicationID = '"+applicationID.trim()+"';", conn);
+            
+            if(rs.next()){
+                
+              apikey  = rs.getString("APIKey");
+              
+              String authid = rs.getString("AuthenticationID");
+              
+              if(!authid.trim().equals(authenticationID.trim())){
+                  respcodes = NIBBsResponseCodes.Security_violation;
+                response.setResponseCode(respcodes.getInlaksCode());
+                response.setResponseDescription(respcodes.getMessage());
+                return gson.toJson(response);
+              }
+                
+            }
+            else{
+                
+                  respcodes = NIBBsResponseCodes.Invalid_Sender;
+                response.setResponseCode(respcodes.getInlaksCode());
+                response.setResponseDescription(respcodes.getMessage());
+                return gson.toJson(response);
+                
+            }
+            
 
             NameEnquiryRequest request = (NameEnquiryRequest) gson.fromJson(payload, NameEnquiryRequest.class);
 
@@ -174,7 +201,7 @@ public class NIPInterfaceClient {
 
             String requesthash = request.getHash();
 
-            String hash = options.get_SHA_512_Hash(stringtohash, "inlaks");
+            String hash = options.get_SHA_512_Hash(stringtohash, apikey);
 
             headers.add("hash");
             values.add(hash);
@@ -335,6 +362,34 @@ public class NIPInterfaceClient {
                 response.setResponseDescription(respcodes.getMessage());
                 return gson.toJson(response);
             }
+            
+            
+            ResultSet rs = db.getData("select * from NIPClients where ApplicationID = '"+applicationID.trim()+"';", conn);
+            
+            if(rs.next()){
+                
+              apikey  = rs.getString("APIKey");
+              
+              String authid = rs.getString("AuthenticationID");
+              
+              if(!authid.trim().equals(authenticationID.trim())){
+                  respcodes = NIBBsResponseCodes.Security_violation;
+                response.setResponseCode(respcodes.getInlaksCode());
+                response.setResponseDescription(respcodes.getMessage());
+                return gson.toJson(response);
+              }
+                
+            }
+            else{
+                
+                  respcodes = NIBBsResponseCodes.Invalid_Sender;
+                response.setResponseCode(respcodes.getInlaksCode());
+                response.setResponseDescription(respcodes.getMessage());
+                return gson.toJson(response);
+                
+            }
+            
+            
 
             FundsTransferDCRequest request = (FundsTransferDCRequest) gson.fromJson(payload, FundsTransferDCRequest.class);
 
@@ -348,7 +403,7 @@ public class NIPInterfaceClient {
 
             String requesthash = request.getHash();
 
-            String hash = options.get_SHA_512_Hash(stringtohash, "inlaks");
+            String hash = options.get_SHA_512_Hash(stringtohash, apikey);
 
             headers.add("hash");
             values.add(hash);
@@ -596,7 +651,34 @@ public class NIPInterfaceClient {
                 response.setResponseDescription(respcodes.getMessage());
                 return gson.toJson(response);
             }
-
+            
+            
+                 ResultSet rs = db.getData("select * from NIPClients where ApplicationID = '"+applicationID.trim()+"';", conn);
+            
+            if(rs.next()){
+                
+              apikey  = rs.getString("APIKey");
+              
+              String authid = rs.getString("AuthenticationID");
+              
+              if(!authid.trim().equals(authenticationID.trim())){
+                  respcodes = NIBBsResponseCodes.Security_violation;
+                response.setResponseCode(respcodes.getInlaksCode());
+                response.setResponseDescription(respcodes.getMessage());
+                return gson.toJson(response);
+              }
+                
+            }
+            else{
+                
+                  respcodes = NIBBsResponseCodes.Invalid_Sender;
+                response.setResponseCode(respcodes.getInlaksCode());
+                response.setResponseDescription(respcodes.getMessage());
+                return gson.toJson(response);
+                
+            }
+            
+            
             TransactionStatusQueryRequest request = (TransactionStatusQueryRequest) gson.fromJson(payload, TransactionStatusQueryRequest.class);
 
             headers.add("applicationID");
@@ -609,7 +691,7 @@ public class NIPInterfaceClient {
 
             String requesthash = request.getHash();
 
-            String hash = options.get_SHA_512_Hash(stringtohash, "inlaks");
+            String hash = options.get_SHA_512_Hash(stringtohash, apikey);
 
             headers.add("hash");
             values.add(hash);
@@ -628,7 +710,7 @@ public class NIPInterfaceClient {
                 nipvalues.add(request.getChannelCode());
                 nipheaders.add("ChannelCode");
 
-                nipvalues.add(niprequest.getSourceInstitutionCode());
+                nipvalues.add(request.getInstitutionCode());
                 nipheaders.add("SourceInstitutionCode");
 
                 nipvalues.add("OUTWARD");
@@ -657,7 +739,7 @@ public class NIPInterfaceClient {
                 } catch (Exception r) {
 
                 }
-
+  db = new DBConnector(options.getDBserver(), options.getDBuser(), options.getDBpass(), "NIPLogs");
                 db.insertData(nipheaders, nipvalues.toArray(), monthlyTable);
 
                 String niprequeststr = options.ObjectToXML(niprequest);
@@ -738,6 +820,35 @@ public class NIPInterfaceClient {
                 response.setResponseDescription(respcodes.getMessage());
                 return gson.toJson(response);
             }
+            
+                 ResultSet rs = db.getData("select * from NIPClients where ApplicationID = '"+applicationID.trim()+"';", conn);
+            
+            if(rs.next()){
+                
+              apikey  = rs.getString("APIKey");
+              
+              String authid = rs.getString("AuthenticationID");
+              
+              if(!authid.trim().equals(authenticationID.trim())){
+                  respcodes = NIBBsResponseCodes.Security_violation;
+                response.setResponseCode(respcodes.getInlaksCode());
+                response.setResponseDescription(respcodes.getMessage());
+                return gson.toJson(response);
+              }
+                
+            }
+            else{
+                
+                  respcodes = NIBBsResponseCodes.Invalid_Sender;
+                response.setResponseCode(respcodes.getInlaksCode());
+                response.setResponseDescription(respcodes.getMessage());
+                return gson.toJson(response);
+                
+            }
+            
+            
+            
+            
 
             getFIListRequest request = (getFIListRequest) gson.fromJson(payload, getFIListRequest.class);
 
@@ -751,16 +862,16 @@ public class NIPInterfaceClient {
 
             String requesthash = request.getHash();
 
-            String hash = options.get_SHA_512_Hash(stringtohash, "inlaks");
+            String hash = options.get_SHA_512_Hash(stringtohash, apikey);
 
             headers.add("hash");
             values.add(hash);
 
             if (hash.equals(requesthash)) {
+  db = new DBConnector(options.getDBserver(), options.getDBuser(), options.getDBpass(), "NIPLogs");
+                 rs = db.getData("Select * from NIP_Institutions", conn);
 
-                ResultSet rs = db.getData("Select * from NIP_Institutions", conn);
-
-                response.setChannelCode(request.getChannelCode());
+                //response.setChannelCode(request.getChannelCode());
 
                 List<Records> records = new LinkedList<>();
                 while (rs.next()) {
@@ -774,7 +885,7 @@ public class NIPInterfaceClient {
 
                 response.setNumberOfRecords(String.valueOf(records.size()));
                 response.setHash(hash);
-                response.setInstitutionCode(request.getInstitutionCode());
+                //response.setInstitutionCode(request.getInstitutionCode());
                 response.setRecord(records.toArray(new Records[records.size()]));
                 respcodes = NIBBsResponseCodes.SUCCESS;
                 response.setResponseCode(respcodes.getInlaksCode());
