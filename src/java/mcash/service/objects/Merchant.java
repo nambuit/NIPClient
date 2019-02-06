@@ -49,9 +49,11 @@ public class Merchant {
     
      @XmlElement(name = "Account")
     private Account Account;
-
-    
+     
     @XmlElement(name = "PhysicalAddress")
     private PhysicalAddress PhysicalAddress;
+    
+   @XmlElement(name = "ResponseCode")
+   private String ResponseCode;
      
 }
