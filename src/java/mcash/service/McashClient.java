@@ -19,8 +19,10 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+import mcash.service.objects.MerchantRegistrationRequest;
 import mcash.wrapperobjects.RegisterMerchantRequest;
 import mcash.wrapperobjects.RegisterMerchantResponse;
+import mcash.service.objects.Header;
 import nip.tools.AppParams;
 import nip.tools.DBConnector;
 import nip.tools.NIBBsResponseCodes;
@@ -166,8 +168,14 @@ public class McashClient {
 
             if (hash.equals(requesthash)) {
 
-//                NESingleRequest niprequest = new NESingleRequest();
+                MerchantRegistrationRequest merchantrequest = new MerchantRegistrationRequest();
+                
+                Header header = new Header();
+                
+              //  header.()
 
+               // merchantrequest.
+                
 //                niprequest.setAccountNumber(request.getAccountNumber());
 //                niprequest.setChannelCode(request.getChannelCode());
 //                niprequest.setDestinationInstitutionCode(request.getDestinationInstitutionCode());
