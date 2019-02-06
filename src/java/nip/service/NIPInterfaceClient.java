@@ -152,6 +152,10 @@ public class NIPInterfaceClient {
 
         headers.add("requestDate");
         values.add(reqdate);
+        
+        String acctname = "";
+        String bvn="";
+        String kyc="";
 
         try {
 
@@ -269,6 +273,10 @@ public class NIPInterfaceClient {
                 NESingleResponse nipresponseobject = (NESingleResponse) options.XMLToObject(nipresponse, new NESingleResponse());
 
                 respcodes = options.getResponseObject(nipresponseobject.getResponseCode());
+                
+                bvn = nipresponseobject.getBankVerificationNumber();
+                acctname = nipresponseobject.getAccountName();
+                kyc = nipresponseobject.getKYCLevel();
 
                 response.setResponseCode(respcodes.getInlaksCode());
                 response.setResponseDescription(respcodes.getMessage());
@@ -305,7 +313,7 @@ public class NIPInterfaceClient {
 
                 db.insertData(headers, values.toArray(), logTable);
 
-                String query = "Update " + monthlyTable + " set ResponseCode='" + respcodes.getCode() + "', StatusMessage='" + respcodes.getMessage() + "' where SessionID='" + sessionID + "' and MethodName='nameenquirysingleitem'";
+                String query = "Update " + monthlyTable + " set ResponseCode='" + respcodes.getCode() + "', AccountName='"+acctname+"', KYCLevel='"+kyc+"', BankVerificationNumber='"+bvn+"', StatusMessage='" + respcodes.getMessage() + "' where SessionID='" + sessionID + "' and MethodName='nameenquirysingleitem'";
 
                 db.Execute(query);
 
