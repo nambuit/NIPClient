@@ -18,11 +18,15 @@ import lombok.Setter;
 @XmlRootElement(name = "MerchantRegistrationRequest")
 public class MerchantRegistrationRequest {
     
+
     @XmlElement(name = "Header")
     private Header Header;
     
     @XmlElement(name = "Merchant")
     private Merchant [] Merchant;
+
+
+
     
    
 }
