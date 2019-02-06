@@ -23,4 +23,8 @@ public class Header {
    
    @XmlElement(name = "TotalCount")
    private String TotalCount;
+   
+   @XmlElement(name = "ResponseCode")
+   private String ResponseCode;
+   
 }

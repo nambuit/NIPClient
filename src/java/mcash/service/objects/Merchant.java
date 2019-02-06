@@ -16,9 +16,11 @@ import lombok.Setter;
  */
  
  
-@Getter @Setter
+@Getter
 @XmlRootElement(name = "Merchant")
 public class Merchant {
+    
+    
     @XmlElement(name = "RequestID")
     private String RequestID;
     
@@ -45,7 +47,12 @@ public class Merchant {
     
     @XmlElement(name = "GroupName")
     private String GroupName;
-     @XmlElement(name = "Account")
-    private String Account;
     
+    @XmlElement(name = "Account")
+    private Account Account;
+    @XmlElement(name = "PhysicalAddress")
+    private PhysicalAddress PhysicalAddress;
+    
+     @XmlElement(name = "ResponseCode")
+   private String ResponseCode;
 }
