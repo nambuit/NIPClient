@@ -25,8 +25,7 @@ import lombok.Setter;
     @XmlElement(name = "Merchant")
     private Merchant [] Merchant;
 
-    @XmlElement(name = "ResponseCode")
+     @XmlElement(name = "ResponseCode")
      private String ResponseCode;
-    
    }
 
