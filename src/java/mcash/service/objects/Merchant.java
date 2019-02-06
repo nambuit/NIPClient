@@ -54,5 +54,5 @@ public class Merchant {
     private PhysicalAddress PhysicalAddress;
     
      @XmlElement(name = "ResponseCode")
-   private String ResponseCode;
+   private String [] ResponseCode;
 }
