@@ -14,6 +14,7 @@ import lombok.Setter;
  * @author cahamefula
  */
 @Getter @Setter
+@XmlRootElement(name = "Account")
 public class Account {
    @XmlElement(name = "AccountNumber")
    private String AccountNumber;
