@@ -25,8 +25,6 @@ public class MerchantRegistrationRequest {
     @XmlElement(name = "Merchant")
     private Merchant [] Merchant;
 
-    @XmlElement(name = "ResponseCode")
-     private String ResponseCode;
     
    
 }

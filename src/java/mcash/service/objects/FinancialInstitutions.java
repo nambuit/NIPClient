@@ -8,22 +8,15 @@ package mcash.service.objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
-import lombok.Setter;
+
 /**
  *
- * @author emusa
+ * @author tadekayero
  */
- @Setter
-@XmlRootElement(name = "PhysicalAddress")
-public class PhysicalAddress {
+@Getter 
+@XmlRootElement(name = "FinancialInstitutions")
+public class FinancialInstitutions {
     
-   @XmlElement(name = "Street")
-   private String Street;
-   
-   @XmlElement(name = "LGA")
-   private String LGA;
-   
-   @XmlElement(name = "State")
-   private String State;
+    @XmlElement(name = "FinancialInstitutionCode")
+    private FinancialInstitutionCode [] FinancialInstitutionCode;
 }
-  
