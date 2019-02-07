@@ -35,6 +35,9 @@ public class TransactionStatusResponse {
    @XmlElement(name = "PayerName")
    private String PayerName;
    
+   @XmlElement(name = "PayerPhoneNumber")
+   private String PayerPhoneNumber;
+   
    @XmlElement(name = "Amount")
    private String Amount;
    
