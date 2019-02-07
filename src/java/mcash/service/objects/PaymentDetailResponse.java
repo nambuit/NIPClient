@@ -43,6 +43,5 @@ public class PaymentDetailResponse {
     private Params Params;
     @XmlElement(name = "ResponseCode")
     private String ResponseCode;
-    
-     
+      
 }

@@ -33,6 +33,5 @@ public class PaymentDetailRequest {
     private String Amount;
     @XmlElement(name = "FinancialInstitutionCode")
     private String FinancialInstitutionCode;
-    
      
 }
