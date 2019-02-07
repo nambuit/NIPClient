@@ -11,18 +11,17 @@ import lombok.Getter;
 
 /**
  *
- * @author tadekayero
+ * @author dogor-Igbosuah
  */
 
 @Getter 
-@XmlRootElement(name = "SearchResult")
-public class SearchResult {
+@XmlRootElement(name = "SearchResults")
+public class SearchResults {
     
-   @XmlElement(name = "ResultStatus")
-    private String ResultStatus; 
-   
-   @XmlElement(name = "BvnSearchResult")
-    private BvnSearchResult BvnSearchResult; 
-   
-   
+    @XmlElement(name = "RequestStatus")
+    private String RequestStatus; 
+    
+    @XmlElement(name = "ResultList")
+    private ResultList ResultList;
+    
 }
