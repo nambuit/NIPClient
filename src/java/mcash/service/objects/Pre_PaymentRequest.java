@@ -6,11 +6,15 @@
 package mcash.service.objects;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import lombok.Getter;
 
 /**
  *
  * @author dogor-Igbosuah
  */
+@Getter
+@XmlRootElement(name = "Pre-PaymentRequest")
 public class Pre_PaymentRequest {
    @XmlElement(name = "SessionID")
    private String SessionID;

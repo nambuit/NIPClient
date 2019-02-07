@@ -16,7 +16,7 @@ import lombok.Setter;
  * @author dogor-Igbosuah
  */
 
-@Getter @Setter
+@Getter
 @XmlRootElement(name = "PaymentDetailResponse")
 
 public class PaymentDetailResponse {

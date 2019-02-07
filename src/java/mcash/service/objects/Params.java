@@ -15,7 +15,7 @@ import lombok.Setter;
  * @author dogor-Igbosuah
  */
 
-@Getter @Setter
+@Getter
 @XmlRootElement(name = "Params")
 
 public class Params {

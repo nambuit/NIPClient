@@ -13,7 +13,7 @@ import lombok.Setter;
  *
  * @author emusa
  */
- @Setter
+ @Getter
 @XmlRootElement(name = "PhysicalAddress")
 public class PhysicalAddress {
     
