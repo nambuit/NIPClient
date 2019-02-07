@@ -9,20 +9,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 
+
 /**
  *
- * @author tadekayero
+ * @author dogor-Igbosuah
  */
 
 @Getter 
-@XmlRootElement(name = "SearchResult")
-public class SearchResult {
+@XmlRootElement(name = "ResultList")
+public class ResultList {
     
-   @XmlElement(name = "ResultStatus")
-    private String ResultStatus; 
-   
-   @XmlElement(name = "BvnSearchResult")
-    private BvnSearchResult BvnSearchResult; 
-   
-   
+    @XmlElement(name = "SearchResult")
+    private SearchResult [] SearchResult;
 }
