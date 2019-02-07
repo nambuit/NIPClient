@@ -26,6 +26,8 @@ import javax.xml.bind.Unmarshaller;
 import logger.WebServiceLogger;
 import lombok.Getter;
 import lombok.Setter;
+import mcash.service.objects.MerchantRegistrationRequest;
+import mcash.service.objects.MerchantRegistrationResponse;
 import nibss.nip.core.NIPInterface;
 import nibss.nip.core.NIPInterface_Service;
 import nip.service.objects.TSQuerySingleRequest;
@@ -101,7 +103,7 @@ public WebServiceLogger getServiceLogger(String filename){
     return new WebServiceLogger(LogDir,filename,propertiesfile);
 }
     
-       public Object XMLToObject (String xml, Object object) throws Exception{
+       public static Object XMLToObject (String xml, Object object) throws Exception{
        try{
     JAXBContext jcontext = JAXBContext.newInstance(object.getClass());
     Unmarshaller um = jcontext.createUnmarshaller();
@@ -621,5 +623,45 @@ String generatedPassword = null;
        }
        
    }
+        
+        public static void main(String [] args){
+            
+            String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+"<MerchantRegistrationResponse>\n" +
+"<Header>\n" +
+"<InstitutionCode>0000011</InstitutionCode>\n" +
+"<TotalCount>2</TotalCount>\n" +
+"<ResponseCode>00</ResponseCode>\n" +
+"</Header>\n" +
+"<Merchant>\n" +
+"<RequestID>000001100913103301000000000001</RequestID>\n" +
+"<MerchantCode>01123455</MerchantCode>\n" +
+"<ResponseCode>00</ResponseCode>\n" +
+"</Merchant>\n" +
+"<Merchant>\n" +
+"<RequestID>000001100913103301000000000002</RequestID>\n" +
+"<MerchantCode>01123456</MerchantCode>\n" +
+"<ResponseCode>00</ResponseCode>\n" +
+"</Merchant>\n" +
+"</MerchantRegistrationResponse>";
+            
+            try{
+            
+                        MerchantRegistrationRequest request =  (MerchantRegistrationRequest) AppParams.XMLToObject(xml, new MerchantRegistrationRequest());
+
+            
+            
+            
+            String d = request.getHeader().getInstitutionCode();
+            
+String dd ="";           
+
+            }
+            catch(Exception d){
+               System.out.println(d.getMessage());
+            }
+            
+            
+        }
      
 }
