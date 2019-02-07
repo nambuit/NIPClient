@@ -8,7 +8,7 @@ package mcash.service.objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
-import lombok.Setter;
+
 
 /**
  *
@@ -17,7 +17,10 @@ import lombok.Setter;
 @Getter
 @XmlRootElement(name = "Pre-PaymentResponse")
 public class Pre_PaymentResponse {
-     @XmlElement(name = "RequestorID")
+    @XmlElement(name = "SessionID")
+    private String SessionID;
+    
+    @XmlElement(name = "RequestorID")
     private String RequestorID;
     
     @XmlElement(name = "PayerBVN")
@@ -38,7 +41,6 @@ public class Pre_PaymentResponse {
     @XmlElement(name = "Amount")
     private String Amount;
     
-      
     @XmlElement(name = "Fee")
     private String Fee;
     
@@ -48,8 +50,5 @@ public class Pre_PaymentResponse {
     @XmlElement(name = "ResponseCode")
     private String ResponseCode;
     
-
-    
-   
     
 }
