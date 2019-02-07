@@ -9,22 +9,21 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 import lombok.Setter;
-
 /**
  *
- * @author tadekayero
+ * @author emusa
  */
-@Getter @Setter
-@XmlRootElement(name = "MerchantRegistrationRequest")
-public class MerchantRegistrationRequest {
+ @Setter
+@XmlRootElement(name = "PhysicalAddress")
+public class PhysicalAddress {
     
-
-    @XmlElement(name = "Header")
-    private Header Header;
-    
-    @XmlElement(name = "Merchant")
-    private Merchant [] Merchant;
-
-    
+   @XmlElement(name = "Street")
+   private String Street;
    
+   @XmlElement(name = "LGA")
+   private String LGA;
+   
+   @XmlElement(name = "State")
+   private String State;
 }
+  

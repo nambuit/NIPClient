@@ -14,17 +14,12 @@ import lombok.Setter;
  *
  * @author tadekayero
  */
-@Getter @Setter
-@XmlRootElement(name = "MerchantRegistrationRequest")
-public class MerchantRegistrationRequest {
-    
 
-    @XmlElement(name = "Header")
+
+public class MerchantRegistrationResponse {
+        @XmlElement(name = "Header")
     private Header Header;
     
     @XmlElement(name = "Merchant")
     private Merchant [] Merchant;
-
-    
-   
 }

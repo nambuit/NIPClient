@@ -26,6 +26,8 @@ import javax.xml.bind.Unmarshaller;
 import logger.WebServiceLogger;
 import lombok.Getter;
 import lombok.Setter;
+import mcash.service.objects.MerchantRegistrationResponse;
+import mcash.service.objects.Pre_PaymentResponse;
 import nibss.nip.core.NIPInterface;
 import nibss.nip.core.NIPInterface_Service;
 import nip.service.objects.TSQuerySingleRequest;
@@ -101,7 +103,7 @@ public WebServiceLogger getServiceLogger(String filename){
     return new WebServiceLogger(LogDir,filename,propertiesfile);
 }
     
-       public Object XMLToObject (String xml, Object object) throws Exception{
+       public static Object XMLToObject (String xml, Object object) throws Exception{
        try{
     JAXBContext jcontext = JAXBContext.newInstance(object.getClass());
     Unmarshaller um = jcontext.createUnmarshaller();
@@ -621,5 +623,42 @@ String generatedPassword = null;
        }
        
    }
+        
+        public static void main(String [] args){
+            
+            String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+"<Pre-PaymentResponse> <SessionID>000001100913103301000000000001</SessionID>\n" +
+"<RequestorID>000001</RequestorID> <PayerPhoneNumber>08060000000</PayerPhoneNumber>\n" +
+"<PayerBVN>00000000000</PayerBVN>\n" +
+"<MerchantCode>00123456</MerchantCode>\n" +
+"<MerchantName>xxxx</MerchantName>\n" +
+"<MerchantPhoneNumber>08060000000</MerchantPhoneNumber>\n" +
+"<Amount>100.00</Amount>\n" +
+"<Fee>5.1</Fee>\n" +
+"<FinancialInstitutions> <FinancialInstitutionCode Name=\"XYZ Bank\"\n" +
+"accountNumber=\"000***1234\">999999</FinancialInstitutionCode> <FinancialInstitutionCode\n" +
+"Name=\"ABC Bank\" accountNumber=\"000****235\">999991</FinancialInstitutionCode>\n" +
+"</FinancialInstitutions>\n" +
+"<ResponseCode>00</ResponseCode>\n" +
+"</Pre-PaymentResponse>";
+            
+            try{
+            
+                        Pre_PaymentResponse request =  (Pre_PaymentResponse) AppParams.XMLToObject(xml, new Pre_PaymentResponse());
+
+            
+            
+            
+           String d = "";
+            
+String dd ="";           
+
+            }
+            catch(Exception d){
+               System.out.println(d.getMessage());
+            }
+            
+            
+        }
      
 }
