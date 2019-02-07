@@ -8,18 +8,15 @@ package mcash.service.objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  *
  * @author tadekayero
  */
-
-
-public class MerchantRegistrationResponse {
-        @XmlElement(name = "Header")
-    private Header Header;
+@Getter 
+@XmlRootElement(name = "FinancialInstitutions")
+public class FinancialInstitutions {
     
-    @XmlElement(name = "Merchant")
-    private Merchant [] Merchant;
+    @XmlElement(name = "FinancialInstitutionCode")
+    private FinancialInstitutionCode [] FinancialInstitutionCode;
 }
