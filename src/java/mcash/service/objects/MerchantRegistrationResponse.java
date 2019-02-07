@@ -26,7 +26,7 @@ public class MerchantRegistrationResponse {
     private Merchant [] Merchant;
     
     @XmlElement(name = "ResponseCode")
-    private Header ResponseCode;
+    private String ResponseCode;
 
     
 }

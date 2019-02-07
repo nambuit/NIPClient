@@ -47,13 +47,17 @@ public class Merchant {
     private String GroupName;
 
     
-     @XmlElement(name = "Account")
+
+    @XmlElement(name = "Account")
     private Account Account;
-     
+    
     @XmlElement(name = "PhysicalAddress")
     private PhysicalAddress PhysicalAddress;
-    
-   @XmlElement(name = "ResponseCode")
-   private String ResponseCode;
      
+     @XmlElement(name = "ResponseCode")
+      private String ResponseCode;
+
+
+     
+
 }
