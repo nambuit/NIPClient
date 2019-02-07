@@ -4,23 +4,26 @@
  * and open the template in the editor.
  */
 package mcash.service.objects;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author dogor-Igbosuah
  */
-@Getter 
-@XmlRootElement(name = "Header")
-public class Header {
-    @XmlElement(name = "InstitutionCode")
-    private String InstitutionCode;
-    @XmlElement(name = "TotalCount")
-    private String TotalCount;
-    @XmlElement(name = "ResponseCode") 
+@Getter @Setter
+@XmlRootElement(name = "OptInOptOutResponse")
+public class OptInOptOutResponse {
+    
+    @XmlElement(name = "SessionID")
+    private String SessionID;
+    @XmlElement(name = "RequestorID")
+    private String RequestorID;
+    @XmlElement(name = "Message") //Array
+    private String Message;  //Array
+    @XmlElement(name = "ResponseCode")
     private String ResponseCode;
     
 }
