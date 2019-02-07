@@ -26,7 +26,6 @@ import javax.xml.bind.Unmarshaller;
 import logger.WebServiceLogger;
 import lombok.Getter;
 import lombok.Setter;
-import mcash.service.objects.MerchantRegistrationRequest;
 import mcash.service.objects.MerchantRegistrationResponse;
 import nibss.nip.core.NIPInterface;
 import nibss.nip.core.NIPInterface_Service;
@@ -647,7 +646,7 @@ String generatedPassword = null;
             
             try{
             
-                        MerchantRegistrationRequest request =  (MerchantRegistrationRequest) AppParams.XMLToObject(xml, new MerchantRegistrationRequest());
+                        MerchantRegistrationResponse request =  (MerchantRegistrationResponse) AppParams.XMLToObject(xml, new MerchantRegistrationResponse());
 
             
             
