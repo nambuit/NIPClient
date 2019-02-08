@@ -11,12 +11,10 @@ import lombok.Setter;
  *
  * @author emusa
  */
-@Getter
-@Setter
+@Getter @Setter
 public class BvnSingleSearchResponse {
     
     private String requestID;
-    private String Searchresult;
     private String resultstatus;
     private String bvn;
     private String firstname;
@@ -32,6 +30,8 @@ public class BvnSingleSearchResponse {
     private String hash;
     private String responsecode;
     private String responsedescription;
+
+
 
 
 
