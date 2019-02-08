@@ -18,7 +18,7 @@ public class BvnMultipleSearchRequest {
 
     private String requestID;
     private String BVNs;
-    private String bankcodes;
+    private String bankcode;
     private String institutioncode;
     private String hash;
 
