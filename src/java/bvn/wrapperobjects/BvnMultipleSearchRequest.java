@@ -3,24 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mcash.wrapperobjects;
+package bvn.wrapperobjects;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  *
- * @author r16user
+ * @author emusa
  */
 @Getter
 @Setter
-public class RegisterMerchantResponse {
+public class BvnMultipleSearchRequest {
 
     private String requestID;
-    private String merchantCode;
-    private String sessionID;
+    private String BVNs;
+    private String bankcodes;
+    private String institutioncode;
     private String hash;
-    private String responseCode;
-    private String responseDescription;
 
 }

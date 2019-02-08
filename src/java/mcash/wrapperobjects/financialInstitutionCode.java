@@ -10,17 +10,15 @@ import lombok.Setter;
 
 /**
  *
- * @author r16user
+ * @author emusa
  */
 @Getter
 @Setter
-public class RegisterMerchantResponse {
+public class financialInstitutionCode {
 
-    private String requestID;
-    private String merchantCode;
-    private String sessionID;
-    private String hash;
-    private String responseCode;
-    private String responseDescription;
+    private String name;
+    private String accountnumber;
+    private String FISpecificInformation;
+    private String SecondFactorAuthCode;
 
 }
