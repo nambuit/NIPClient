@@ -8,12 +8,10 @@ package mcash.wrapperobjects;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- *
- * @author r16user
- */
-@Getter
-@Setter
+
+
+@Getter @Setter
+
 public class RegisterMerchantResponse {
 
     private String requestID;

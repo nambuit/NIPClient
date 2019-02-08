@@ -8,6 +8,8 @@ package nip.tools;
 
 
 
+import bvn.service.objects.SearchResult;
+import bvn.service.objects.SearchResults;
 import com.sun.xml.bind.StringInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -26,7 +28,12 @@ import javax.xml.bind.Unmarshaller;
 import logger.WebServiceLogger;
 import lombok.Getter;
 import lombok.Setter;
+import mcash.service.objects.MerchantRegistrationRequest;
 import mcash.service.objects.MerchantRegistrationResponse;
+import mcash.service.objects.OptInOptOutRequest;
+import mcash.service.objects.PaymentDetailRequest;
+import mcash.service.objects.PaymentDetailResponse;
+import mcash.service.objects.Pre_PaymentRequest;
 import mcash.service.objects.Pre_PaymentResponse;
 import nibss.nip.core.NIPInterface;
 import nibss.nip.core.NIPInterface_Service;
@@ -627,27 +634,66 @@ String generatedPassword = null;
         public static void main(String [] args){
             
             String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-"<Pre-PaymentResponse> <SessionID>000001100913103301000000000001</SessionID>\n" +
-"<RequestorID>000001</RequestorID> <PayerPhoneNumber>08060000000</PayerPhoneNumber>\n" +
-"<PayerBVN>00000000000</PayerBVN>\n" +
-"<MerchantCode>00123456</MerchantCode>\n" +
-"<MerchantName>xxxx</MerchantName>\n" +
-"<MerchantPhoneNumber>08060000000</MerchantPhoneNumber>\n" +
-"<Amount>100.00</Amount>\n" +
-"<Fee>5.1</Fee>\n" +
-"<FinancialInstitutions> <FinancialInstitutionCode Name=\"XYZ Bank\"\n" +
-"accountNumber=\"000***1234\">999999</FinancialInstitutionCode> <FinancialInstitutionCode\n" +
-"Name=\"ABC Bank\" accountNumber=\"000****235\">999991</FinancialInstitutionCode>\n" +
-"</FinancialInstitutions>\n" +
-"<ResponseCode>00</ResponseCode>\n" +
-"</Pre-PaymentResponse>";
+"<MerchantRegistrationRequest>\n" +
+"<Header>\n" +
+"<InstitutionCode>0000011</InstitutionCode>\n" +
+"<TotalCount>2</TotalCount>\n" +
+"</Header>\n" +
+"<Merchant>\n" +
+"<RequestID>000001100913103301000001</RequestID>\n" +
+"<MerchantCode>01123455</MerchantCode>\n" +
+"<MerchantName>XYZ and Sons Plc</MerchantName>\n" +
+"<ContactName>Ibrahim Emeka Ade</ContactName>\n" +
+"<PhoneNumber>+2348010987654</PhoneNumber>\n" +
+"<EmailAddress>xyz12@nibss-plc.com.ng</EmailAddress>\n" +
+"<PhysicalAddress>\n" +
+"<Street>Plot 1230B Ahmadu Bello Way Victoria Island</Street>\n" +
+"<LGA>Eti-Osa</LGA>\n" +
+"<State>Lagos</State>\n" +
+"</PhysicalAddress>\n" +
+"<GPSLocation>40.7127837, -74.00594130000002</GPSLocation>\n" +
+"<GroupCode>20000001</GroupCode>\n" +
+"<GroupName>Merchant Group 1</GroupName>\n" +
+"<Account>\n" +
+"<AccountNumber>0001234567</AccountNumber>\n" +
+"<AccountName>Ibrahim Emeka Ade</AccountName>\n" +
+"<Kyc>1</Kyc>\n" +
+"<BankVerificationNumber>20000000021</BankVerificationNumber>\n" +
+"<MaximumTransactionAmount>100000.00</MaximumTransactionAmount>\n" +
+"<DeferredSettlement>false</DeferredSettlement>\n" +
+"</Account>\n" +
+"</Merchant>\n" +
+"<Merchant>\n" +
+"<RequestID>000001100913103301000002</RequestID>\n" +
+"<MerchantCode>01123456</MerchantCode>\n" +
+"<MerchantName>XYZ and Sons Plc</MerchantName>\n" +
+"<ContactName>Ibrahim Emeka Ade</ContactName>\n" +
+"<PhoneNumber>+2348010987654</PhoneNumber>\n" +
+"<EmailAddress>xyz12@nibss-plc.com.ng</EmailAddress>\n" +
+"<PhysicalAddress>\n" +
+"<Street>Plot 1230B Ahmadu Bello Way Victoria Island</Street>\n" +
+"<LGA>Eti-Osa</LGA>\n" +
+"<State>Lagos</State>\n" +
+"</PhysicalAddress>\n" +
+"<GPSLocation>40.7127837, -74.00594130000002</GPSLocation>\n" +
+"<GroupCode>20000001</GroupCode>\n" +
+"<GroupName>Merchant Group 1</GroupName><Account>\n" +
+"<AccountNumber>0001234567</AccountNumber>\n" +
+"<AccountName>Ibrahim Emeka Ade</AccountName>\n" +
+"<Kyc>1</Kyc>\n" +
+"<BankVerificationNumber>20000000021</BankVerificationNumber>\n" +
+"<MaximumTransactionAmount>100000.00</MaximumTransactionAmount>\n" +
+"<DeferredSettlement>true</DeferredSettlement>\n" +
+"</Account>\n" +
+"</Merchant>\n" +
+"</MerchantRegistrationRequest>";
             
             try{
             
-                        Pre_PaymentResponse request =  (Pre_PaymentResponse) AppParams.XMLToObject(xml, new Pre_PaymentResponse());
+                        MerchantRegistrationRequest request =  (MerchantRegistrationRequest) AppParams.XMLToObject(xml, new MerchantRegistrationRequest());
 
             
-            
+           
             
            String d = "";
             

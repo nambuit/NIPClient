@@ -14,7 +14,7 @@ import lombok.Setter;
  *
  * @author dogor-Igbosuah
  */
-@Getter @Setter
+@Getter 
 @XmlRootElement(name = "OptInOptOutRequest")
 
 public class OptInOptOutRequest {

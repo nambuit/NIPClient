@@ -5,8 +5,6 @@
  */
 package mcash.wrapperobjects;
 
-
-import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 import lombok.Setter;
 
