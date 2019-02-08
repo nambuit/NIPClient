@@ -10,6 +10,8 @@ package nip.tools;
 
 import bvn.service.objects.SearchResult;
 import bvn.service.objects.SearchResults;
+import bvn.wrapperobjects.BvnSingleSearchRequest;
+import com.google.gson.Gson;
 import com.sun.xml.bind.StringInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -683,73 +685,21 @@ String generatedPassword = null;
    }
         
         public static void main(String [] args){
-            
-            String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-"<MerchantRegistrationRequest>\n" +
-"<Header>\n" +
-"<InstitutionCode>0000011</InstitutionCode>\n" +
-"<TotalCount>2</TotalCount>\n" +
-"</Header>\n" +
-"<Merchant>\n" +
-"<RequestID>000001100913103301000001</RequestID>\n" +
-"<MerchantCode>01123455</MerchantCode>\n" +
-"<MerchantName>XYZ and Sons Plc</MerchantName>\n" +
-"<ContactName>Ibrahim Emeka Ade</ContactName>\n" +
-"<PhoneNumber>+2348010987654</PhoneNumber>\n" +
-"<EmailAddress>xyz12@nibss-plc.com.ng</EmailAddress>\n" +
-"<PhysicalAddress>\n" +
-"<Street>Plot 1230B Ahmadu Bello Way Victoria Island</Street>\n" +
-"<LGA>Eti-Osa</LGA>\n" +
-"<State>Lagos</State>\n" +
-"</PhysicalAddress>\n" +
-"<GPSLocation>40.7127837, -74.00594130000002</GPSLocation>\n" +
-"<GroupCode>20000001</GroupCode>\n" +
-"<GroupName>Merchant Group 1</GroupName>\n" +
-"<Account>\n" +
-"<AccountNumber>0001234567</AccountNumber>\n" +
-"<AccountName>Ibrahim Emeka Ade</AccountName>\n" +
-"<Kyc>1</Kyc>\n" +
-"<BankVerificationNumber>20000000021</BankVerificationNumber>\n" +
-"<MaximumTransactionAmount>100000.00</MaximumTransactionAmount>\n" +
-"<DeferredSettlement>false</DeferredSettlement>\n" +
-"</Account>\n" +
-"</Merchant>\n" +
-"<Merchant>\n" +
-"<RequestID>000001100913103301000002</RequestID>\n" +
-"<MerchantCode>01123456</MerchantCode>\n" +
-"<MerchantName>XYZ and Sons Plc</MerchantName>\n" +
-"<ContactName>Ibrahim Emeka Ade</ContactName>\n" +
-"<PhoneNumber>+2348010987654</PhoneNumber>\n" +
-"<EmailAddress>xyz12@nibss-plc.com.ng</EmailAddress>\n" +
-"<PhysicalAddress>\n" +
-"<Street>Plot 1230B Ahmadu Bello Way Victoria Island</Street>\n" +
-"<LGA>Eti-Osa</LGA>\n" +
-"<State>Lagos</State>\n" +
-"</PhysicalAddress>\n" +
-"<GPSLocation>40.7127837, -74.00594130000002</GPSLocation>\n" +
-"<GroupCode>20000001</GroupCode>\n" +
-"<GroupName>Merchant Group 1</GroupName><Account>\n" +
-"<AccountNumber>0001234567</AccountNumber>\n" +
-"<AccountName>Ibrahim Emeka Ade</AccountName>\n" +
-"<Kyc>1</Kyc>\n" +
-"<BankVerificationNumber>20000000021</BankVerificationNumber>\n" +
-"<MaximumTransactionAmount>100000.00</MaximumTransactionAmount>\n" +
-"<DeferredSettlement>true</DeferredSettlement>\n" +
-"</Account>\n" +
-"</Merchant>\n" +
-"</MerchantRegistrationRequest>";
-            
-            try{
-            
-                        MerchantRegistrationRequest request =  (MerchantRegistrationRequest) AppParams.XMLToObject(xml, new MerchantRegistrationRequest());
-
-            
-           
-            
-           String d = "";
-            
-String dd ="";           
-
+           try{
+               
+               BvnSingleSearchRequest request = new BvnSingleSearchRequest();
+               
+               request.setBVN("2342324232");
+               request.setBankcode("762232");
+               request.setHash("2378273293092323-2-23232423");
+               request.setInstitutioncode("002323");
+               
+               Gson gson = new Gson();
+               
+               
+               
+               System.out.println(gson.toJson(request));
+               
             }
             catch(Exception d){
                System.out.println(d.getMessage());
