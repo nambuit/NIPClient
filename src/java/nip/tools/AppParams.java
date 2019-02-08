@@ -7,6 +7,7 @@ package nip.tools;
  */
 import bvn.service.objects.SearchResult;
 import bvn.service.objects.SearchResults;
+import bvn.wrapperobjects.BVNMultipleSearchResponse;
 import bvn.wrapperobjects.BvnMultipleSearchRequest;
 import bvn.wrapperobjects.BvnSingleSearchRequest;
 import bvn.wrapperobjects.BvnSingleSearchResponse;
@@ -20,6 +21,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 import javax.naming.InitialContext;
@@ -651,43 +653,55 @@ public class AppParams {
     public static void main(String[] args) {
         try {
 
-            BvnMultipleSearchResponse response = new BvnMultipleSearchResponse();
-            
-             response.setBvn("222222566722");
-            response.setResponsecode("02");
-            response.setFirstname("Daniel");
-            response.setMiddlename("BUKKY");
-            response.setLastname("MWERT");
-            response.setDateofbirth("12-Nov-1946");
-            response.setRegistrationdate("12-Nov-2018");
-            response.setEnrollmentbank("901");
-            response.setEntrollmentbranch("Victoria");
-            response.setImagebase64("Too long to be pasted here");
-            response.setHash("23782732930976783-2-23232423");
-            response.setResponsedescription("0001");
-            
-            
-            response.setBvn("2222222222");
-            response.setResponsecode("00");
-            response.setFirstname("Emeka");
-            response.setMiddlename("Lome");
-            response.setLastname("Musa");
-            response.setDateofbirth("12-Nov-1945");
-            response.setRegistrationdate("12-Nov-2017");
-            response.setEnrollmentbank("900");
-            response.setEntrollmentbranch("VictoriaIsland");
-            response.setImagebase64("Too long to be pasted here");
-            response.setHash("2378273293092323-2-23232423");
-            response.setResponsedescription("0000");
-            
-            
+            BVNMultipleSearchResponse response = new BVNMultipleSearchResponse();
 
-           
-         
+            ArrayList<BvnSingleSearchResponse> srs = new ArrayList<BvnSingleSearchResponse>();
+
+            BvnSingleSearchResponse sr = new BvnSingleSearchResponse();
+
+            sr.setBvn("222222566722");
+            sr.setRequestID("1234");
+            sr.setResponsecode("02");
+            sr.setFirstname("Daniel");
+            sr.setMiddlename("BUKKY");
+            sr.setLastname("MWERT");
+            sr.setDateofbirth("12-Nov-1946");
+            sr.setRegistrationdate("12-Nov-2018");
+            sr.setEnrollmentbank("901");
+            sr.setEntrollmentbranch("Victoria");
+            sr.setImagebase64("Too long to be pasted here");
+            sr.setHash("23782732930976783-2-23232423");
+            sr.setResponsedescription("0001");
+
+            srs.add(sr);
+
+            sr = new BvnSingleSearchResponse();
+
+            sr.setBvn("2222222222");
+            sr.setRequestID("1238");
+            sr.setResponsecode("00");
+            sr.setFirstname("Emeka");
+            sr.setMiddlename("Lome");
+            sr.setLastname("Musa");
+            sr.setDateofbirth("12-Nov-1945");
+            sr.setRegistrationdate("12-Nov-2017");
+            sr.setEnrollmentbank("900");
+            sr.setEntrollmentbranch("VictoriaIsland");
+            sr.setImagebase64("Too long to be pasted here");
+            sr.setHash("2378273293092323-2-23232423");
+            sr.setResponsedescription("0000");
+
+            srs.add(sr);
+
+            response.setBVNMultipleSearchResponse(srs.toArray(new BvnSingleSearchResponse[srs.size()]));
+            response.setInstitutioncode("1342516");
+            response.setHash("132435736-8u393");
+            response.setResponsecode("0001");
+            response.setResponsedescription("447839");
 
             Gson gson = new Gson();
 
-            System.out.println(gson.toJson(request));
+            System.out.println(gson.toJson(response));
 
         } catch (Exception d) {
             System.out.println(d.getMessage());
