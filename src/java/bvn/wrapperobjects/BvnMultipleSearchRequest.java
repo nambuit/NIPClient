@@ -15,10 +15,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BvnMultipleSearchRequest {
-
+    
+    private BvnSingleSearchRequest [] BvnMultipleSearchRequest;
     private String requestID;
-    private String BVNs;
-    private String bankcode;
     private String institutioncode;
     private String hash;
 

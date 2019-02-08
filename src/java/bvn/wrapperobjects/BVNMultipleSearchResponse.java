@@ -16,21 +16,7 @@ import lombok.Setter;
 @Setter
 public class BVNMultipleSearchResponse {
 
-    private String requestID;
-    private String Searchresults;
-    private String Searchresult;
-    private String resultlist;
-    private String resultstatus;
-    private String bvn;
-    private String firstname;
-    private String middlename;
-    private String lastname;
-    private String dateofbirth;
-    private String phonenumber;
-    private String registrationdate;
-    private String enrollmentbank;
-    private String entrollmentbranch;
-    private String imagebase64;
+    private BvnSingleSearchResponse [] BVNMultipleSearchResponse;
     private String institutioncode;
     private String hash;
     private String responsecode;
