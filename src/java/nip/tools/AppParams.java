@@ -222,57 +222,57 @@ public WebServiceLogger getServiceLogger(String filename){
     
     
     
-    public String getCreateNIPTableScript(String tableName){
+    public String getCreateMcashTableScript(String tableName){
         
         return "CREATE TABLE [dbo].["+tableName+"](\n" +
 "	[SessionID] [varchar](100) NULL,\n" +
-"	[DestinationInstitutionCode] [varchar](100) NULL,\n" +
-"	[SourceInstitutionCode] [varchar](100) NULL,\n" +
-"	[ChannelCode] [varchar](100) NULL,\n" +
+"	[RequestorID] [varchar](100) NULL,\n" +
+"	[PayerPhoneNumber] [varchar](100) NULL,\n" +
+"	[PayerName] [varchar](100) NULL,\n" +
 "	[AccountNumber] [varchar](100) NULL,\n" +
-"	[BankVerificationNumber] [varchar](100) NULL,\n" +
+"	[AccountName] [varchar](100) NULL,\n" +                
+"	[PayerBVN] [varchar](100) NULL,\n" +
+"	[MerchantCode] [varchar](100) NULL,\n" +
+"	[MerchantName] [varchar](100) NULL,\n" +
+"	[MerchantName] [varchar](100) NULL,\n" +
+"	[MandateCode] [varchar](100) NULL,\n" +
+"	[MerchantPhoneNumber] [varchar](100) NULL,\n" +
+"	[OptIn] [varchar](100) NULL,\n" +
+"	[Message] [varchar](100) NULL,\n" +
 "	[ResponseCode] [varchar](100) NULL,\n" +
-"	[NameEnquiryRef] [varchar](100) NULL,\n" +
-"	[BeneficiaryAccountName] [varchar](100) NULL,\n" +
-"	[BeneficiaryAccountNumber] [varchar](100) NULL,\n" +
-"	[BeneficiaryBankVerificationNumber] [varchar](100) NULL,\n" +
-"	[OriginatorAccountName] [varchar](100) NULL,\n" +
-"	[OriginatorAccountNumber] [varchar](100) NULL,\n" +
-"	[OriginatorBankVerificationNumber] [varchar](100) NULL,\n" +
-"	[OriginatorKYCLevel] [varchar](100) NULL,\n" +
-"	[TransactionLocation] [varchar](100) NULL,\n" +
-"	[Narration] [varchar](1000) NULL,\n" +
+"	[Telco] [varchar](1000) NULL,\n" +
 "	[PaymentReference] [varchar](100) NULL,\n" +
 "	[Amount] [money] NULL,\n" +
-"	[DebitAccountName] [varchar](100) NULL,\n" +
-"	[DebitAccountNumber] [varchar](100) NULL,\n" +
-"	[DebitBankVerificationNumber] [varchar](100) NULL,\n" +
+"	[Fee] [money] NULL,\n" +
+"	[Passcode] [varchar](100) NULL,\n" +
 "	[MandateReferenceNumber] [varchar](100) NULL,\n" +
-"	[BatchNumber] [varchar](100) NULL,\n" +
-"	[NumberOfRecords] [varchar](100) NULL,\n" +
-"	[RecID] [varchar](100) NULL,\n" +
-"	[AuthorizationCode] [varchar](100) NULL,\n" +
-"	[TargetAccountName] [varchar](100) NULL,\n" +
-"	[TargetAccountNumber] [varchar](100) NULL,\n" +
-"	[TargetBankVerificationNumber] [varchar](100) NULL,\n" +
-"	[AvailableBalance] [money] NULL,\n" +
-"	[TransactionFee] [money] NULL,\n" +
-"	[DebitKYCLevel] [varchar](100) NULL,\n" +
+"	[ProductCode] [varchar](100) NULL,\n" +
+"	[FinancialInstitutionCode] [varchar](100) NULL,\n" +
+"	[Name] [varchar](100) NULL,\n" +
+"	[FISpecificInformation] [varchar](100) NULL,\n" +
+"	[SecondFactorAuthCode] [varchar](100) NULL,\n" +
 "	[ReferenceCode] [varchar](100) NULL,\n" +
-"	[ReasonCode] [varchar](100) NULL,\n" +
-"	[AccountName] [varchar](100) NULL,\n" +
-"	[BeneficiaryKYCLevel] [varchar](100) NULL,\n" +
-"	[KYCLevel] [varchar](100) NULL,\n" +
-"	[InstitutionCode] [varchar](100) NULL,\n" +
-"	[InstitutionName] [varchar](100) NULL,\n" +
-"	[Category] [varchar](100) NULL,\n" +
-"	[TranDirection] [nvarchar](50) NULL,\n" +
-"	[StatusMessage] [nvarchar](500) NULL,\n" +
+"	[Reason] [varchar](100) NULL,\n" +
 "	[TransactionDate] [datetime] NULL,\n" +
-"	[MethodName] [nvarchar](50) NULL\n" +
 ") ON [PRIMARY]";
     }
     
+    public String getCreateBVNTableScript(String tableName){
+        
+        return "CREATE TABLE [dbo].["+tableName+"](\n" +
+"	[Bvn] [varchar](100) NULL,\n" +
+"	[FirstName] [varchar](100) NULL,\n" +
+"	[MiddleName] [varchar](100) NULL,\n" +
+"	[LastName] [varchar](100) NULL,\n" +
+"	[DateOfBirth] [date](100) NULL,\n" +
+"	[PhoneNumber] [varchar](100) NULL,\n" +
+"	[RegistrationDate] [datetime](100) NULL,\n" +
+"	[EnrollmentBank] [varchar](100) NULL,\n" +
+"	[EnrollmentBranch] [varchar](100) NULL,\n" +
+"	[ImageBase64] [varchar](100) NULL,\n" +
+"	[MethodName] [nvarchar](50) NULL\n" +
+") ON [PRIMARY]";
+    }
     
     public String get_SHA_512_Hash(String StringToHash, String   salt) throws Exception{
 String generatedPassword = null;

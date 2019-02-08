@@ -5,10 +5,21 @@
  */
 package bvn.wrapperobjects;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @author tadekayero
  */
-public class NewClass {
-    
+@Getter
+@Setter
+public class BvnSingleSearchRequest {
+
+    private String requestID;
+    private String BVN;
+    private String bankcode;
+    private String institutioncode;
+    private String hash;
+
 }

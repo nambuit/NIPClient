@@ -4,30 +4,33 @@
  * and open the template in the editor.
  */
 package mcash.service.objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 import lombok.Setter;
-
-
 /**
  *
- * @author aagbasale
+ * @author cahamefula
  */
+@Getter @Setter
+@XmlRootElement(name = "Account")
 public class Account {
-    @XmlElement(name = "RequestID")
-    private String RequestID;
-    @XmlElement(name = "AccountNumber")
-    private String AccountNumber;
-    @XmlElement(name = "AccountName") 
-    private String AccountName;
-    @XmlElement(name = "Kyc")
-    private String Kyc;
-    @XmlElement(name = "BankVerificationNumber")
-    private String BankVerificationNumber;
-    @XmlElement(name = "MaximumTransactionAmount")
-    private String MaximumTransactionAmount;
-    @XmlElement(name = "DeferredSettlement")
-    private String DeferredSettlement;
-    
+   @XmlElement(name = "AccountNumber")
+   private String AccountNumber;
+   
+   @XmlElement(name = "AccountName")
+   private String AccountName;
+   
+   @XmlElement(name = "Kyc")
+   private String Kyc;
+   
+   @XmlElement(name = "BankVerificationNumber")
+   private String BankVerificationNumber;
+   
+   @XmlElement(name = "MaximumTransactionAmount")
+   private String MaximumTransactionAmount;
+   
+  @XmlElement(name = "DeferredSettlement")
+   private String DeferredSettlement;
 }
