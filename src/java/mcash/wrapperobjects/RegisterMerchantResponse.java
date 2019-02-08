@@ -11,7 +11,6 @@ import lombok.Setter;
 
 
 @Getter @Setter
-
 public class RegisterMerchantResponse {
 
     private String requestID;
