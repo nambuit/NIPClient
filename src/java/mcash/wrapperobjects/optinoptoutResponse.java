@@ -10,17 +10,18 @@ import lombok.Setter;
 
 /**
  *
- * @author r16user
+ * @author emusa
  */
 @Getter
 @Setter
-public class RegisterMerchantResponse {
+public class optinoptoutResponse {
 
-    private String requestID;
-    private String merchantCode;
+    private String requestorID;
     private String sessionID;
-    private String hash;
-    private String responseCode;
+    private String message;
+    private String institutioncode;
+    private String responsecode;
     private String responseDescription;
+    private String hash;
 
 }

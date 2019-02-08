@@ -4,23 +4,25 @@
  * and open the template in the editor.
  */
 package mcash.wrapperobjects;
-
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  *
- * @author r16user
+ * @author emusa
  */
-@Getter
-@Setter
-public class RegisterMerchantResponse {
-
+@Getter @Setter
+public class RegisterPaymentDetailRequest {
+    
     private String requestID;
-    private String merchantCode;
     private String sessionID;
+    private String payphonenumber;
+    private String payerBVN;
+    private String merchantcode;
+    private String Amount;
+    private String InstitutionCode;
+    private String FinancialInstitutionCode;
+    private String Accountnumber;
     private String hash;
-    private String responseCode;
-    private String responseDescription;
-
-}
+    
+  }

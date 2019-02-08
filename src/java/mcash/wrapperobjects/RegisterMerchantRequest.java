@@ -16,11 +16,9 @@ import lombok.Setter;
  */
 
 @Getter @Setter
-@XmlRootElement(name = "FundsTransferDCRequest")
 public class RegisterMerchantRequest {
     
     private String requestID;
-    private String nameEnquiryRef;
     private String merchantCode;
     private String merchantName;
     private String contactName;
