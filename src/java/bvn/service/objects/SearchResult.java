@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mcash.service.objects;
+package bvn.service.objects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,16 +11,18 @@ import lombok.Getter;
 
 /**
  *
- * @author dogor-Igbosuah
+ * @author tadekayero
  */
+
 @Getter 
-@XmlRootElement(name = "Header")
-public class Header {
-    @XmlElement(name = "InstitutionCode")
-    private String InstitutionCode;
-    @XmlElement(name = "TotalCount")
-    private String TotalCount;
-    @XmlElement(name = "ResponseCode") 
-    private String ResponseCode;
+@XmlRootElement(name = "SearchResult")
+public class SearchResult {
     
+   @XmlElement(name = "ResultStatus")
+    private String ResultStatus; 
+   
+   @XmlElement(name = "BvnSearchResult")
+    private BvnSearchResult BvnSearchResult; 
+   
+   
 }

@@ -6,49 +6,42 @@
 package mcash.service.objects;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
-
-
+import lombok.Setter;
+/**
 /**
  *
- * @author tadekayero
+ * @author dogor-Igbosuah
  */
-@Getter
-@XmlRootElement(name = "Pre-PaymentResponse")
-public class Pre_PaymentResponse {
+
+@Getter @Setter
+@XmlRootElement(name = "PaymentDetailResponse")
+
+public class PaymentDetailResponse {
+    
     @XmlElement(name = "SessionID")
     private String SessionID;
-    
     @XmlElement(name = "RequestorID")
     private String RequestorID;
-    
-    @XmlElement(name = "PayerBVN")
-    private int PayerBVN;
-    
-    @XmlElement(name = "PayerPhoneNumber")
+    @XmlElement(name = "PayerPhoneNumber") 
     private String PayerPhoneNumber;
-    
+    @XmlElement(name = "PayerBVN")
+    private String PayerBVN;
     @XmlElement(name = "MerchantCode")
     private String MerchantCode;
-    
     @XmlElement(name = "MerchantName")
-    private int MerchantName;
-    
-    @XmlElement(name = "MerchantPhoneNumber")
-    private String MerchantPhoneNumber;
-    
+    private String MerchantName;
     @XmlElement(name = "Amount")
     private String Amount;
-    
     @XmlElement(name = "Fee")
     private String Fee;
-    
-    @XmlElement(name = "FinancialInstitutions")
-    private FinancialInstitutions FinancialInstitutions;
-    
+    @XmlElement(name = "FinancialInstitutionCode")
+    private FinancialInstitutionCode FinancialInstitutionCode;
+    @XmlElement(name = "Params")
+    private Params Params;
     @XmlElement(name = "ResponseCode")
     private String ResponseCode;
-    
-    
+      
 }

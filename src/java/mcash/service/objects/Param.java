@@ -4,29 +4,28 @@
  * and open the template in the editor.
  */
 package mcash.service.objects;
-
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
 import lombok.Getter;
 import lombok.Setter;
-
 /**
  *
  * @author dogor-Igbosuah
  */
 
 @Getter @Setter
-@XmlRootElement(name = "MerchantRegistrationResponse")
-public class MerchantRegistrationResponse {
+@XmlRootElement(name = "Param")
+public class Param {
+ 
+    @XmlAttribute(name = "name")
+    private String Name;
     
-    @XmlElement(name = "Header")
-    private Header Header;
+    @XmlAttribute(name = "description")
+    private String description;
     
-    @XmlElement(name = "Merchant")
-    private Merchant [] Merchant;
+    @XmlValue
+    private String Param;
     
-    @XmlElement(name = "ResponseCode")
-    private String ResponseCode;
-
     
 }

@@ -28,9 +28,8 @@ public class FinancialInstitutionCode {
     @XmlAttribute(name = "FISpecificInformation")
     private String FISpecificInformation;
     
-    @XmlAttribute(name = "FISpecificInformation")
+    @XmlAttribute(name = "SecondFactorAuthCode")
     private String SecondFactorAuthCode;
-    
     
     @XmlValue
     private String FinancialInstitutionCode;

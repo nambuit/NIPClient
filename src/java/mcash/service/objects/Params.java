@@ -5,8 +5,8 @@
  */
 package mcash.service.objects;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlElement;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,17 +16,9 @@ import lombok.Setter;
  */
 
 @Getter @Setter
-@XmlRootElement(name = "MerchantRegistrationResponse")
-public class MerchantRegistrationResponse {
-    
-    @XmlElement(name = "Header")
-    private Header Header;
-    
-    @XmlElement(name = "Merchant")
-    private Merchant [] Merchant;
-    
-    @XmlElement(name = "ResponseCode")
-    private String ResponseCode;
+@XmlRootElement(name = "Params")
 
-    
+public class Params {
+    @XmlElement (name = "Param")
+    private Param [] Param;
 }
