@@ -11,7 +11,8 @@ import lombok.Setter;
  *
  * @author dogor-Igbosuah
  */
-@Getter @Setter
+@Getter 
+@Setter
 public class Pre_PaymentRequest {
   
     private String InstitutionCode;
