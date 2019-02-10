@@ -14,7 +14,6 @@ import lombok.Setter;
 @Getter @Setter
 public class Pre_PaymentRequest {
   
-    private String requestID;
     private String InstitutionCode;
     private String RequestorID;
     private String PayerPhoneNumber;
