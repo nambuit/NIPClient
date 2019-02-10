@@ -38,6 +38,8 @@ import mcash.service.objects.PaymentDetailRequest;
 import mcash.service.objects.PaymentDetailResponse;
 import mcash.service.objects.Pre_PaymentRequest;
 import mcash.service.objects.Pre_PaymentResponse;
+import mcash.wrapperobjects.MerchantNameRequest;
+import mcash.wrapperobjects.MerchantNameResponse;
 import nibss.nip.core.NIPInterface;
 import nibss.nip.core.NIPInterface_Service;
 import nip.service.objects.TSQuerySingleRequest;
@@ -653,13 +655,16 @@ public class AppParams {
     public static void main(String[] args) {
         try {
 
-          BvnSingleSearchRequest request = new BvnSingleSearchRequest();
+         Pre_PaymentRequest request = new Pre_PaymentRequest();
           
-          request.setBVN("22222222222222");
-          request.setBankcode("345609");
+          request.setRequestorID("4567738-jfncm");
+          request.setMerchantname("Emeka");
           request.setHash("34356364-688695kfkkd");
           request.setInstitutioncode("346526758");
-          request.setRequestID("357809-d");
+          request.setMerchantcode("357809-d");
+          request.setPayerPhoneNumber("08076234567");
+          request.setPayerBVN("222222222222");
+          request.setAmount("34000");
           
             Gson gson = new Gson();
 
