@@ -5,6 +5,7 @@
  */
 
 package mcash.wrapperobjects;
+
 import lombok.Getter;
 import lombok.Setter;
 /**
