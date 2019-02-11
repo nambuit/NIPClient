@@ -20,12 +20,16 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import mcash.service.objects.Account;
+import mcash.service.objects.FinancialInstitutionCode;
 import mcash.service.objects.MerchantRegistrationRequest;
 import mcash.wrapperobjects.RegisterMerchantRequest;
 import mcash.wrapperobjects.RegisterMerchantResponse;
 import mcash.service.objects.Header;
 import mcash.service.objects.Merchant;
+import mcash.service.objects.PaymentDetailRequest;
 import mcash.service.objects.PhysicalAddress;
+import mcash.wrapperobjects.RegisterPaymentDetailRequest;
+import mcash.wrapperobjects.RegisterPaymentDetailResponse;
 import nip.tools.AppParams;
 import nip.tools.DBConnector;
 import nip.tools.NIBBsResponseCodes;
@@ -403,5 +407,240 @@ public class McashClient {
         return gson.toJson(response);
     }
     
+    
+    
+    
+     /**
+     * Retrieves representation of an instance of mcash.service.McashClient
+     * @param authenticationID
+     * @param timeStamp
+     * @param applicationID
+     * @param payload
+     * @return an instance of java.lang.String
+     */
+    @POST
+    @Path("executePaymentDetails")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String executePaymentDetails(@HeaderParam("authenticationID") String authenticationID, @HeaderParam("timeStamp") String timeStamp, @HeaderParam("applicationID") String applicationID, String payload) {
+        Gson gson = new Gson();
+        String sessionID = "", monthlyTable = "";
+        RegisterPaymentDetailResponse response = new RegisterPaymentDetailResponse();
+
+        List<Object> values = new ArrayList<>();
+        List<String> headers = new ArrayList<>();
+
+        List<Object> mcashvalues = new ArrayList<>();
+        List<String> mcashheaders = new ArrayList<>();
+
+        headers.add("requestPayload");
+        values.add(payload);
+
+        Date reqdate = new Date();
+
+        headers.add("requestDate");
+        values.add(reqdate);
+        
+     
+
+        try {
+
+            if (authenticationID == null || timeStamp == null || applicationID == null) {
+
+                respcodes = NIBBsResponseCodes.Invalid_Sender;
+                response.setResponsecode(respcodes.getInlaksCode());
+                response.setResponseDescription(respcodes.getMessage());
+                return gson.toJson(response);
+            }
+            
+            ResultSet rs = db.getData("select * from NIPClients where ApplicationID = '"+applicationID.trim()+"';", conn);
+            
+            if(rs.next()){
+                
+              apikey  = rs.getString("APIKey");
+              
+              String authid = rs.getString("AuthenticationID");
+              
+              if(!authid.trim().equals(authenticationID.trim())){
+                  respcodes = NIBBsResponseCodes.Security_violation;
+                response.setResponsecode(respcodes.getInlaksCode());
+                response.setResponseDescription(respcodes.getMessage());
+                return gson.toJson(response);
+              }
+                
+            }
+            else{
+                
+                  respcodes = NIBBsResponseCodes.Invalid_Sender;
+                response.setResponsecode(respcodes.getInlaksCode());
+                response.setResponseDescription(respcodes.getMessage());
+                return gson.toJson(response);
+                
+            }
+            
+
+            RegisterPaymentDetailRequest request = (RegisterPaymentDetailRequest) gson.fromJson(payload, RegisterPaymentDetailRequest.class);
+
+            headers.add("applicationID");
+            values.add(applicationID);
+
+            headers.add("requestID");
+            values.add(request.getRequestID());
+
+            String stringtohash = request.getRequestID() + request.getMerchantcode() + request.getAccountnumber();
+
+            String requesthash = request.getHash();
+
+            String hash = options.get_SHA_512_Hash(stringtohash, apikey);
+
+            headers.add("hash");
+            values.add(hash);
+
+            if (hash.equals(requesthash)) {
+
+                PaymentDetailRequest payrequest = new PaymentDetailRequest();
+                
+                FinancialInstitutionCode ficode = new FinancialInstitutionCode();
+                
+             
+                
+                  //setting FinancialInstitutionCode values
+                  ficode.setAccountNumber(request.getAccountnumber());
+                  mcashheaders.add("Accountnumber");
+                  mcashvalues.add(request.getAccountnumber());
+               
+                  ficode.setFinancialInstitutionCode(request.getFinancialInstitutionCode());
+                  mcashheaders.add("FinancialInstitutionCode");
+                  mcashvalues.add(request.getFinancialInstitutionCode());
+                  
+                  
+                  //setting payment request values
+                  payrequest.setAmount(apikey);;
+                  mcashheaders.add("Amount");
+                  mcashvalues.add(request.getAmount());
+                  
+                  merchant.setGPSLocation(request.getGpsLocation());
+                  mcashheaders.add("GPSLocation");
+                  mcashvalues.add(request.getGpsLocation());
+                  
+                  merchant.setGroupCode(request.getGroupCode());
+                  mcashheaders.add("GroupCode");
+                  mcashvalues.add(request.getGroupCode());
+                  
+                  merchant.setMerchantName(request.getMerchantName());
+                  mcashheaders.add("MerchantName");
+                  mcashvalues.add(request.getMerchantName());
+                  
+                  merchant.setMerchantCode(request.getMerchantCode());
+                  mcashheaders.add("MerchantCode");
+                  mcashvalues.add(request.getMerchantCode());
+                  
+                  merchant.setPhoneNumber(request.getPhoneNumber());
+                  mcashheaders.add("PhoneNumber");
+                  mcashvalues.add(request.getPhoneNumber());
+                  
+                  merchant.setRequestID(request.getRequestID());
+                  mcashheaders.add("RequestID");
+                  mcashvalues.add(request.getRequestID());
+                  
+                  
+                   mcashheaders.add("MethodName");
+                   mcashvalues.add("RegisterMerchant");
+                  
+                  
+                  
+                  
+                  
+                  //setting payment details request subclasses
+                  payrequest.setFinancialInstitutionCode(ficode);
+                  
+                  
+                  
+            
+      
+     
+          
+
+                String datestr = sessionID.substring(6, 18);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+
+                Date date = sdf.parse(datestr);
+
+//                nipvalues.add(date);
+//                nipheaders.add("TransactionDate");
+
+                SimpleDateFormat df = new SimpleDateFormat("MMMyyyy");
+
+                monthlyTable = df.format(date) + "mCASH_TRANSACTIONS";
+
+                String createquery = options.getCreateMcashTableScript(monthlyTable);
+
+                try {
+                    db.Execute(createquery);
+                } catch (Exception r) {
+
+                }
+
+                db.insertData(mcashheaders, mcashvalues.toArray(), monthlyTable);
+                
+               
+                
+               String nibsmerchantrequest = options.ObjectToXML(merchantrequest);
+                
+                nibsmerchantrequest = nipssm.encrypt(nibsmerchantrequest);
+                
+                String nibsmerchantresposne = nibsmerchantrequest;
+                
+                
+                
+                nibsmerchantresposne = nipssm.decrypt(nibsmerchantresposne);
+                
+                RegisterMerchantResponse nibsresposneobject = (RegisterMerchantResponse) options.XMLToObject(nibsmerchantresposne, new RegisterMerchantResponse());
+                
+                
+                response.setMerchantCode(nibsresposneobject.getMerchantCode()); 
+
+         
+               
+
+                response.setResponsecode(respcodes.getInlaksCode());
+                response.setResponseDescription(respcodes.getMessage());
+            
+                response.setHash(request.getHash());
+
+            } else {
+                respcodes = NIBBsResponseCodes.Security_violation;
+                response.setResponsecode(respcodes.getInlaksCode());
+                response.setResponseDescription(respcodes.getMessage());
+
+            }
+
+            headers.add("responseCode");
+            values.add(response.getResponseCode());
+            headers.add("responseDescription");
+            values.add(response.getResponseDescription());
+        } catch (Exception e) {
+            respcodes = NIBBsResponseCodes.System_malfunction;
+            response.setResponseCode(respcodes.getInlaksCode());
+            response.setResponseDescription(respcodes.getMessage());
+        } finally {
+            try {
+
+                headers.add("response");
+                values.add(gson.toJson(response));
+
+                db.insertData(headers, values.toArray(), logTable);
+
+                String query = "";
+
+                db.Execute(query);
+
+            } catch (Exception s) {
+
+            }
+        }
+
+        return gson.toJson(response);
+    }
     
 }

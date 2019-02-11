@@ -6,15 +6,13 @@
 package mcash.service.objects;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import lombok.Getter;
 import lombok.Setter;
 /**
  *
  * @author dogor-Igbosuah
  */
-@Getter 
+@Setter 
 @XmlRootElement(name = "PaymentDetailRequest")
 
 public class PaymentDetailRequest {
@@ -32,6 +30,6 @@ public class PaymentDetailRequest {
     @XmlElement(name = "Amount")
     private String Amount;
     @XmlElement(name = "FinancialInstitutionCode")
-    private String FinancialInstitutionCode;
+    private FinancialInstitutionCode FinancialInstitutionCode;
      
 }
