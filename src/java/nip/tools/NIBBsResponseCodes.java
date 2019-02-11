@@ -49,7 +49,23 @@ package nip.tools;
   Routing_error("92","Routing error"),
   Duplicate_transaction("94","Duplicate transaction"),
   System_malfunction("96","System malfunction"),
-  Timeout("97","Timeout waiting for response from destination")
+  Timeout("97","Timeout waiting for response from destination"),
+  Maximun_transaction("0A","Maximum transaction amount set by NIBSS exceeded"),
+  Unknown_requestor("0B","Unknown requestor"),
+  Payer_blacklisted("0C","Payer blacklisted"),
+  Unknown_merchant_code("0D","Unknown merchanct code"),
+  Transaction_not_permitted_to_merchant("0E","Transaction not permitted to merchant"),
+  Maximum_transaction_amount("0F","Maximum transaction amount permitted to mercahnt exceeded"),
+  Maximum_daily_transaction_limit("0G","Maximum daily transaction limit to payer exceeded"),
+  Maximum_transaction_amount_permitted("0H","Maximum transaction amount permitted to payer exceeded"),
+  Invalid_BVN("0J","Invalid BNV"),
+  More_than_one_BVN("0K","More than one BVN tied to phone number"),
+  No_BNV_tied_to_account("0L","No BVN tied to account"),
+  N0_account_returned("0M","No account returned"),
+  Name_enquiry_failed("0N","Name enquired failed"),
+  Wrong_date_of_birth("0P","Wrong date of birth"),
+  Phone_number_swapped("0Q","Phone number swapped"),
+  Multiple_merchant_code_request("0R","Multiple merchant code request")
   ;
   
   
