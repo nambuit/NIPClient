@@ -25,7 +25,11 @@ public class RegisterPaymentDetailResponse {
     private String fee;
     private String institutioncode;
     private param[] params;
-    private financialInstitutionCode[] financialInstitutionCode;
+    private String financialInstitutionCode;
+    private String Name;
+    private String AccountNumber;
+    private String FISpecificInformation;
+    private String SecondFactorAuthCode;
     private String responsecode;
     private String responseDescription;
     private String hash;
