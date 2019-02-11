@@ -211,7 +211,7 @@ public class McashClient {
                   
                   
                   
-                  
+                 
                   //setting account values
                   account.setAccountName(request.getAccountName());
                   mcashheaders.add("AccountName");
@@ -220,6 +220,22 @@ public class McashClient {
                   account.setBankVerificationNumber(request.getBvn());
                   mcashheaders.add("Bvn");
                   mcashvalues.add(request.getBvn());
+                  
+                  account.setDeferredSettlement(request.getDefferedSettlement());
+                  mcashheaders.add("DeferredSettlement");
+                  mcashvalues.add(request.getDefferedSettlement());
+                  
+                  account.setKyc(request.getKyc());
+                  mcashheaders.add("Kyc");
+                  mcashvalues.add(request.getKyc());
+                  
+                  account.setAccountNumber(request.getAccountNumber());
+                  mcashheaders.add("AccountNumber");
+                  mcashvalues.add(request.getAccountNumber());
+                  
+                  account.setMaximumTransactionAmount(request.getMaximumTransactionAmount());
+                  mcashheaders.add("MaximumTransactionAmount");
+                  mcashvalues.add(request.getMaximumTransactionAmount());
                   
                   
                   
