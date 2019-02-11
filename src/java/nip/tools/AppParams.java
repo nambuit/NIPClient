@@ -21,7 +21,9 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import javax.naming.InitialContext;
 import javax.xml.bind.JAXBContext;
@@ -30,18 +32,32 @@ import javax.xml.bind.Unmarshaller;
 import logger.WebServiceLogger;
 import lombok.Getter;
 import lombok.Setter;
+import mcash.service.objects.FinancialInstitutions;
 import mcash.service.objects.MerchantRegistrationRequest;
 import mcash.service.objects.MerchantRegistrationResponse;
 import mcash.service.objects.OptInOptOutRequest;
 import mcash.service.objects.PaymentDetailRequest;
 import mcash.service.objects.PaymentDetailResponse;
-import mcash.service.objects.Pre_PaymentRequest;
-import mcash.service.objects.Pre_PaymentResponse;
+//import mcash.service.objects.Pre_PaymentRequest;
+//import mcash.service.objects.Pre_PaymentResponse;
+import mcash.wrapperobjects.PaymentRequest;
+import mcash.wrapperobjects.PaymentResponse;
+import mcash.wrapperobjects.TransactionStatusRequest;
+import mcash.wrapperobjects.TransactionStatusResponse;
+import mcash.wrapperobjects.financialInstitutionCode;
+import mcash.wrapperobjects.optinoptoutRequest;
+import mcash.wrapperobjects.param;
 import nibss.nip.core.NIPInterface;
 import nibss.nip.core.NIPInterface_Service;
 import nip.service.objects.TSQuerySingleRequest;
 import nip.service.objects.TSQuerySingleResponse;
 import org.apache.log4j.Level;
+import mcash.wrapperobjects.Pre_PaymentRequest;
+import mcash.wrapperobjects.Pre_PaymentResponse;
+
+
+
+
 
 
 
@@ -687,12 +703,81 @@ String generatedPassword = null;
         public static void main(String [] args){
            try{
                
-               BvnSingleSearchRequest request = new BvnSingleSearchRequest();
+            Pre_PaymentResponse request = new Pre_PaymentResponse();
                
-               request.setBVN("2342324232");
-               request.setBankcode("762232");
-               request.setHash("2378273293092323-2-23232423");
-               request.setInstitutioncode("002323");
+              request.setAccountNumber("000***1234");
+////               request.setAmount("762232");
+//               request.setFISpecificInformation("PIN");
+//               request.setFinancialInstitutionCode("999999");
+               request.setHash("233444344-0988-900998");
+//               request.setMandateCode("00123456");
+               request.setInstitutionCode("00123456");
+               request.setMerchantCode("XXXXXXXXX");
+//               request.setPayerName("Akinwale A");
+               request.setName("XYZ Bank");
+//                request.setSecondFactorAuthCode("0987");
+               
+
+               List<financialInstitutionCode> financialInstitutionCode   = new ArrayList<financialInstitutionCode>();
+
+               financialInstitutionCode p = new financialInstitutionCode();
+               p.setName("XYZ Bank");
+               p.setAccountnumber("0001234");
+               p.setValue("999999");
+
+//               
+               financialInstitutionCode.add(p);
+//               
+               p = new financialInstitutionCode();
+//               
+               p.setName("ABC Bank");
+               p.setAccountnumber("000235");
+               p.setValue("999991");
+
+               financialInstitutionCode.add(p);
+               request.setFinancialInstitutionCode(financialInstitutionCode.toArray(new financialInstitutionCode[financialInstitutionCode.size()]));
+
+
+
+
+//               List<param> params = new  ArrayList<param>();
+//               
+//               param p = new param();
+//               p.setName("DOB");
+//               p.setValue("12-04-2016");
+//               
+//               params.add(p);
+//               
+//               p = new param();
+//               
+//                  p.setName("Last 4 digit of Card");
+//               p.setValue("1245");
+//                params.add(p);
+//                           
+// 
+//               
+//               request.setParams(params.toArray(new param [params.size()]));
+
+               request.setResponseCode("00");
+               request.setMerchantName("XYZ and Co");
+//               request.setTransactionDate("100");
+               request.setResponseDescription("0000000");
+//               request.setPayerName("Akinwale A");
+               
+               request.setPayerPhoneNumber("080600000");
+               request.setRequestID("000001");
+//               request.setReferenceCode("040201");
+               request.setMerchantPhoneNumber("08060000000");
+               request.setFinancialInstitutions("");
+//               request.setSessionID("00000110091310330100002");
+               request.setRequestorID("000001");
+               request.setAmount("100");
+               request.setPayerBVN("000001");
+//               request.setOptin("True");
+//               request.setReason("Voluntary");
+               
+              
+               
                
                Gson gson = new Gson();
                
