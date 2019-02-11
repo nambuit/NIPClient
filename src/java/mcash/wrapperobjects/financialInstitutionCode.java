@@ -20,5 +20,6 @@ public class financialInstitutionCode {
     private String accountnumber;
     private String FISpecificInformation;
     private String SecondFactorAuthCode;
+    private String value;
 
 }
