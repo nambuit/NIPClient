@@ -27,6 +27,6 @@ public class PaymentRequest {
     private String accountNumber;
     private String FISpecificInformation;
     private String SecondFactorAuthCode;
-    private String Param;    
+    private param [] Params;    
     private String hash;
 }

@@ -13,11 +13,13 @@ import lombok.Setter;
 @Getter @Setter
 public class PaymentResponse {
     private String requestID;
+     private String InstitutionCode;
     private String SessionID;
     private String RequestorID;
     private String PayerPhoneNumber;
     private String PayerBVN;
     private String PayerName;
+    private String FinancialInstitutionCode;
     private String Telco;
     private String Amount;
     private String MerchantCode;

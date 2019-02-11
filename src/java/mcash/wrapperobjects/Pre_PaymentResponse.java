@@ -25,7 +25,7 @@ public class Pre_PaymentResponse {
     private String MerchantPhoneNumber;
     private String Amount;
     private String FinancialInstitutions;
-    private FinancialInstitutionCode [] FinancialInstitutionCode;
+    private financialInstitutionCode [] financialInstitutionCode;
     private String ResponseCode;
     private String Name;
     private String accountNumber;

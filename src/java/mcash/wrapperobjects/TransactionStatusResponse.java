@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 package mcash.wrapperobjects;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author dogor-Igbosuah
  */
+@Getter @Setter
 public class TransactionStatusResponse {
     
     private String requestID;
