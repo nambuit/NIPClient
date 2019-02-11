@@ -26,10 +26,13 @@ import mcash.wrapperobjects.RegisterMerchantRequest;
 import mcash.wrapperobjects.RegisterMerchantResponse;
 import mcash.service.objects.Header;
 import mcash.service.objects.Merchant;
+import mcash.service.objects.Param;
 import mcash.service.objects.PaymentDetailRequest;
+import mcash.service.objects.PaymentDetailResponse;
 import mcash.service.objects.PhysicalAddress;
 import mcash.wrapperobjects.RegisterPaymentDetailRequest;
 import mcash.wrapperobjects.RegisterPaymentDetailResponse;
+import mcash.wrapperobjects.param;
 import nip.tools.AppParams;
 import nip.tools.DBConnector;
 import nip.tools.NIBBsResponseCodes;
@@ -514,37 +517,14 @@ public class McashClient {
                   
                   
                   //setting payment request values
-                  payrequest.setAmount(apikey);;
+                  payrequest.setAmount(request.getAmount());
                   mcashheaders.add("Amount");
                   mcashvalues.add(request.getAmount());
                   
-                  merchant.setGPSLocation(request.getGpsLocation());
-                  mcashheaders.add("GPSLocation");
-                  mcashvalues.add(request.getGpsLocation());
-                  
-                  merchant.setGroupCode(request.getGroupCode());
-                  mcashheaders.add("GroupCode");
-                  mcashvalues.add(request.getGroupCode());
-                  
-                  merchant.setMerchantName(request.getMerchantName());
-                  mcashheaders.add("MerchantName");
-                  mcashvalues.add(request.getMerchantName());
-                  
-                  merchant.setMerchantCode(request.getMerchantCode());
-                  mcashheaders.add("MerchantCode");
-                  mcashvalues.add(request.getMerchantCode());
-                  
-                  merchant.setPhoneNumber(request.getPhoneNumber());
-                  mcashheaders.add("PhoneNumber");
-                  mcashvalues.add(request.getPhoneNumber());
-                  
-                  merchant.setRequestID(request.getRequestID());
-                  mcashheaders.add("RequestID");
-                  mcashvalues.add(request.getRequestID());
-                  
-                  
-                   mcashheaders.add("MethodName");
-                   mcashvalues.add("RegisterMerchant");
+                  mcashheaders.add("MethodName");
+                  mcashvalues.add("executePaymentDetails");
+                   
+                   
                   
                   
                   
@@ -557,8 +537,7 @@ public class McashClient {
                   
             
       
-     
-          
+ 
 
                 String datestr = sessionID.substring(6, 18);
 
@@ -585,24 +564,53 @@ public class McashClient {
                 
                
                 
-               String nibsmerchantrequest = options.ObjectToXML(merchantrequest);
+               String nibsspaymentdetailrequest = options.ObjectToXML(payrequest);
                 
-                nibsmerchantrequest = nipssm.encrypt(nibsmerchantrequest);
+                nibsspaymentdetailrequest = nipssm.encrypt(nibsspaymentdetailrequest);
                 
-                String nibsmerchantresposne = nibsmerchantrequest;
+                String nibsspaymentdetailresponse = nibsspaymentdetailrequest;
                 
+            
                 
+                nibsspaymentdetailresponse = nipssm.decrypt(nibsspaymentdetailresponse);
                 
-                nibsmerchantresposne = nipssm.decrypt(nibsmerchantresposne);
+                PaymentDetailResponse nibssresponseobject = (PaymentDetailResponse) options.XMLToObject(nibsspaymentdetailresponse, new PaymentDetailResponse());
                 
-                RegisterMerchantResponse nibsresposneobject = (RegisterMerchantResponse) options.XMLToObject(nibsmerchantresposne, new RegisterMerchantResponse());
+                Param [] params = nibssresponseobject.getParams().getParam();
+                param [] wparams = new param[params.length];
                 
+                for(int i=0; i<params.length;i++){
+                     
+                    param wparam = new param();
+                     
+                     wparam.setName(params[i].getName());
+                     wparam.setName(params[i].getDescription());
+                     
+                     wparams[i] = wparam;
+                }
                 
-                response.setMerchantCode(nibsresposneobject.getMerchantCode()); 
+               
+                
+                response.setMerchantCode(nibssresponseobject.getMerchantCode());
+                 response.setMerchantname(nibssresponseobject.getMerchantName());
+                 response.setPayerBVN(nibssresponseobject.getMerchantCode());
+                 response.setRequestID(nibssresponseobject.getMerchantCode());
+                 response.setAmount(nibssresponseobject.getMerchantCode());
+                 response.setFee(nibssresponseobject.getMerchantCode());
+                 response.setHash(nibssresponseobject.getMerchantCode());
+                 response.setSessionID(nibssresponseobject.getMerchantCode());
+                 response.setParams(wparams);
+                 response.setFinancialInstitutionCode(nibssresponseobject.getFinancialInstitutionCode().getFinancialInstitutionCode());
+                 response.setSecondFactorAuthCode(nibssresponseobject.getFinancialInstitutionCode().getSecondFactorAuthCode());
+                 response.setAccountNumber(nibssresponseobject.getFinancialInstitutionCode().getAccountNumber());
+                 response.setFISpecificInformation(nibssresponseobject.getFinancialInstitutionCode().getFISpecificInformation());
+                 response.setName(nibssresponseobject.getFinancialInstitutionCode().getName());
+                 
+                 
+                 
 
          
-               
-
+     
                 response.setResponsecode(respcodes.getInlaksCode());
                 response.setResponseDescription(respcodes.getMessage());
             
