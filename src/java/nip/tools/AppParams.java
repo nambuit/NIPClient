@@ -47,6 +47,7 @@ import mcash.wrapperobjects.RegisterMerchantResponse;
 import mcash.wrapperobjects.RegisterPaymentDetailRequest;
 import mcash.wrapperobjects.RegisterPaymentDetailResponse;
 import mcash.wrapperobjects.financialInstitutionCode;
+import mcash.wrapperobjects.optinoptoutResponse;
 import mcash.wrapperobjects.param;
 import nibss.nip.core.NIPInterface;
 import nibss.nip.core.NIPInterface_Service;
@@ -663,52 +664,15 @@ public class AppParams {
     public static void main(String[] args) {
         try {
 
-   RegisterPaymentDetailResponse sr = new RegisterPaymentDetailResponse();   
+   param sr = new param(); 
+   
+   sr.setName("Musa Emeka");
+   sr.setValue("3898");
+
+   
+  
           
-          sr.setMerchantname("EMEKA");
-          sr.setAmount("300,000");
-          sr.setRequestID("0000001");
-          sr.setInstitutioncode("234556789");
-          sr.setSessionID("367");
-          sr.setMerchantCode("2345");
-          sr.setPayBVN("222222233");
-          sr.setFee("2000");
-          sr.setHash("34785-958kfj");
-          sr.setResponseDescription("SUCCESS");
-          sr.setResponsecode("01");
-           
-            
-        List<param> params = new ArrayList<param>();
-        
-        param p = new param();
-        p.setName("");
-        p.setValue("");
-          
-        params.add(p);
-        p = new param();
-       p.setName("");
-        p.setValue("");
-         params.add(p);
          
-         sr.setParams(params.toArray(new param[params.size()]));
-         
-        
-        List<financialInstitutionCode> financialInstitutionCode = new ArrayList<financialInstitutionCode>();
-        
-        financialInstitutionCode f = new financialInstitutionCode();
-        f.setName("");
-        f.setAccountnumber("");
-        f.setFISpecificInformation("");
-        f.setSecondFactorAuthCode("");
-        
-       financialInstitutionCode.add(f);
-        f = new financialInstitutionCode();
-        f.setName("");
-        f.setAccountnumber("");
-        f.setFISpecificInformation("");
-        f.setSecondFactorAuthCode("");
-        
-        sr.setFinancialInstitutionCode(financialInstitutionCode.toArray(new financialInstitutionCode[financialInstitutionCode.size()]));
         
         
         
