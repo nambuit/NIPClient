@@ -34,7 +34,7 @@ import nip.tools.InstitutionDetails;
 import nip.tools.NIBBsResponseCodes;
 import nip.tools.PGPEncrytionTool;
 import nip.tools.T24Link;
-import nip.tools.T24TAFJLink;
+//import nip.tools.T24TAFJLink;
 import nip.tools.ofsParam;
 import nip.wrapperobjects.FundsTransferDCRequest;
 import nip.wrapperobjects.FundsTransferDCResponse;
@@ -90,7 +90,7 @@ public class NIPInterfaceClient {
 
             db = new DBConnector(options.getDBserver(), options.getDBuser(), options.getDBpass(), "NIPLogs");
 
-            t24 = new T24TAFJLink();
+            //t24 = new T24TAFJLink();
 
             if (watcherthread.getState() == Thread.State.NEW) {
 
