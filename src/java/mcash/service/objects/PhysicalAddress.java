@@ -7,13 +7,12 @@ package mcash.service.objects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import lombok.Getter;
 import lombok.Setter;
 /**
  *
  * @author emusa
  */
- @Getter
+ @Setter
 @XmlRootElement(name = "PhysicalAddress")
 public class PhysicalAddress {
     
