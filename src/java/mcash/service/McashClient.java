@@ -26,10 +26,13 @@ import mcash.wrapperobjects.RegisterMerchantRequest;
 import mcash.wrapperobjects.RegisterMerchantResponse;
 import mcash.service.objects.Header;
 import mcash.service.objects.Merchant;
+import mcash.service.objects.Param;
 import mcash.service.objects.PaymentDetailRequest;
+import mcash.service.objects.PaymentDetailResponse;
 import mcash.service.objects.PhysicalAddress;
 import mcash.wrapperobjects.RegisterPaymentDetailRequest;
 import mcash.wrapperobjects.RegisterPaymentDetailResponse;
+import mcash.wrapperobjects.param;
 import nip.tools.AppParams;
 import nip.tools.DBConnector;
 import nip.tools.NIBBsResponseCodes;
@@ -456,6 +459,7 @@ public class McashClient {
 
                 FinancialInstitutionCode ficode = new FinancialInstitutionCode();
 
+
                 //setting FinancialInstitutionCode values
                 ficode.setAccountNumber(request.getAccountnumber());
                 mcashheaders.add("Accountnumber");
@@ -498,6 +502,43 @@ public class McashClient {
                 mcashheaders.add("FinancialInstitutionCode");
                 mcashvalues.add(request.getFinancialInstitutionCode());
 
+                
+             
+                
+                  //setting FinancialInstitutionCode values
+                  ficode.setAccountNumber(request.getAccountnumber());
+                  mcashheaders.add("Accountnumber");
+                  mcashvalues.add(request.getAccountnumber());
+               
+                  ficode.setFinancialInstitutionCode(request.getFinancialInstitutionCode());
+                  mcashheaders.add("FinancialInstitutionCode");
+                  mcashvalues.add(request.getFinancialInstitutionCode());
+                  
+                  
+                  //setting payment request values
+                  payrequest.setAmount(request.getAmount());
+                  mcashheaders.add("Amount");
+                  mcashvalues.add(request.getAmount());
+                  
+                  mcashheaders.add("MethodName");
+                  mcashvalues.add("executePaymentDetails");
+                   
+                   
+                  
+                  
+                  
+                  
+                  
+                  //setting payment details request subclasses
+                  payrequest.setFinancialInstitutionCode(ficode);
+                  
+                  
+                  
+            
+      
+ 
+
+
                 String datestr = sessionID.substring(6, 18);
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
@@ -520,6 +561,7 @@ public class McashClient {
 
                 db.insertData(mcashheaders, mcashvalues.toArray(), monthlyTable);
 
+
                 String nibsmerchantrequest = options.ObjectToXML(payrequest);
 
                 nibsmerchantrequest = nipssm.encrypt(nibsmerchantrequest);
@@ -532,6 +574,57 @@ public class McashClient {
 
                 response.setMerchantCode(nibsresposneobject.getMerchantCode());
 
+                
+               
+                
+               String nibsspaymentdetailrequest = options.ObjectToXML(payrequest);
+                
+                nibsspaymentdetailrequest = nipssm.encrypt(nibsspaymentdetailrequest);
+                
+                String nibsspaymentdetailresponse = nibsspaymentdetailrequest;
+                
+            
+                
+                nibsspaymentdetailresponse = nipssm.decrypt(nibsspaymentdetailresponse);
+                
+                PaymentDetailResponse nibssresponseobject = (PaymentDetailResponse) options.XMLToObject(nibsspaymentdetailresponse, new PaymentDetailResponse());
+                
+                Param [] params = nibssresponseobject.getParams().getParam();
+                param [] wparams = new param[params.length];
+                
+                for(int i=0; i<params.length;i++){
+                     
+                    param wparam = new param();
+                     
+                     wparam.setName(params[i].getName());
+                     wparam.setName(params[i].getDescription());
+                     
+                     wparams[i] = wparam;
+                }
+                
+               
+                
+                response.setMerchantCode(nibssresponseobject.getMerchantCode());
+                 response.setMerchantname(nibssresponseobject.getMerchantName());
+                 response.setPayerBVN(nibssresponseobject.getMerchantCode());
+                 response.setRequestID(nibssresponseobject.getMerchantCode());
+                 response.setAmount(nibssresponseobject.getMerchantCode());
+                 response.setFee(nibssresponseobject.getMerchantCode());
+                 response.setHash(nibssresponseobject.getMerchantCode());
+                 response.setSessionID(nibssresponseobject.getMerchantCode());
+                 response.setParams(wparams);
+                 response.setFinancialInstitutionCode(nibssresponseobject.getFinancialInstitutionCode().getFinancialInstitutionCode());
+                 response.setSecondFactorAuthCode(nibssresponseobject.getFinancialInstitutionCode().getSecondFactorAuthCode());
+                 response.setAccountNumber(nibssresponseobject.getFinancialInstitutionCode().getAccountNumber());
+                 response.setFISpecificInformation(nibssresponseobject.getFinancialInstitutionCode().getFISpecificInformation());
+                 response.setName(nibssresponseobject.getFinancialInstitutionCode().getName());
+                 
+                 
+                 
+
+
+         
+     
                 response.setResponsecode(respcodes.getInlaksCode());
                 response.setResponseDescription(respcodes.getMessage());
 

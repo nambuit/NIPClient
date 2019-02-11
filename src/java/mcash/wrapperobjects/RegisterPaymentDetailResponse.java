@@ -18,7 +18,7 @@ public class RegisterPaymentDetailResponse {
 
     private String requestID;
     private String sessionID;
-    private String PayBVN;
+    private String PayerBVN;
     private String merchantCode;
     private String merchantname;
     private String Amount;
@@ -27,10 +27,17 @@ public class RegisterPaymentDetailResponse {
     private param[] params;
     private String financialInstitutionCode;
     private String Name;
+
     private String AccountNumber;
     private String FISpecificInformation;
     private String SecondFactorAuthCode;
     private String responsecode;
+
+    private String SecondFactorAuthCode;
+    private String FISpecificInformation;
+    private String accountNumber;
+    private String responsecode;  
+
     private String responseDescription;
     private String hash;
 
