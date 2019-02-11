@@ -35,7 +35,7 @@ import nip.tools.DBConnector;
 import nip.tools.NIBBsResponseCodes;
 import nip.tools.PGPEncrytionTool;
 import nip.tools.T24Link;
-import nip.tools.T24TAFJLink;
+//import nip.tools.T24TAFJLink;
 import org.apache.log4j.Level;
 
 /**
@@ -75,7 +75,7 @@ public class McashClient {
             nipssm = new PGPEncrytionTool(options);
              db = new DBConnector(options.getDBserver(), options.getDBuser(), options.getDBpass(), "NIPLogs");
 
-            t24 = new T24TAFJLink();
+            //t24 = new T24TAFJLink();
        
          } catch (Exception e) {
             options.getServiceLogger(logfilename).LogError(e.getMessage(), e, Level.FATAL);
@@ -362,7 +362,12 @@ public class McashClient {
                 RegisterMerchantResponse nibsresposneobject = (RegisterMerchantResponse) options.XMLToObject(nibsmerchantresposne, new RegisterMerchantResponse());
                 
                 
-                response.setMerchantCode(nibsresposneobject.getMerchantCode()); 
+                response.setMerchantCode(nibsresposneobject.getMerchantCode());
+                response.setMerchantCode(nibsresposneobject.getMerchantCode());
+                response.setRequestID(nibsresposneobject.getRequestID());
+                response.setSessionID(nibsresposneobject.getSessionID());
+                response.setResponseCode(nibsresposneobject.getResponseCode());
+                response.setResponseDescription(nibsresposneobject.getResponseDescription());
 
          
                
@@ -514,34 +519,30 @@ public class McashClient {
                   
                   
                   //setting payment request values
-                  payrequest.setAmount(apikey);;
+                  payrequest.setAmount(request.getAmount());
                   mcashheaders.add("Amount");
                   mcashvalues.add(request.getAmount());
                   
-                  merchant.setGPSLocation(request.getGpsLocation());
-                  mcashheaders.add("GPSLocation");
-                  mcashvalues.add(request.getGpsLocation());
+                  payrequest.setMerchantCode(request.getMerchantcode());
+                  mcashheaders.add("setMerchantCode");
+                  mcashvalues.add(request.getMerchantcode());
                   
-                  merchant.setGroupCode(request.getGroupCode());
-                  mcashheaders.add("GroupCode");
-                  mcashvalues.add(request.getGroupCode());
+                  payrequest.setPayerBVN(request.getPayerBVN());
+                  mcashheaders.add("PayerBVN");
+                  mcashvalues.add(request.getPayerBVN());
                   
-                  merchant.setMerchantName(request.getMerchantName());
-                  mcashheaders.add("MerchantName");
-                  mcashvalues.add(request.getMerchantName());
+                  payrequest.setPayerPhoneNumber(request.getPayphonenumber());
+                  mcashheaders.add("PayerPhoneNumber");
+                  mcashvalues.add(request.getPayphonenumber());
                   
-                  merchant.setMerchantCode(request.getMerchantCode());
-                  mcashheaders.add("MerchantCode");
-                  mcashvalues.add(request.getMerchantCode());
-                  
-                  merchant.setPhoneNumber(request.getPhoneNumber());
-                  mcashheaders.add("PhoneNumber");
-                  mcashvalues.add(request.getPhoneNumber());
-                  
-                  merchant.setRequestID(request.getRequestID());
-                  mcashheaders.add("RequestID");
+                  payrequest.setRequestorID(request.getRequestID());
+                  mcashheaders.add("RequestorID");
                   mcashvalues.add(request.getRequestID());
                   
+                  payrequest.setSessionID(request.getSessionID());
+                  mcashheaders.add("SessionID");
+                  mcashvalues.add(request.getSessionID());
+                                   
                   
                    mcashheaders.add("MethodName");
                    mcashvalues.add("RegisterMerchant");
@@ -552,7 +553,8 @@ public class McashClient {
                   
                   //setting payment details request subclasses
                   payrequest.setFinancialInstitutionCode(ficode);
-                  
+                  mcashheaders.add("FinancialInstitutionCode");
+                  mcashvalues.add(request.getFinancialInstitutionCode());
                   
                   
             
@@ -585,7 +587,7 @@ public class McashClient {
                 
                
                 
-               String nibsmerchantrequest = options.ObjectToXML(merchantrequest);
+               String nibsmerchantrequest = options.ObjectToXML(payrequest);
                 
                 nibsmerchantrequest = nipssm.encrypt(nibsmerchantrequest);
                 
@@ -616,12 +618,12 @@ public class McashClient {
             }
 
             headers.add("responseCode");
-            values.add(response.getResponseCode());
+            values.add(response.getResponsecode());
             headers.add("responseDescription");
             values.add(response.getResponseDescription());
         } catch (Exception e) {
             respcodes = NIBBsResponseCodes.System_malfunction;
-            response.setResponseCode(respcodes.getInlaksCode());
+            response.setResponsecode(respcodes.getInlaksCode());
             response.setResponseDescription(respcodes.getMessage());
         } finally {
             try {
