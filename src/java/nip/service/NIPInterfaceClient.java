@@ -22,10 +22,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
-import nibss.nip.core.NIPInterface;
-import nibss.nip.core.NIPInterface_Service;
-import nibss.nip.core.NIPTSQInterface;
-import nibss.nip.core.NIPTSQInterface_Service;
 import nip.service.objects.FTSingleCreditRequest;
 import nip.service.objects.FTSingleCreditResponse;
 import nip.service.objects.NESingleRequest;
@@ -38,7 +34,7 @@ import nip.tools.InstitutionDetails;
 import nip.tools.NIBBsResponseCodes;
 import nip.tools.PGPEncrytionTool;
 import nip.tools.T24Link;
-import nip.tools.T24TAFJLink;
+//import nip.tools.T24TAFJLink;
 import nip.tools.ofsParam;
 import nip.wrapperobjects.FundsTransferDCRequest;
 import nip.wrapperobjects.FundsTransferDCResponse;
@@ -68,8 +64,8 @@ public class NIPInterfaceClient {
     private DBConnector db;
     String logfilename = "NIPClientInterface";
     String logTable = "InlaksNIPWrapperLog";
-    NIPInterface nip;
-    NIPTSQInterface niptsq;
+  //  NIPInterface nip;
+    //NIPTSQInterface niptsq;
     T24Link t24;
     Thread watcherthread = new Thread();
     String apikey = "";
@@ -84,17 +80,17 @@ public class NIPInterfaceClient {
 
             nipssm = new PGPEncrytionTool(options);
 
-            NIPInterface_Service nipservice = new NIPInterface_Service();
+            //NIPInterface_Service nipservice = new NIPInterface_Service();
 
-            nip = nipservice.getNIPInterfacePort();
+           // nip = nipservice.getNIPInterfacePort();
             
-             NIPTSQInterface_Service niptsqservice = new NIPTSQInterface_Service();
+           //  NIPTSQInterface_Service niptsqservice = new NIPTSQInterface_Service();
 
-            niptsq = niptsqservice.getNIPTQSInterfacePort();
+           // niptsq = niptsqservice.getNIPTQSInterfacePort();
 
             db = new DBConnector(options.getDBserver(), options.getDBuser(), options.getDBpass(), "NIPLogs");
 
-            t24 = new T24TAFJLink();
+            //t24 = new T24TAFJLink();
 
             if (watcherthread.getState() == Thread.State.NEW) {
 
@@ -266,28 +262,28 @@ public class NIPInterfaceClient {
 
                 niprequeststr = nipssm.encrypt(niprequeststr);
 
-                String nipresponse = nip.nameenquirysingleitem(niprequeststr);
+               // String nipresponse = nip.nameenquirysingleitem(niprequeststr);
 
-                nipresponse = nipssm.decrypt(nipresponse);
+               // nipresponse = nipssm.decrypt(nipresponse);
 
-                NESingleResponse nipresponseobject = (NESingleResponse) options.XMLToObject(nipresponse, new NESingleResponse());
+               // NESingleResponse nipresponseobject = (NESingleResponse) options.XMLToObject(nipresponse, new NESingleResponse());
 
-                respcodes = options.getResponseObject(nipresponseobject.getResponseCode());
+               // respcodes = options.getResponseObject(nipresponseobject.getResponseCode());
                 
-                bvn = nipresponseobject.getBankVerificationNumber();
-                acctname = nipresponseobject.getAccountName();
-                kyc = nipresponseobject.getKYCLevel();
+               // bvn = nipresponseobject.getBankVerificationNumber();
+               // acctname = nipresponseobject.getAccountName();
+               // kyc = nipresponseobject.getKYCLevel();
 
                 response.setResponseCode(respcodes.getInlaksCode());
                 response.setResponseDescription(respcodes.getMessage());
-                response.setNameEnquiryRef(nipresponseobject.getSessionID());
-                response.setBankVerificationNo(nipresponseobject.getBankVerificationNumber());
-                response.setKycLevel(nipresponseobject.getKYCLevel());
+               // response.setNameEnquiryRef(nipresponseobject.getSessionID());
+                //response.setBankVerificationNo(nipresponseobject.getBankVerificationNumber());
+               // response.setKycLevel(nipresponseobject.getKYCLevel());
                 response.setRequestID(request.getRequestID());
-                response.setAccountName(nipresponseobject.getAccountName());
-                response.setAccountNumber(nipresponseobject.getAccountNumber());
-                response.setDestinationInstitutionCode(nipresponseobject.getDestinationInstitutionCode());
-                response.setChannelCode(nipresponseobject.getChannelCode());
+               // response.setAccountName(nipresponseobject.getAccountName());
+                //response.setAccountNumber(nipresponseobject.getAccountNumber());
+                //response.setDestinationInstitutionCode(nipresponseobject.getDestinationInstitutionCode());
+                //response.setChannelCode(nipresponseobject.getChannelCode());
                 response.setHash(request.getHash());
 
             } else {
@@ -519,11 +515,11 @@ public class NIPInterfaceClient {
 
                 niprequeststr = nipssm.encrypt(niprequeststr);
 
-                String nipresponse = nip.fundtransfersingleitemDc(niprequeststr);
+               // String nipresponse = nip.fundtransfersingleitemDc(niprequeststr);
 
-                nipresponse = nipssm.decrypt(nipresponse);
+               // nipresponse = nipssm.decrypt(nipresponse);
 
-                nipresponseobject = (FTSingleCreditResponse) options.XMLToObject(nipresponse, new FTSingleCreditResponse());
+               // nipresponseobject = (FTSingleCreditResponse) options.XMLToObject(nipresponse, new FTSingleCreditResponse());
 
                 sessionID = nipresponseobject.getSessionID();
                 respcodes = options.getResponseObject(nipresponseobject.getResponseCode());
@@ -536,7 +532,7 @@ public class NIPInterfaceClient {
                 response.setRequestID(request.getRequestID());
                 response.setHash(request.getHash());
                 response.setChannelCode(nipresponseobject.getChannelCode());
-                response.setBeneficiaryAccountNumber(nipresponse);
+                //response.setBeneficiaryAccountNumber(nipresponse);
 
             } else {
                 respcodes = NIBBsResponseCodes.Security_violation;
@@ -754,17 +750,17 @@ public class NIPInterfaceClient {
 
                 niprequeststr = nipssm.encrypt(niprequeststr);
 
-                String nipresponse = niptsq.txnstatusquerysingleitem(niprequeststr);
+                //String nipresponse = niptsq.txnstatusquerysingleitem(niprequeststr);
 
-                nipresponse = nipssm.decrypt(nipresponse);
+               // nipresponse = nipssm.decrypt(nipresponse);
 
-                TSQuerySingleResponse nipresponseobject = (TSQuerySingleResponse) options.XMLToObject(nipresponse, new TSQuerySingleResponse());
+               // TSQuerySingleResponse nipresponseobject = (TSQuerySingleResponse) options.XMLToObject(nipresponse, new TSQuerySingleResponse());
 
-                respcodes = options.getResponseObject(nipresponseobject.getResponseCode());
+                //respcodes = options.getResponseObject(nipresponseobject.getResponseCode());
 
                 response.setResponseCode(respcodes.getInlaksCode());
                 response.setResponseDescription(respcodes.getMessage());
-                response.setNibssSessionID(nipresponseobject.getSessionID());
+               // response.setNibssSessionID(nipresponseobject.getSessionID());
 
             } else {
                 respcodes = NIBBsResponseCodes.Security_violation;
