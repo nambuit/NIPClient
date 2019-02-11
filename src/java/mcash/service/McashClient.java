@@ -199,10 +199,37 @@ public class McashClient {
                   mcashheaders.add("EmailAddress");
                   mcashvalues.add(request.getEmailAddress());
                   
-                
+            
                   merchant.setGroupName(request.getGroupName());
                   mcashheaders.add("GroupName");
                   mcashvalues.add(request.getGroupName());
+                  
+                  merchant.setGPSLocation(request.getGpsLocation());
+                  mcashheaders.add("GPSLocation");
+                  mcashvalues.add(request.getGpsLocation());
+                  
+                  merchant.setGroupCode(request.getGroupCode());
+                  mcashheaders.add("GroupCode");
+                  mcashvalues.add(request.getGroupCode());
+                  
+                  merchant.setMerchantName(request.getMerchantName());
+                  mcashheaders.add("MerchantName");
+                  mcashvalues.add(request.getMerchantName());
+                  
+                  merchant.setMerchantCode(request.getMerchantCode());
+                  mcashheaders.add("MerchantCode");
+                  mcashvalues.add(request.getMerchantCode());
+                  
+                  merchant.setPhoneNumber(request.getPhoneNumber());
+                  mcashheaders.add("PhoneNumber");
+                  mcashvalues.add(request.getPhoneNumber());
+                  
+                  merchant.setRequestID(request.getRequestID());
+                  mcashheaders.add("RequestID");
+                  mcashvalues.add(request.getRequestID());
+                  
+                  
+                  
                   
                   
                   
@@ -246,6 +273,16 @@ public class McashClient {
                   
                   //setting physical address
                   address.setLGA(request.getLGA());
+                  mcashheaders.add("LGA");
+                  mcashvalues.add(request.getLGA());
+                  
+                  address.setState(request.getState());
+                  mcashheaders.add("State");
+                  mcashvalues.add(request.getState());
+                  
+                  address.setStreet(request.getStreet());
+                  mcashheaders.add("Street");
+                  mcashvalues.add(request.getStreet());
                   
                   
                   
