@@ -15,8 +15,7 @@ import lombok.Setter;
 /**
  *
  * @author tadekayero
- */
-@Setter 
+ */@Getter @Setter 
 @XmlRootElement(name = "FinancialInstitutionCode")
 public class FinancialInstitutionCode {
     
