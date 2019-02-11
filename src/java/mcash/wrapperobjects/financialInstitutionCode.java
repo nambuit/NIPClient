@@ -21,4 +21,3 @@ public class financialInstitutionCode {
     private String FISpecificInformation;
     private String SecondFactorAuthCode;
 
-}

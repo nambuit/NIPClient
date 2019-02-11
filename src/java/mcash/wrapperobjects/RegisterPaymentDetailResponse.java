@@ -30,4 +30,5 @@ public class RegisterPaymentDetailResponse {
     private String responseDescription;
     private String hash;
 
+   
 }
