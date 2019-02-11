@@ -7,13 +7,13 @@ package mcash.service.objects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author dogor-Igbosuah
  */
-@Getter 
+@Setter 
 @XmlRootElement(name = "Header")
 public class Header {
     @XmlElement(name = "InstitutionCode")

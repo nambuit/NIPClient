@@ -19,17 +19,19 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+import mcash.service.objects.Account;
 import mcash.service.objects.MerchantRegistrationRequest;
 import mcash.wrapperobjects.RegisterMerchantRequest;
 import mcash.wrapperobjects.RegisterMerchantResponse;
 import mcash.service.objects.Header;
+import mcash.service.objects.Merchant;
+import mcash.service.objects.PhysicalAddress;
 import nip.tools.AppParams;
 import nip.tools.DBConnector;
 import nip.tools.NIBBsResponseCodes;
 import nip.tools.PGPEncrytionTool;
 import nip.tools.T24Link;
 import nip.tools.T24TAFJLink;
-import nip.wrapperobjects.NameEnquiryResponse;
 import org.apache.log4j.Level;
 
 /**
@@ -172,14 +174,65 @@ public class McashClient {
                 
                 Header header = new Header();
                 
-              //  header.()
-
-               // merchantrequest.
+                Merchant merchant = new Merchant();
                 
-//                niprequest.setAccountNumber(request.getAccountNumber());
-//                niprequest.setChannelCode(request.getChannelCode());
-//                niprequest.setDestinationInstitutionCode(request.getDestinationInstitutionCode());
-
+                Account account = new Account();
+                
+                PhysicalAddress address = new PhysicalAddress();
+                
+                Merchant [] merchants = new Merchant [1];
+                
+                header.setInstitutionCode(request.getInstitutionCode());
+                mcashheaders.add("InstitutionCode");
+                mcashvalues.add(request.getInstitutionCode());
+                
+                header.setTotalCount("1");
+                
+                merchantrequest.setHeader(header);
+                
+                  //setting merchant values
+                  merchant.setContactName(request.getContactName());
+                  mcashheaders.add("ContactName");
+                  mcashvalues.add(request.getContactName());
+               
+                  merchant.setEmailAddress(request.getEmailAddress());
+                  mcashheaders.add("EmailAddress");
+                  mcashvalues.add(request.getEmailAddress());
+                  
+                
+                  merchant.setGroupName(request.getGroupName());
+                  mcashheaders.add("GroupName");
+                  mcashvalues.add(request.getGroupName());
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  //setting account values
+                  account.setAccountName(request.getAccountName());
+                  mcashheaders.add("AccountName");
+                  mcashvalues.add(request.getAccountName());
+                  
+                  account.setBankVerificationNumber(request.getBvn());
+                  mcashheaders.add("Bvn");
+                  mcashvalues.add(request.getBvn());
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  //setting physical address
+                  address.setLGA(request.getLGA());
+                  
+                  
+                  
 //                sessionID = options.generateSessionID(request.getInstitutionCode());
 //                niprequest.setSessionID(sessionID);
 
@@ -198,8 +251,21 @@ public class McashClient {
 //                nipvalues.add("OUTWARD");
 //                nipheaders.add("TranDirection");
 //
-//                nipvalues.add("nameenquirysingleitem");
-//                nipheaders.add("MethodName");
+                   mcashheaders.add("MethodName");
+                   mcashvalues.add("RegisterMerchant");
+                
+                
+                  //setting merchant sub classes
+                    merchant.setAccount(account);
+                    merchant.setPhysicalAddress(address);
+                  
+     
+                        
+                merchants[0] = merchant;
+                
+                
+                merchantrequest.setMerchant(merchants);
+
 
                 String datestr = sessionID.substring(6, 18);
 
@@ -212,9 +278,9 @@ public class McashClient {
 
                 SimpleDateFormat df = new SimpleDateFormat("MMMyyyy");
 
-                monthlyTable = df.format(date) + "NIP_TRANSACTIONS";
+                monthlyTable = df.format(date) + "mCASH_TRANSACTIONS";
 
-                String createquery = options.getCreateNIPTableScript(monthlyTable);
+                String createquery = options.getCreateMcashTableScript(monthlyTable);
 
                 try {
                     db.Execute(createquery);
@@ -222,19 +288,26 @@ public class McashClient {
 
                 }
 
-               // db.insertData(nipheaders, nipvalues.toArray(), monthlyTable);
+                db.insertData(mcashheaders, mcashvalues.toArray(), monthlyTable);
+                
+               
+                
+               String nibsmerchantrequest = options.ObjectToXML(merchantrequest);
+                
+                nibsmerchantrequest = nipssm.encrypt(nibsmerchantrequest);
+                
+                String nibsmerchantresposne = nibsmerchantrequest;
+                
+                
+                
+                nibsmerchantresposne = nipssm.decrypt(nibsmerchantresposne);
+                
+                RegisterMerchantResponse nibsresposneobject = (RegisterMerchantResponse) options.XMLToObject(nibsmerchantresposne, new RegisterMerchantResponse());
+                
+                
+                response.setMerchantCode(nibsresposneobject.getMerchantCode()); 
 
-                //String niprequeststr = options.ObjectToXML(niprequest);
-
-                //niprequeststr = nipssm.encrypt(niprequeststr);
-
-               // String nipresponse = nip.nameenquirysingleitem(niprequeststr);
-
-              //  nipresponse = nipssm.decrypt(nipresponse);
-
-              //  NESingleResponse nipresponseobject = (NESingleResponse) options.XMLToObject(nipresponse, new NESingleResponse());
-
-             //   respcodes = options.getResponseObject(nipresponseobject.getResponseCode());
+         
                
 
                 response.setResponseCode(respcodes.getInlaksCode());
