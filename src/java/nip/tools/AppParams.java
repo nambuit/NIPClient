@@ -23,6 +23,7 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import javax.naming.InitialContext;
 import javax.xml.bind.JAXBContext;
@@ -31,6 +32,7 @@ import javax.xml.bind.Unmarshaller;
 import logger.WebServiceLogger;
 import lombok.Getter;
 import lombok.Setter;
+import mcash.service.objects.FinancialInstitutionCode;
 import mcash.service.objects.MerchantRegistrationRequest;
 import mcash.service.objects.MerchantRegistrationResponse;
 import mcash.service.objects.OptInOptOutRequest;
@@ -40,6 +42,12 @@ import mcash.service.objects.Pre_PaymentRequest;
 import mcash.service.objects.Pre_PaymentResponse;
 import mcash.wrapperobjects.MerchantNameRequest;
 import mcash.wrapperobjects.MerchantNameResponse;
+import mcash.wrapperobjects.RegisterMerchantRequest;
+import mcash.wrapperobjects.RegisterMerchantResponse;
+import mcash.wrapperobjects.RegisterPaymentDetailRequest;
+import mcash.wrapperobjects.RegisterPaymentDetailResponse;
+import mcash.wrapperobjects.financialInstitutionCode;
+import mcash.wrapperobjects.param;
 import nibss.nip.core.NIPInterface;
 import nibss.nip.core.NIPInterface_Service;
 import nip.service.objects.TSQuerySingleRequest;
@@ -655,20 +663,58 @@ public class AppParams {
     public static void main(String[] args) {
         try {
 
-         Pre_PaymentRequest request = new Pre_PaymentRequest();
+   RegisterPaymentDetailResponse sr = new RegisterPaymentDetailResponse();   
           
-          request.setRequestorID("4567738-jfncm");
-          request.setMerchantname("Emeka");
-          request.setHash("34356364-688695kfkkd");
-          request.setInstitutioncode("346526758");
-          request.setMerchantcode("357809-d");
-          request.setPayerPhoneNumber("08076234567");
-          request.setPayerBVN("222222222222");
-          request.setAmount("34000");
+          sr.setMerchantname("EMEKA");
+          sr.setAmount("300,000");
+          sr.setRequestID("0000001");
+          sr.setInstitutioncode("234556789");
+          sr.setSessionID("367");
+          sr.setMerchantCode("2345");
+          sr.setPayBVN("222222233");
+          sr.setFee("2000");
+          sr.setHash("34785-958kfj");
+          sr.setResponseDescription("SUCCESS");
+          sr.setResponsecode("01");
+           
+            
+        List<param> params = new ArrayList<param>();
+        
+        param p = new param();
+        p.setName("");
+        p.setValue("");
           
+        params.add(p);
+        p = new param();
+       p.setName("");
+        p.setValue("");
+         params.add(p);
+         
+         sr.setParams(params.toArray(new param[params.size()]));
+         
+        
+        List<financialInstitutionCode> financialInstitutionCode = new ArrayList<financialInstitutionCode>();
+        
+        financialInstitutionCode f = new financialInstitutionCode();
+        f.setName("");
+        f.setAccountnumber("");
+        f.setFISpecificInformation("");
+        f.setSecondFactorAuthCode("");
+        
+       financialInstitutionCode.add(f);
+        f = new financialInstitutionCode();
+        f.setName("");
+        f.setAccountnumber("");
+        f.setFISpecificInformation("");
+        f.setSecondFactorAuthCode("");
+        
+        sr.setFinancialInstitutionCode(financialInstitutionCode.toArray(new financialInstitutionCode[financialInstitutionCode.size()]));
+        
+        
+        
             Gson gson = new Gson();
 
-            System.out.println(gson.toJson(request));
+            System.out.println(gson.toJson(sr));
 
         } catch (Exception d) {
             System.out.println(d.getMessage());
