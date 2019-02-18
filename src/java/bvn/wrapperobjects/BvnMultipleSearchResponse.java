@@ -14,7 +14,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class BVNMultipleSearchResponse {
+public class BvnMultipleSearchResponse {
 
     private String requestID;
     private String Searchresults;
