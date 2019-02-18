@@ -624,12 +624,12 @@ public class McashClient {
             }
 
             headers.add("responseCode");
-            values.add(response.getResponseCode());
+            values.add(response.getResponsecode());
             headers.add("responseDescription");
             values.add(response.getResponseDescription());
         } catch (Exception e) {
             respcodes = NIBBsResponseCodes.System_malfunction;
-            response.setResponseCode(respcodes.getInlaksCode());
+            response.setResponsecode(respcodes.getInlaksCode());
             response.setResponseDescription(respcodes.getMessage());
         } finally {
             try {
