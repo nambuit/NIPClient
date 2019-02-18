@@ -34,8 +34,10 @@ import mcash.service.objects.PaymentDetailRequest;
 import mcash.service.objects.PaymentDetailResponse;
 import mcash.service.objects.Pre_PaymentRequest;
 import mcash.service.objects.Pre_PaymentResponse;
-import nibss.nip.core.NIPInterface;
-import nibss.nip.core.NIPInterface_Service;
+import nibbsnip.service.NIBBSNIPInterface;
+import nibbsnip.service.NIBBSNIPInterface_Service;
+//import nibss.nip.core.NIPInterface;
+//import nibss.nip.core.NIPInterface_Service;
 import nip.service.objects.TSQuerySingleRequest;
 import nip.service.objects.TSQuerySingleResponse;
 import org.apache.log4j.Level;
@@ -578,10 +580,10 @@ public class AppParams {
 
             requeststr = nipssm.encrypt(requeststr);
 
-            NIPInterface_Service nipclient = new NIPInterface_Service();
-            NIPInterface nip = nipclient.getNIPInterfacePort();
+//            NIPInterface_Service nipclient = new NIPInterface_Service();
+//            NIPInterface nip = nipclient.getNIPInterfacePort();
 
-            String nipresponse = nip.txnstatusquerysingleitem(requeststr);
+            String nipresponse = "";// nip.txnstatusquerysingleitem(requeststr);
 
             nipresponse = nipssm.decrypt(nipresponse);
 
@@ -645,25 +647,13 @@ public class AppParams {
         }
 
     }
-
-    public static void main(String[] args) {
-        try {
-
-            BvnSingleSearchRequest request = new BvnSingleSearchRequest();
-
-            request.setBVN("2342324232");
-            request.setBankcode("762232");
-            request.setHash("2378273293092323-2-23232423");
-            request.setInstitutioncode("002323");
-
-            Gson gson = new Gson();
-
-            System.out.println(gson.toJson(request));
-
-        } catch (Exception d) {
-            System.out.println(d.getMessage());
-        }
-
-    }
+    
+         
+     public static void main (String [] args){
+        NIBBSNIPInterface service =  new NIBBSNIPInterface_Service().getNIBBSNIPInterfacePort();
+         
+     String response =  service.pgpEncryption("inlaks$own2morrow", "GEN");
+     String f = response;
+     }
 
 }

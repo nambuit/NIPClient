@@ -6,6 +6,8 @@
 package mcash.service;
 
 import com.google.gson.Gson;
+import com.nibss.merchantpay.ws.PaymentService;
+import com.nibss.merchantpay.ws.PaymentWebService;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
@@ -51,7 +53,7 @@ public class McashClient {
 
     @Context
     private UriInfo context;
-
+    PaymentWebService mcash;
     NIBBsResponseCodes respcodes;
     AppParams options;
     PGPEncrytionTool nipssm;
@@ -76,8 +78,8 @@ public class McashClient {
           options = new AppParams();
 
             nipssm = new PGPEncrytionTool(options);
-             db = new DBConnector(options.getDBserver(), options.getDBuser(), options.getDBpass(), "NIPLogs");
-
+             db = new DBConnector(options.getDBserver(), options.getDBuser(), options.getDBpass(), "McashLogs");
+             mcash =  new PaymentService().getPaymentWebServicePort();
             t24 = new T24TAFJLink();
        
          } catch (Exception e) {
@@ -348,7 +350,7 @@ public class McashClient {
                 
                 nibsmerchantrequest = nipssm.encrypt(nibsmerchantrequest);
                 
-                String nibsmerchantresposne = nibsmerchantrequest;
+                String nibsmerchantresposne = mcash.;
                 
                 
                 
