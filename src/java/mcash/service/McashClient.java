@@ -150,7 +150,7 @@ public class McashClient {
             }
             else{
                 
-                  respcodes = NIBBsResponseCodes.Invalid_Sender;
+                respcodes = NIBBsResponseCodes.Invalid_Sender;
                 response.setResponseCode(respcodes.getInlaksCode());
                 response.setResponseDescription(respcodes.getMessage());
                 return gson.toJson(response);
@@ -234,14 +234,6 @@ public class McashClient {
                   merchant.setRequestID(request.getRequestID());
                   mcashheaders.add("RequestID");
                   mcashvalues.add(request.getRequestID());
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
                   
                   
                   

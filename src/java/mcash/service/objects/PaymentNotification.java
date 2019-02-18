@@ -19,6 +19,10 @@ public class PaymentNotification {
     
     @XmlElement(name = "SessionID")
    private String SessionID;
+    
+    @XmlElement(name = "RequestorID")
+   private String RequestorID;
+    
    
    @XmlElement(name = "PayerPhoneNumber")
    private String PayerPhoneNumber;
@@ -31,5 +35,20 @@ public class PaymentNotification {
    
    @XmlElement(name = "MerchantName")
    private String MerchantName;
+   
+    @XmlElement(name = "MerchantPhoneNumber")
+   private String MerchantPhoneNumber;
+    
+    @XmlElement(name = "Amount")
+   private String Amount;
+    
+    @XmlElement(name = "ReferenceCode")
+   private String ReferenceCode;
+    
+    @XmlElement(name = "TransactionDate")
+   private String TransactionDate;
+    
+    @XmlElement(name = "ResponseCode")
+   private String ResponseCode;
     
 }
