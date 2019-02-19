@@ -5,10 +5,9 @@ package nip.tools;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import bvn.service.objects.SearchResult;
-import bvn.service.objects.SearchResults;
-import bvn.wrapperobjects.BvnSingleSearchRequest;
-import com.google.gson.Gson;
+
+//import bvn.wrapperobjects.BvnSingleSearchRequest;
+//import com.google.gson.Gson;
 import com.sun.xml.bind.StringInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -27,13 +26,13 @@ import javax.xml.bind.Unmarshaller;
 import logger.WebServiceLogger;
 import lombok.Getter;
 import lombok.Setter;
-import mcash.service.objects.MerchantRegistrationRequest;
-import mcash.service.objects.MerchantRegistrationResponse;
-import mcash.service.objects.OptInOptOutRequest;
-import mcash.service.objects.PaymentDetailRequest;
-import mcash.service.objects.PaymentDetailResponse;
-import mcash.service.objects.Pre_PaymentRequest;
-import mcash.service.objects.Pre_PaymentResponse;
+//import mcash.service.objects.MerchantRegistrationRequest;
+//import mcash.service.objects.MerchantRegistrationResponse;
+//import mcash.service.objects.OptInOptOutRequest;
+//import mcash.service.objects.PaymentDetailRequest;
+//import mcash.service.objects.PaymentDetailResponse;
+//import mcash.service.objects.Pre_PaymentRequest;
+//import mcash.service.objects.Pre_PaymentResponse;
 import nibbsnip.service.NIBBSNIPInterface;
 import nibbsnip.service.NIBBSNIPInterface_Service;
 //import nibss.nip.core.NIPInterface;
@@ -251,14 +250,25 @@ public class AppParams {
 
         return "CREATE TABLE [dbo].[" + tableName + "](\n"
                 + "	[SessionID] [varchar](100) NULL,\n"
+                + "	[Kyc] [varchar](100) NULL,\n"
+                + "	[BankVerificationNumber] [varchar](100) NULL,\n"
+                + "	[MaximumTransactionAmount] [varchar](100) NULL,\n"
+                + "	[DeferredSettlement] [varchar](100) NULL,\n"
                 + "	[RequestorID] [varchar](100) NULL,\n"
+                + "	[RequestID] [varchar](100) NULL,\n"
+                + "	[PhoneNumber] [varchar](100) NULL,\n"
+                + "	[EmailAddress] [varchar](100) NULL,\n"
                 + "	[PayerPhoneNumber] [varchar](100) NULL,\n"
                 + "	[PayerName] [varchar](100) NULL,\n"
                 + "	[AccountNumber] [varchar](100) NULL,\n"
+                + "	[GPSLocation] [varchar](100) NULL,\n"
+                + "	[GroupName] [varchar](100) NULL,\n"
+                + "	[GroupCode] [varchar](100) NULL,\n"
+                + "	[PhysicalAddress] [varchar](100) NULL,\n"
                 + "	[AccountName] [varchar](100) NULL,\n"
                 + "	[PayerBVN] [varchar](100) NULL,\n"
                 + "	[MerchantCode] [varchar](100) NULL,\n"
-                + "	[MerchantName] [varchar](100) NULL,\n"
+                + "	[ContactName] [varchar](100) NULL,\n"
                 + "	[MerchantName] [varchar](100) NULL,\n"
                 + "	[MandateCode] [varchar](100) NULL,\n"
                 + "	[MerchantPhoneNumber] [varchar](100) NULL,\n"

@@ -6,6 +6,9 @@
 package mcash.service;
 
 import com.google.gson.Gson;
+import com.nibss.merchantpay.ws.MerchantEnrollment;
+import com.nibss.merchantpay.ws.MerchantEnrollmentEndPoint;
+import com.nibss.merchantpay.ws.MerchantEnrollment_Service;
 import com.nibss.merchantpay.ws.PaymentService;
 import com.nibss.merchantpay.ws.PaymentWebService;
 import java.sql.Connection;
@@ -21,6 +24,7 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+import javax.xml.ws.Holder;
 import mcash.service.objects.Account;
 import mcash.service.objects.FinancialInstitutionCode;
 import mcash.service.objects.MerchantRegistrationRequest;
@@ -54,6 +58,7 @@ public class McashClient {
     @Context
     private UriInfo context;
     PaymentWebService mcash;
+    MerchantEnrollmentEndPoint mcashenrollment;
     NIBBsResponseCodes respcodes;
     AppParams options;
     PGPEncrytionTool nipssm;
@@ -80,6 +85,7 @@ public class McashClient {
             nipssm = new PGPEncrytionTool(options);
              db = new DBConnector(options.getDBserver(), options.getDBuser(), options.getDBpass(), "McashLogs");
              mcash =  new PaymentService().getPaymentWebServicePort();
+               mcashenrollment = new MerchantEnrollment_Service().getMerchantEnrollmentEndPointPort();
             t24 = new T24TAFJLink();
        
          } catch (Exception e) {
@@ -191,9 +197,9 @@ public class McashClient {
                 
                 Merchant [] merchants = new Merchant [1];
                 
-                header.setInstitutionCode(request.getInstitutionCode());
-                mcashheaders.add("InstitutionCode");
-                mcashvalues.add(request.getInstitutionCode());
+////                header.setInstitutionCode(request.getInstitutionCode());
+//                mcashheaders.add("InstitutionCode");
+//                mcashvalues.add(request.getInstitutionCode());
                 
                 header.setTotalCount("1");
                 
@@ -246,7 +252,7 @@ public class McashClient {
                   mcashvalues.add(request.getAccountName());
                   
                   account.setBankVerificationNumber(request.getBvn());
-                  mcashheaders.add("Bvn");
+                  mcashheaders.add("BankVerificationNumber");
                   mcashvalues.add(request.getBvn());
                   
                   account.setDeferredSettlement(request.getDefferedSettlement());
@@ -273,17 +279,17 @@ public class McashClient {
                   
                   
                   //setting physical address
-                  address.setLGA(request.getLGA());
-                  mcashheaders.add("LGA");
-                  mcashvalues.add(request.getLGA());
-                  
-                  address.setState(request.getState());
-                  mcashheaders.add("State");
-                  mcashvalues.add(request.getState());
-                  
-                  address.setStreet(request.getStreet());
-                  mcashheaders.add("Street");
-                  mcashvalues.add(request.getStreet());
+//                  address.setLGA(request.getLGA());
+//                  mcashheaders.add("LGA");
+//                  mcashvalues.add(request.getLGA());
+//                  
+//                  address.setState(request.getState());
+//                  mcashheaders.add("State");
+//                  mcashvalues.add(request.getState());
+//                  
+//                  address.setStreet(request.getStreet());
+//                  mcashheaders.add("Street");
+//                  mcashvalues.add(request.getStreet());
                   
                   
                   
@@ -321,11 +327,11 @@ public class McashClient {
                 merchantrequest.setMerchant(merchants);
 
 
-                String datestr = sessionID.substring(6, 18);
+               // String datestr = sessionID.substring(6, 18);
 
-                SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+               // SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
 
-                Date date = sdf.parse(datestr);
+                Date date = new Date();
 
 //                nipvalues.add(date);
 //                nipheaders.add("TransactionDate");
@@ -339,8 +345,9 @@ public class McashClient {
                 try {
                     db.Execute(createquery);
                 } catch (Exception r) {
+System.out.print(r);
 
-                }
+             }
 
                 db.insertData(mcashheaders, mcashvalues.toArray(), monthlyTable);
                 
@@ -350,11 +357,18 @@ public class McashClient {
                 
                 nibsmerchantrequest = nipssm.encrypt(nibsmerchantrequest);
                 
-                String nibsmerchantresposne = mcash.;
+              
+                Holder<String> holder = new Holder<>();
+                
+                holder.value = nibsmerchantrequest;
+                
+               mcashenrollment.merchantEnrollment(holder);
                 
                 
                 
-                nibsmerchantresposne = nipssm.decrypt(nibsmerchantresposne);
+                
+                
+            String    nibsmerchantresposne = nipssm.decrypt(holder.value);
                 
                 RegisterMerchantResponse nibsresposneobject = (RegisterMerchantResponse) options.XMLToObject(nibsmerchantresposne, new RegisterMerchantResponse());
                 
@@ -618,12 +632,12 @@ public class McashClient {
             }
 
             headers.add("responseCode");
-            values.add(response.getResponseCode());
+            values.add(response.getResponsecode());
             headers.add("responseDescription");
             values.add(response.getResponseDescription());
         } catch (Exception e) {
             respcodes = NIBBsResponseCodes.System_malfunction;
-            response.setResponseCode(respcodes.getInlaksCode());
+            response.setResponsecode(respcodes.getInlaksCode());
             response.setResponseDescription(respcodes.getMessage());
         } finally {
             try {

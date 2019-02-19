@@ -46,8 +46,7 @@ public class Merchant {
     @XmlElement(name = "GroupName")
     private String GroupName;
 
-    
-
+   
     @XmlElement(name = "Account")
     private Account Account;
     

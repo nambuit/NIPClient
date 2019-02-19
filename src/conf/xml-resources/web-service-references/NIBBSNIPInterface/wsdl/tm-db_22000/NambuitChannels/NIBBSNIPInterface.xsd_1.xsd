@@ -1,0 +1,211 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.4.0 (wsit240-7e98ff4; 2017-08-03T21:19:54+0200) JAXWS-RI/2.3.0 JAXWS-API/2.3.0 JAXB-RI/2.3.0 JAXB-API/2.3.0 svn-revision#unknown. --><xs:schema xmlns:tns="http://service.nibbsnip/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://service.nibbsnip/">
+
+<xs:element name="PGPEncryption" type="tns:PGPEncryption"/>
+
+<xs:element name="PGPEncryptionResponse" type="tns:PGPEncryptionResponse"/>
+
+<xs:element name="accountblock" type="tns:accountblock"/>
+
+<xs:element name="accountblockResponse" type="tns:accountblockResponse"/>
+
+<xs:element name="accountunblock" type="tns:accountunblock"/>
+
+<xs:element name="accountunblockResponse" type="tns:accountunblockResponse"/>
+
+<xs:element name="amountblock" type="tns:amountblock"/>
+
+<xs:element name="amountblockResponse" type="tns:amountblockResponse"/>
+
+<xs:element name="amountunblock" type="tns:amountunblock"/>
+
+<xs:element name="amountunblockResponse" type="tns:amountunblockResponse"/>
+
+<xs:element name="balanceenquiry" type="tns:balanceenquiry"/>
+
+<xs:element name="balanceenquiryResponse" type="tns:balanceenquiryResponse"/>
+
+<xs:element name="financialinstitutionlist" type="tns:financialinstitutionlist"/>
+
+<xs:element name="financialinstitutionlistResponse" type="tns:financialinstitutionlistResponse"/>
+
+<xs:element name="fundtransferAdvice_dc" type="tns:fundtransferAdvice_dc"/>
+
+<xs:element name="fundtransferAdvice_dcResponse" type="tns:fundtransferAdvice_dcResponse"/>
+
+<xs:element name="fundtransferAdvice_dd" type="tns:fundtransferAdvice_dd"/>
+
+<xs:element name="fundtransferAdvice_ddResponse" type="tns:fundtransferAdvice_ddResponse"/>
+
+<xs:element name="fundtransfersingleitem_dc" type="tns:fundtransfersingleitem_dc"/>
+
+<xs:element name="fundtransfersingleitem_dcResponse" type="tns:fundtransfersingleitem_dcResponse"/>
+
+<xs:element name="fundtransfersingleitem_dd" type="tns:fundtransfersingleitem_dd"/>
+
+<xs:element name="fundtransfersingleitem_ddResponse" type="tns:fundtransfersingleitem_ddResponse"/>
+
+<xs:element name="mandateadvice" type="tns:mandateadvice"/>
+
+<xs:element name="mandateadviceResponse" type="tns:mandateadviceResponse"/>
+
+<xs:element name="nameenquirysingleitem" type="tns:nameenquirysingleitem"/>
+
+<xs:element name="nameenquirysingleitemResponse" type="tns:nameenquirysingleitemResponse"/>
+
+<xs:complexType name="balanceenquiry">
+<xs:sequence>
+<xs:element name="balancerequest" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="balanceenquiryResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="accountunblock">
+<xs:sequence>
+<xs:element name="AccountUnblockIn" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="accountunblockResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fundtransferAdvice_dc">
+<xs:sequence>
+<xs:element name="creditrequest" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fundtransferAdvice_dcResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="mandateadvice">
+<xs:sequence>
+<xs:element name="MandateAdviceIn" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="mandateadviceResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fundtransferAdvice_dd">
+<xs:sequence>
+<xs:element name="debitrequest" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fundtransferAdvice_ddResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="accountblock">
+<xs:sequence>
+<xs:element name="AccountBlockIn" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="accountblockResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fundtransfersingleitem_dc">
+<xs:sequence>
+<xs:element name="ftsinglecreditrequest" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fundtransfersingleitem_dcResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fundtransfersingleitem_dd">
+<xs:sequence>
+<xs:element name="ftsingledebitrequest" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fundtransfersingleitem_ddResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="nameenquirysingleitem">
+<xs:sequence>
+<xs:element name="nesinglerequest" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="nameenquirysingleitemResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="amountblock">
+<xs:sequence>
+<xs:element name="amountblockrequest" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="amountblockResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="PGPEncryption">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="PGPEncryptionResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="amountunblock">
+<xs:sequence>
+<xs:element name="amountunblockrequest" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="amountunblockResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="financialinstitutionlist">
+<xs:sequence>
+<xs:element name="FinancialInstitutionListIn" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="financialinstitutionlistResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
