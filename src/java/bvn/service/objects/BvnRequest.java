@@ -5,10 +5,14 @@
  */
 package bvn.service.objects;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @author dogor-Igbosuah
  */
+@Getter @Setter
 public class BvnRequest {
     
     private String BVN;

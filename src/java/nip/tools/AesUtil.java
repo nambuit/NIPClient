@@ -1,4 +1,4 @@
-package studentrecords;
+package nip.tools;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -50,10 +50,10 @@ public class AesUtil {
         }
     }
     
-    public String encrypt(String salt, String iv, String passphrase, String plaintext) {
+    public String encrypt(String aeskey, String iv, String passphrase, String plaintext) {
         try {
-            SecretKey key = generateKey(hex(salt), passphrase);
-            cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(hex(iv)));
+            SecretKey key = new SecretKeySpec(aeskey.getBytes(),"AES");
+            cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv.getBytes()));
             return base64(cipher.doFinal(plaintext.getBytes("UTF-8")));
         }
         catch (InvalidKeyException a) {throw fail (a);}
@@ -65,10 +65,10 @@ public class AesUtil {
         }
     }
     
-    public String decrypt(String salt, String iv, String passphrase, String ciphertext) throws JSONException {
+    public String decrypt(String aeskey, String iv, String passphrase, String ciphertext) throws JSONException {
         try {
-            SecretKey key = generateKey(hex(salt), passphrase);
-            cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(hex(iv)));
+            SecretKey key  = new SecretKeySpec(aeskey.getBytes(),"AES");
+            cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv.getBytes()));
             return new String(cipher.doFinal(base64(ciphertext)), "UTF-8");
         }
         catch (InvalidKeyException a) {throw new JSONException(a);}
