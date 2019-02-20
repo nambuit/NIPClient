@@ -5,20 +5,21 @@
  */
 package bvn.service.objects;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import lombok.Getter;
 
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author dogor-Igbosuah
  */
 
-@Getter 
-@XmlRootElement(name = "ResultList")
-public class ResultList {
+@Getter @Setter
+
+public class BvnMultipleResponse {
     
-    @XmlElement(name = "SearchResult")
-    private SearchResult [] SearchResult;
+    private String ResponseCode; 
+    
+    private  BvnSingleResponse [] ValidationResponses;
+    
 }

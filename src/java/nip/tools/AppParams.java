@@ -5,8 +5,8 @@ package nip.tools;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import bvn.service.objects.SearchResult;
-import bvn.service.objects.SearchResults;
+
+
 import bvn.wrapperobjects.BvnSingleSearchRequest;
 import com.google.gson.Gson;
 import com.sun.xml.bind.StringInputStream;
