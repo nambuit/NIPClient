@@ -7,6 +7,7 @@ package mcash.service.objects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.Getter;
 import lombok.Setter;
 
 
@@ -14,7 +15,7 @@ import lombok.Setter;
  *
  * @author tadekayero
  */
-@Setter
+@Setter @Getter
 @XmlRootElement(name = "MerchantRegistrationRequest")
 public class MerchantRegistrationRequest {
     

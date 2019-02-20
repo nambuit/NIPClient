@@ -12,8 +12,7 @@ import lombok.Setter;
 /**
  *
  * @author cahamefula
- */
-@Getter @Setter
+ */@Setter
 @XmlRootElement(name = "Account")
 public class Account {
    @XmlElement(name = "AccountNumber")

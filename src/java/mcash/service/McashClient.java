@@ -6,7 +6,6 @@
 package mcash.service;
 
 import com.google.gson.Gson;
-import com.nibss.merchantpay.ws.MerchantEnrollment;
 import com.nibss.merchantpay.ws.MerchantEnrollmentEndPoint;
 import com.nibss.merchantpay.ws.MerchantEnrollment_Service;
 import com.nibss.merchantpay.ws.PaymentService;
@@ -166,7 +165,7 @@ public class McashClient {
             }
             
 
-            RegisterMerchantRequest request = (RegisterMerchantRequest) gson.fromJson(payload, RegisterMerchantRequest.class);
+            RegisterMerchantRequest request = (RegisterMerchantRequest) gson.fromJson(payload, RegisterMerchantRequest.class );
 
             headers.add("applicationID");
             values.add(applicationID);
@@ -197,6 +196,10 @@ public class McashClient {
                 
                 Merchant [] merchants = new Merchant [1];
                 
+                
+              //  Merchant
+                
+              
 ////                header.setInstitutionCode(request.getInstitutionCode());
 //                mcashheaders.add("InstitutionCode");
 //                mcashvalues.add(request.getInstitutionCode());
@@ -270,6 +273,11 @@ public class McashClient {
                   account.setMaximumTransactionAmount(request.getMaximumTransactionAmount());
                   mcashheaders.add("MaximumTransactionAmount");
                   mcashvalues.add(request.getMaximumTransactionAmount());
+                  
+                  
+
+                  
+                  
                   
                   
                   

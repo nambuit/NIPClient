@@ -7,6 +7,7 @@ package mcash.service.objects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.Getter;
 import lombok.Setter;
 
 
@@ -55,8 +56,4 @@ public class Merchant {
      
      @XmlElement(name = "ResponseCode")
       private String ResponseCode;
-
-
-     
-
 }
