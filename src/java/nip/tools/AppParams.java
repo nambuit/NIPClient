@@ -6,7 +6,8 @@ package nip.tools;
  * and open the template in the editor.
  */
 
-
+import bvn.service.objects.BvnMultipleResponse;
+import bvn.service.objects.BvnRequest;
 import bvn.wrapperobjects.BvnSingleSearchRequest;
 import com.google.gson.Gson;
 import com.sun.xml.bind.StringInputStream;
