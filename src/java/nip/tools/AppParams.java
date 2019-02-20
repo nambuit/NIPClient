@@ -5,6 +5,7 @@ package nip.tools;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 import bvn.service.objects.BvnMultipleResponse;
 import bvn.service.objects.BvnRequest;
 import bvn.wrapperobjects.BvnSingleSearchRequest;
