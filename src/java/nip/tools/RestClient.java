@@ -17,9 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 
 
 /**
@@ -29,10 +29,10 @@ import java.util.Date;
 public class RestClient {
     
     String endpointurl = "http://196.6.103.58:8080/bvnr";
-    String placeholderUrl = "http://196.6.103.58:8080/BVNPlaceHolder";
-    String aeskey = "3XShD+joLxx6q6Ec";
-    String iv = "t1nOEGaDbrVWGnbm";
-    String pass ="uja8Y~YRIf:Ceklh";
+    String placeholderUrl = "http://196.6.103.58:8080/";
+    String aeskey = "hrWKVAmYoeW/MAdO";
+    String iv = "MgdCLoJAybpxfGx2";
+    String pass ="e\\~Fw7_=w-ljWcf\"";
             
             
 
@@ -70,11 +70,11 @@ public void ReAuthenticateBVN(String orgCode){
         
         connection.connect();
         
-    
-          
-      
+        HashMap<String,String> headers = this.getHeaders(connection);
         
-   
+     
+        
+   String a  ="";
         
        
         
@@ -95,6 +95,28 @@ public void ReAuthenticateBVN(String orgCode){
         throw new RuntimeException(e); 
     } 
     }
+
+public HashMap<String,String> getHeaders(HttpURLConnection connection){
+    
+    HashMap<String,String> headers = new HashMap<>();
+    
+    for (int i = 0;; i++) {
+        
+       String headerName = connection.getHeaderFieldKey(i);
+      String headerValue = connection.getHeaderField(i);
+        
+      headers.put(headerName, headerValue) ;
+
+
+      if (headerName == null && headerValue == null) {
+       
+        break;
+      }
+          
+          }
+    
+    return headers;
+}
     
     public String ProcessBVNRequest(String payload, String methodName){
         
@@ -102,7 +124,7 @@ public void ReAuthenticateBVN(String orgCode){
             
         URL url = new URL(endpointurl+"/"+methodName); 
         
-        String auth = "001011:uja8Y~YRIf:Ceklh";
+        String auth = "001011:e\\~Fw7_=w-ljWcf\"";
         
          byte[] encodedBytes =   Base64.getEncoder().encode(auth.getBytes());
          
@@ -115,7 +137,7 @@ public void ReAuthenticateBVN(String orgCode){
          String formatedDate = sdf.format(date);
          
          
-         String sig = "001011"+formatedDate+"uja8Y~YRIf:Ceklh";
+         String sig = "001011"+formatedDate+"e\\~Fw7_=w-ljWcf\"";
          
          
          sig = this.sha256(sig);
@@ -131,7 +153,7 @@ public void ReAuthenticateBVN(String orgCode){
         connection.setRequestProperty("Authorization", auth);
         connection.setRequestProperty("SIGNATURE", sig);
         connection.setRequestProperty("SIGNATURE_METH", "SHA256");
-         connection.setRequestProperty("Content", payload);
+        // connection.setRequestProperty("Content", payload);
       //  connection.setRequestProperty("OrganisationCode","001011");
         
         
@@ -139,7 +161,7 @@ public void ReAuthenticateBVN(String orgCode){
         connection.connect();
         OutputStream os = connection.getOutputStream();
        // int recode = connection.getResponseCode();
-        //os.write(payload.getBytes("UTF8")); 
+        os.write(payload.getBytes("UTF8")); 
         
         os.flush();
 
@@ -221,19 +243,17 @@ String generatedPassword = null;
          {
          RestClient client = new RestClient();
          
-        // client.ReAuthenticateBVN("001011");
+        client.ReAuthenticateBVN("001011");
          
          AesUtil aes = new AesUtil(128,1);  
          
          BvnRequest req = new BvnRequest();
          
-         req.setBVN("22204213323");
+         req.setBVN("22222222225");
          
          Gson gson =  new Gson();
          
-         String reqstr =  "<ValidationRequest>\n" +
-"<BVN>22204213323</BVN>\n" +
-"</ValidationRequest>";//gson.toJson(req);
+         String reqstr = gson.toJson(req);
          
          String encreq = aes.encrypt( client.aeskey,client.iv, client.pass, reqstr);
          

@@ -28,7 +28,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
-import org.codehaus.jettison.json.JSONException;
+import org.json.JSONException;
 
 
 
