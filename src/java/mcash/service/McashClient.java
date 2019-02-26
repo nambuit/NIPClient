@@ -86,6 +86,7 @@ public class McashClient {
              mcash =  new PaymentService().getPaymentWebServicePort();
                mcashenrollment = new MerchantEnrollment_Service().getMerchantEnrollmentEndPointPort();
             t24 = new T24TAFJLink();
+            
        
          } catch (Exception e) {
             options.getServiceLogger(logfilename).LogError(e.getMessage(), e, Level.FATAL);
@@ -600,6 +601,7 @@ System.out.print(r);
                     param wparam = new param();
                      
                      wparam.setName(params[i].getName());
+    
                      wparam.setName(params[i].getDescription());
                      
                      wparams[i] = wparam;
