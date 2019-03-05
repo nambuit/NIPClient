@@ -24,8 +24,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import nibss.nip.core.NIPInterface;
 import nibss.nip.core.NIPInterface_Service;
-import nibss.nip.core.NIPTSQInterface;
-import nibss.nip.core.NIPTSQInterface_Service;
+//import nibss.nip.core.NIPTSQInterface;
+//import nibss.nip.core.NIPTSQInterface_Service;
 import nip.service.objects.FTSingleCreditRequest;
 import nip.service.objects.FTSingleCreditResponse;
 import nip.service.objects.NESingleRequest;
@@ -69,7 +69,7 @@ public class NIPInterfaceClient {
     String logfilename = "NIPClientInterface";
     String logTable = "InlaksNIPWrapperLog";
     NIPInterface nip;
-    NIPTSQInterface niptsq;
+//    NIPTSQInterface niptsq;
     T24Link t24;
     Thread watcherthread = new Thread();
     String apikey = "";
@@ -88,9 +88,9 @@ public class NIPInterfaceClient {
 
             nip = nipservice.getNIPInterfacePort();
             
-             NIPTSQInterface_Service niptsqservice = new NIPTSQInterface_Service();
+//             NIPTSQInterface_Service niptsqservice = new NIPTSQInterface_Service();
 
-            niptsq = niptsqservice.getNIPTQSInterfacePort();
+//            niptsq = niptsqservice.getNIPTQSInterfacePort();
 
             db = new DBConnector(options.getDBserver(), options.getDBuser(), options.getDBpass(), "NIPLogs");
 
@@ -753,8 +753,7 @@ public class NIPInterfaceClient {
                 String niprequeststr = options.ObjectToXML(niprequest);
 
                 niprequeststr = nipssm.encrypt(niprequeststr);
-
-                String nipresponse = niptsq.txnstatusquerysingleitem(niprequeststr);
+              String nipresponse ="";// niptsq.txnstatusquerysingleitem(niprequeststr);
 
                 nipresponse = nipssm.decrypt(nipresponse);
 

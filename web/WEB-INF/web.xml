@@ -89,4 +89,15 @@
         <env-entry-type>java.lang.String</env-entry-type>
         <env-entry-value>TAFJ</env-entry-value>
     </env-entry>
+      <env-entry>
+        <env-entry-name>BVNendpointUrl</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>http://196.6.103.58:8080/bvnr</env-entry-value>
+    </env-entry>
+    
+        <env-entry>
+        <env-entry-name>BVNOrgCode</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>001011</env-entry-value>
+    </env-entry>
 </web-app>

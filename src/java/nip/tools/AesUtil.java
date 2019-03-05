@@ -54,7 +54,7 @@ public class AesUtil {
         try {
             SecretKey key = new SecretKeySpec(aeskey.getBytes(),"AES");
             cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv.getBytes()));
-            return base64(cipher.doFinal(plaintext.getBytes("UTF-8")));
+            return this.bytesToHex(cipher.doFinal(plaintext.getBytes("UTF-8")));
         }
         catch (InvalidKeyException a) {throw fail (a);}
         catch  (InvalidAlgorithmParameterException b) {throw fail (b);}
@@ -69,7 +69,7 @@ public class AesUtil {
         try {
             SecretKey key  = new SecretKeySpec(aeskey.getBytes(),"AES");
             cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv.getBytes()));
-            return new String(cipher.doFinal(base64(ciphertext)), "UTF-8");
+            return new String(cipher.doFinal(this.hexToBytes(ciphertext)), "UTF-8");
         }
         catch (InvalidKeyException a) {throw new JSONException(a);}
         catch  (InvalidAlgorithmParameterException b) {throw new JSONException (b);}
@@ -130,6 +130,42 @@ public class AesUtil {
         
         return "the quick brown fox jumps over the lazy dog";
     }
+    
+    public  String bytesToHex(byte[] data)
+{
+if (data==null) {
+return null;
+}
+int len = data.length;
+String str = "";
+for (int i=0; i<len; i++) 
+{
+if ((data[i]&0xFF)<16) {
+str = str + "0" + java.lang.Integer.toHexString(data[i]&0xFF);
+}
+else {
+str = str + java.lang.Integer.toHexString(data[i]&0xFF);
+}
+}
+return str;
+}
+
+public  byte[] hexToBytes(String str) {
+if (str==null) {
+return null;
+}
+else if (str.length() < 2) {
+return null;
+}
+else {
+int len = str.length() / 2;
+byte[] buffer = new byte[len];
+for (int i=0; i<len; i++) {
+buffer[i] = (byte) Integer.parseInt(str.substring(i*2,i*2+2),16);
+}
+return buffer;
+}
+}
 }
     
     
