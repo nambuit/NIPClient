@@ -66,6 +66,8 @@ public class AppParams {
     private String DBuser;
     private String DBpass;
     private String DBserver;
+    private String bvnEndpoint;
+    private String bvnOrgcode;
 
     public AppParams() {
         try {
@@ -87,6 +89,9 @@ public class AppParams {
             LogDir = (String) ctx.lookup("LogDir");
             listeningDir = (String) ctx.lookup("ISOLogListenerDir");
             T24Framework = (String) ctx.lookup("T24Framework");
+                bvnEndpoint = (String) ctx.lookup("BVNendpointUrl");
+                bvnOrgcode = (String) ctx.lookup("BVNOrgCode");
+                
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             propertiesfile = classLoader.getResourceAsStream("nip/tools/interfacelogger.properties");
 
