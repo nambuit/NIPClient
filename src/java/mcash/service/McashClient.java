@@ -56,7 +56,7 @@ public class McashClient {
 
     @Context
     private UriInfo context;
-    PaymentWebService mcash;
+//    PaymentWebService mcash;
     MerchantEnrollmentEndPoint mcashenrollment;
     NIBBsResponseCodes respcodes;
     AppParams options;
@@ -83,7 +83,7 @@ public class McashClient {
 
             nipssm = new PGPEncrytionTool(options);
              db = new DBConnector(options.getDBserver(), options.getDBuser(), options.getDBpass(), "McashLogs");
-             mcash =  new PaymentService().getPaymentWebServicePort();
+             //mcash =  new PaymentService().getPaymentWebServicePort();
                mcashenrollment = new MerchantEnrollment_Service().getMerchantEnrollmentEndPointPort();
             t24 = new T24TAFJLink();
             
@@ -366,7 +366,7 @@ System.out.print(r);
                 
                 nibsmerchantrequest = nipssm.encrypt(nibsmerchantrequest);
                 
-              
+           
                 Holder<String> holder = new Holder<>();
                 
                 holder.value = nibsmerchantrequest;

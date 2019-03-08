@@ -33,8 +33,8 @@ import lombok.Setter;
 //import mcash.service.objects.PaymentDetailResponse;
 //import mcash.service.objects.Pre_PaymentRequest;
 //import mcash.service.objects.Pre_PaymentResponse;
-import nibbsnip.service.NIBBSNIPInterface;
-import nibbsnip.service.NIBBSNIPInterface_Service;
+//import nibbsnip.service.NIBBSNIPInterface;
+//import nibbsnip.service.NIBBSNIPInterface_Service;
 //import nibss.nip.core.NIPInterface;
 //import nibss.nip.core.NIPInterface_Service;
 import nip.service.objects.TSQuerySingleRequest;
@@ -657,13 +657,14 @@ public class AppParams {
         }
 
     }
-    
-         
-     public static void main (String [] args){
-        NIBBSNIPInterface service =  new NIBBSNIPInterface_Service().getNIBBSNIPInterfacePort();
-         
-     String response =  service.pgpEncryption("inlaks$own2morrow", "GEN");
-     String f = response;
-     }
-
 }
+    
+//         
+//     public static void main (String [] args){
+//        //NIBBSNIPInterface service = "";// new NIBBSNIPInterface_Service().getNIBBSNIPInterfacePort();
+//         
+////     String response =  service.pgpEncryption("inlaks$own2morrow", "GEN");
+////     String f = response;
+////     }
+//
+//}
