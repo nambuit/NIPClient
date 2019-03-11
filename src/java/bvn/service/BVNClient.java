@@ -169,8 +169,31 @@ public class BVNClient {
    
        BvnSingleResponse bvnrespobject = (BvnSingleResponse) gson.fromJson(bvnserviceresponse, BvnSingleResponse.class);
         
-       response.setBvn(bvnrespobject.getBVN());
-          //continue      
+       response.setBVN(bvnrespobject.getBVN());
+       response.setDateOfBirth(bvnrespobject.getDateOfBirth());
+       response.setEnrollmentBank(bvnrespobject.getEnrollmentBank());
+       response.setEnrollmentBranch(bvnrespobject.getEnrollmentBranch());
+       response.setFirstName(bvnrespobject.getFirstName());
+       response.setBase64Image(bvnrespobject.getBase64Image());
+       response.setPhonenumber1(bvnrespobject.getPhoneNumber1());
+       response.setPhonenumber2(bvnrespobject.getPhoneNumber2());
+       response.setRegistrationDate(bvnrespobject.getRegistrationDate());
+       response.setLastName(bvnrespobject.getLastName());
+       response.setMiddleName(bvnrespobject.getMiddleName());
+       response.setLgaOfOrigin(bvnrespobject.getLgaOfOrigin());
+       response.setEmail(bvnrespobject.getEmail());
+       response.setGender(bvnrespobject.getGender());
+       response.setLevelOfAccount(bvnrespobject.getLevelOfAccount());
+       response.setMaritalStatus(bvnrespobject.getMaritalStatus());
+       response.setNIN(bvnrespobject.getNIN());
+       response.setNameOnCard(bvnrespobject.getNameOnCard());
+       response.setNationality(bvnrespobject.getNationality());
+       response.setLgaOfResidence(bvnrespobject.getLgaOfResidence());  
+       
+       
+                respcodes = NIBBsResponseCodes.SUCCESS;
+                response.setResponsecode(respcodes.getInlaksCode());
+                response.setResponsedescription(respcodes.getMessage());
 
             } else {
                 respcodes = NIBBsResponseCodes.Security_violation;

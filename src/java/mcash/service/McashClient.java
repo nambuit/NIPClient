@@ -6,6 +6,8 @@
 package mcash.service;
 
 import com.google.gson.Gson;
+import com.nibss.merchantpay.ws.MerchantEnrollmentEndPoint;
+import com.nibss.merchantpay.ws.MerchantEnrollment_Service;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
@@ -56,6 +58,7 @@ public class McashClient {
     AppParams options;
     PGPEncrytionTool nipssm;
     Connection conn = null;
+    MerchantEnrollmentEndPoint mcashenrollment;
     private DBConnector db;
     String logfilename = "NIPClientInterface";
     String logTable = "InlaksNIPWrapperLog";
@@ -76,8 +79,8 @@ public class McashClient {
           options = new AppParams();
 
             nipssm = new PGPEncrytionTool(options);
-             db = new DBConnector(options.getDBserver(), options.getDBuser(), options.getDBpass(), "NIPLogs");
-
+            db = new DBConnector(options.getDBserver(), options.getDBuser(), options.getDBpass(), "McashLogs");
+            mcashenrollment = new MerchantEnrollment_Service().getMerchantEnrollmentEndPointPort();
             t24 = new T24TAFJLink();
        
          } catch (Exception e) {

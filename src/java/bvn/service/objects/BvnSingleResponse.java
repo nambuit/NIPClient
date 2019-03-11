@@ -14,7 +14,8 @@ import lombok.Setter;
  *
  * @author dogor-Igbosuah
  */
-@Getter @Setter
+@Getter 
+@Setter
 public class BvnSingleResponse {
     
     private String BVN; 
@@ -35,7 +36,7 @@ public class BvnSingleResponse {
     
     private String EnrollmentBranch;
     
-    private String ImageBase64; 
+    private String Base64Image; 
     
     private String Email;
     
@@ -56,16 +57,5 @@ public class BvnSingleResponse {
     private String NameOnCard; 
     
     private String Nationality;
-    
-    private String ResidentialAddress;
-    
-    private String StateOfOrigin;
-    
-    private String StateOfResidence;
-    
-    private String Title;
-    
-    private String WatchListed;
-       
     
 }

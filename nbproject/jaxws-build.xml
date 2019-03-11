@@ -74,5 +74,37 @@
         <delete dir="${build.generated.sources.dir}/jax-ws/nip/tools"/>
         <delete dir="${build.generated.dir}/jax-wsCache/OFSService"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-NIPTSQInterface, wsimport-client-NIPInterface, wsimport-client-OFSService"/>
+    <target name="wsimport-client-merchant-enrollment" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/merchant-enrollment"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/merchant-enrollment" destdir="${build.generated.dir}/jax-wsCache/merchant-enrollment" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/merchant-enrollment/wsdl/196.6.103.10_8564/merchantpay/merchant-enrollment.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://196.6.103.10:8564/merchantpay/merchant-enrollment?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/merchant-enrollment/wsdl/196.6.103.10_8564/merchantpay/merchant-enrollment.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/merchant-enrollment"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/merchant-enrollment">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-merchant-enrollment" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/com/nibss/merchantpay/ws"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/merchant-enrollment"/>
+    </target>
+    <target name="wsimport-client-payment-service" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/payment-service"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/payment-service" destdir="${build.generated.dir}/jax-wsCache/payment-service" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/payment-service/wsdl/196.6.103.10_9092/merchantpay/payment-service.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://196.6.103.10:9092/merchantpay/payment-service?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/payment-service/wsdl/196.6.103.10_9092/merchantpay/payment-service.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/payment-service"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/payment-service">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-payment-service" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/com/nibss/merchantpay/ws"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/payment-service"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-NIPTSQInterface, wsimport-client-NIPInterface, wsimport-client-OFSService, wsimport-client-merchant-enrollment, wsimport-client-payment-service"/>
 </project>
