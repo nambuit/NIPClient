@@ -7,13 +7,13 @@ package mcash.service.objects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import lombok.Getter;
+
 import lombok.Setter;
 /**
  *
  * @author cahamefula
  */
-@Getter @Setter
+ @Setter
 @XmlRootElement(name = "Account")
 public class Account {
    @XmlElement(name = "AccountNumber")

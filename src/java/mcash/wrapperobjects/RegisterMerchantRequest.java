@@ -22,9 +22,9 @@ public class RegisterMerchantRequest {
     private String contactName;
     private String phoneNumber;
     private String emailAddress;
-    private String street;
-    private String lGA;
-    private String state;
+    private String Street;
+    private String LGA;
+    private String State;
     private String gpsLocation;
     private String groupCode;
     private String groupName;
@@ -32,7 +32,7 @@ public class RegisterMerchantRequest {
     private String accountNumber;
     private String InstitutionCode;
      private String kyc;
-      private String bvn;
+      private String BVN;
        private String maximumTransactionAmount;
         private String defferedSettlement;
      private String hash;

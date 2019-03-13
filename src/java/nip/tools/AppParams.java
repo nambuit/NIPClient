@@ -142,12 +142,12 @@ public class AppParams {
     }
 
     public String generateSessionID(String instcode) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyddMMHHmmss"); //yyMMddHHmm
 
         Date now = new Date();
 
         String date = sdf.format(now);
-        String uniquenumber = GenerateRandomNumber(12);
+        String uniquenumber = GenerateRandomNumber(6);
 
         String sessionid = instcode + date + uniquenumber;
 
@@ -259,13 +259,22 @@ public class AppParams {
                 + "	[PayerPhoneNumber] [varchar](100) NULL,\n"
                 + "	[PayerName] [varchar](100) NULL,\n"
                 + "	[AccountNumber] [varchar](100) NULL,\n"
+                + "	[RequestID] [varchar](100) NULL,\n"
                 + "	[AccountName] [varchar](100) NULL,\n"
+                + "	[LGA] [varchar](100) NULL,\n"
+                + "	[State] [varchar](100) NULL,\n"
+                + "	[Street] [varchar](100) NULL,\n"
                 + "	[PayerBVN] [varchar](100) NULL,\n"
+                + "	[BVN] [varchar](100) NULL,\n"
+                + "	[DeferredSettlement] [varchar](100) NULL,\n"
+                + "	[Kyc] [varchar](100) NULL,\n"
+                + "	[MaximumTransactionAmount] [varchar](100) NULL,\n"
                 + "	[MerchantCode] [varchar](100) NULL,\n"
                 + "	[MerchantName] [varchar](100) NULL,\n"
-                + "	[MerchantName] [varchar](100) NULL,\n"
+                + "	[ContactName] [varchar](100) NULL,\n"
+                + "	[EmailAddress] [varchar](100) NULL,\n"
                 + "	[MandateCode] [varchar](100) NULL,\n"
-                + "	[MerchantPhoneNumber] [varchar](100) NULL,\n"
+                + "	[PhoneNumber] [varchar](100) NULL,\n"
                 + "	[OptIn] [varchar](100) NULL,\n"
                 + "	[Message] [varchar](100) NULL,\n"
                 + "	[ResponseCode] [varchar](100) NULL,\n"
@@ -276,6 +285,7 @@ public class AppParams {
                 + "	[Passcode] [varchar](100) NULL,\n"
                 + "	[MandateReferenceNumber] [varchar](100) NULL,\n"
                 + "	[ProductCode] [varchar](100) NULL,\n"
+                + "	[InstitutionCode] [varchar](100) NULL,\n"
                 + "	[FinancialInstitutionCode] [varchar](100) NULL,\n"
                 + "	[Name] [varchar](100) NULL,\n"
                 + "	[FISpecificInformation] [varchar](100) NULL,\n"

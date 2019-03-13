@@ -21,6 +21,7 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+import javax.xml.ws.Holder;
 import mcash.service.objects.Account;
 import mcash.service.objects.FinancialInstitutionCode;
 import mcash.service.objects.MerchantRegistrationRequest;
@@ -118,10 +119,13 @@ public class McashClient {
         headers.add("requestPayload");
         values.add(payload);
 
+        SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmm");
         Date reqdate = new Date();
-
+        String newdate = odf.format(reqdate);
         headers.add("requestDate");
-        values.add(reqdate);
+        values.add(newdate);
+        
+       
         
      
 
@@ -166,10 +170,9 @@ public class McashClient {
             headers.add("applicationID");
             values.add(applicationID);
 
-            headers.add("requestID");
-            values.add(request.getRequestID());
+            
 
-            String stringtohash = request.getRequestID() + request.getMerchantCode() + request.getAccountNumber();
+            String stringtohash = request.getMerchantCode() + request.getAccountNumber();
 
             String requesthash = request.getHash();
 
@@ -180,15 +183,16 @@ public class McashClient {
 
             if (hash.equals(requesthash)) {
 
-                MerchantRegistrationRequest merchantrequest = new MerchantRegistrationRequest();
+                 MerchantRegistrationRequest merchantrequest = new MerchantRegistrationRequest();
                 
                 Header header = new Header();
                 
                 Merchant merchant = new Merchant();
                 
+                PhysicalAddress address = new PhysicalAddress();
+                
                 Account account = new Account();
                 
-                PhysicalAddress address = new PhysicalAddress();
                 
                 Merchant [] merchants = new Merchant [1];
                 
@@ -208,19 +212,7 @@ public class McashClient {
                   merchant.setEmailAddress(request.getEmailAddress());
                   mcashheaders.add("EmailAddress");
                   mcashvalues.add(request.getEmailAddress());
-                  
-            
-                  merchant.setGroupName(request.getGroupName());
-                  mcashheaders.add("GroupName");
-                  mcashvalues.add(request.getGroupName());
-                  
-                  merchant.setGPSLocation(request.getGpsLocation());
-                  mcashheaders.add("GPSLocation");
-                  mcashvalues.add(request.getGpsLocation());
-                  
-                  merchant.setGroupCode(request.getGroupCode());
-                  mcashheaders.add("GroupCode");
-                  mcashvalues.add(request.getGroupCode());
+      
                   
                   merchant.setMerchantName(request.getMerchantName());
                   mcashheaders.add("MerchantName");
@@ -234,21 +226,38 @@ public class McashClient {
                   mcashheaders.add("PhoneNumber");
                   mcashvalues.add(request.getPhoneNumber());
                   
-                  merchant.setRequestID(request.getRequestID());
+                  sessionID = options.generateSessionID(request.getInstitutionCode());
+                  merchant.setRequestID(sessionID);
                   mcashheaders.add("RequestID");
-                  mcashvalues.add(request.getRequestID());
+                  mcashvalues.add(sessionID);
+                  
+                  headers.add("requestID");
+                  values.add(sessionID);
                   
                   
+                  //setting physical address
+                  address.setLGA(request.getLGA());
+                  mcashheaders.add("LGA");
+                  mcashvalues.add(request.getLGA());
                   
-                 
+                  address.setState(request.getState());
+                  mcashheaders.add("State");
+                  mcashvalues.add(request.getState());
+                  
+                  address.setStreet(request.getStreet());
+                  mcashheaders.add("Street");
+                  mcashvalues.add(request.getStreet());
+
+                  
+                  
                   //setting account values
                   account.setAccountName(request.getAccountName());
                   mcashheaders.add("AccountName");
                   mcashvalues.add(request.getAccountName());
                   
-                  account.setBankVerificationNumber(request.getBvn());
-                  mcashheaders.add("Bvn");
-                  mcashvalues.add(request.getBvn());
+                  account.setBankVerificationNumber(request.getBVN());
+                  mcashheaders.add("BVN");
+                  mcashvalues.add(request.getBVN());
                   
                   account.setDeferredSettlement(request.getDefferedSettlement());
                   mcashheaders.add("DeferredSettlement");
@@ -273,19 +282,7 @@ public class McashClient {
                   
                   
                   
-                  //setting physical address
-                  address.setLGA(request.getLGA());
-                  mcashheaders.add("LGA");
-                  mcashvalues.add(request.getLGA());
-                  
-                  address.setState(request.getState());
-                  mcashheaders.add("State");
-                  mcashvalues.add(request.getState());
-                  
-                  address.setStreet(request.getStreet());
-                  mcashheaders.add("Street");
-                  mcashvalues.add(request.getStreet());
-                  
+                                    
                   
                   
 //                sessionID = options.generateSessionID(request.getInstitutionCode());
@@ -311,8 +308,9 @@ public class McashClient {
                 
                 
                   //setting merchant sub classes
-                    merchant.setAccount(account);
+
                     merchant.setPhysicalAddress(address);
+                    merchant.setAccount(account);
                   
      
                         
@@ -322,15 +320,16 @@ public class McashClient {
                 merchantrequest.setMerchant(merchants);
 
 
-                String datestr = sessionID.substring(6, 18);
-
-                SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
-
-                Date date = sdf.parse(datestr);
+//                String datestr = sessionID.substring(6, 18);
+//
+//                SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+//
+//                Date date = sdf.parse(datestr);
 
 //                nipvalues.add(date);
 //                nipheaders.add("TransactionDate");
 
+                 Date date = new Date();
                 SimpleDateFormat df = new SimpleDateFormat("MMMyyyy");
 
                 monthlyTable = df.format(date) + "mCASH_TRANSACTIONS";
@@ -351,16 +350,18 @@ public class McashClient {
                 
                 nibsmerchantrequest = nipssm.encrypt(nibsmerchantrequest);
                 
-                String nibsmerchantresposne = nibsmerchantrequest;
+                Holder<String> holder = new Holder<>();
+                holder.value = nibsmerchantrequest;
+                mcashenrollment.merchantEnrollment(holder);
+                String nibsmerchantresponse = nipssm.decrypt(holder.value);
+     
+                
+                RegisterMerchantResponse nibsresponseobject = (RegisterMerchantResponse) options.XMLToObject(nibsmerchantresponse, new RegisterMerchantResponse());
                 
                 
+                response.setMerchantCode(nibsresponseobject.getMerchantCode()); 
+                response.setRequestID(nibsresponseobject.getRequestID());
                 
-                nibsmerchantresposne = nipssm.decrypt(nibsmerchantresposne);
-                
-                RegisterMerchantResponse nibsresposneobject = (RegisterMerchantResponse) options.XMLToObject(nibsmerchantresposne, new RegisterMerchantResponse());
-                
-                
-                response.setMerchantCode(nibsresposneobject.getMerchantCode()); 
 
          
                
